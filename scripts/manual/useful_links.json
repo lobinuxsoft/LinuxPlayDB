@@ -5983,6 +5983,3702 @@
       "source": "reddit",
       "link_type": "discussion",
       "name": "Myst"
+    },
+    {
+      "app_id": -732173,
+      "name": "A Plague Tale: Requiem",
+      "url": "https://www.protondb.com/app/1182900",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -208937,
+      "name": "Ambulance Life: A Paramedic Simulator",
+      "url": "https://www.protondb.com/app/1926520",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -400205,
+      "name": "Aron's Adventure",
+      "url": "https://www.protondb.com/app/1013910",
+      "title_en": "ProtonDB reports (pending) — 0 reports",
+      "title_es": "Reportes ProtonDB (pending) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -848944,
+      "name": "Assassin's Creed Shadows",
+      "url": "https://www.protondb.com/app/3159330",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1203220,
+      "url": "https://www.protondb.com/app/1203220?device=steamDeck",
+      "title_en": "ProtonDB Game Details for NARAKA: BLADEPOINT",
+      "title_es": "Detalles del juego NARAKA: BLADEPOINT en ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1203220,
+      "url": "https://www.youtube.com/watch?v=h-SaX1En-hc",
+      "title_en": "Naraka Bladepoint On Linux // Ryzen 3700x, RX 6700 10GB",
+      "title_es": "Naraka Bladepoint en Linux // Ryzen 3700x, RX 6700 10GB",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": 1203220,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Raytracing - ArchWiki",
+      "title_es": "Iluminación por rayos - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -675772,
+      "url": "https://www.protondb.com/app/3287520",
+      "title_en": "ProtonDB Game Details",
+      "title_es": "Detalles del juego en ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -675772,
+      "url": "https://www.youtube.com/watch?v=S1VAqktOvUw",
+      "title_en": "Ninja Gaiden II Gaming Motherboard: ASRock B550M PG Riptide",
+      "title_es": "Tarjeta madre de juego Ninja Gaiden II: ASRock B550M PG Riptide",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": -675772,
+      "url": "https://www.pcgamingwiki.com/wiki/Ninja_Gaiden_2_Black",
+      "title_en": "Ninja Gaiden 2 Black PC Gaming Wiki",
+      "title_es": "Ninja Gaiden 2 Black Wiki de juegos de PC",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -820627,
+      "url": "https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List",
+      "title_en": "FSR4 Compatibility List",
+      "title_es": "Lista de compatibilidad FSR4",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -820627,
+      "url": "https://store.steampowered.com/app/1386900/Observer_System_Redux/",
+      "title_en": "Observer: System Redux on Steam",
+      "title_es": "Observer: System Redux en Steam",
+      "source": "steam",
+      "link_type": "game"
+    },
+    {
+      "app_id": -820627,
+      "url": "https://www.protondb.com/explore",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "database"
+    },
+    {
+      "app_id": -820627,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Raytracing",
+      "title_es": "Raytracing de hardware",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -980671,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -980671,
+      "url": "https://www.protondb.com/app/464060",
+      "title_en": "PERISH ProtonDB Page",
+      "title_es": "Página de PERISH en ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -980671,
+      "url": "https://www.protondb.com/explore",
+      "title_en": "ProtonDB Explore",
+      "title_es": "Explorar ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -980671,
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?l=german",
+      "title_en": "Proton 101",
+      "title_es": "Proton 101",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -980671,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "ValveSoftware/Proton",
+      "title_es": "ValveSoftware/Proton",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "Proton GitHub",
+      "title_es": "Proton GitHub",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://www.dedoimedo.com/games/steam-proton-compatibility-report-2023.html",
+      "title_en": "Steam Proton Compatibility Report 2023",
+      "title_es": "Informe de compatibilidad de Steam Proton 2023",
+      "source": "dedoimedo",
+      "link_type": "article"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://www.xda-developers.com/how-to-play-windows-games-on-linux/",
+      "title_en": "How to Play Windows Games on Linux",
+      "title_es": "Cómo jugar juegos de Windows en Linux",
+      "source": "xda",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Raytracing",
+      "title_es": "Iluminación por rayos en hardware",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing Now Possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "La iluminación por rayos ahora es posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "article"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://steamcommunity.com/app/1160220/discussions/0/3193621324028744364/",
+      "title_en": "Ray tracing on AMD?",
+      "title_es": "Iluminación por rayos en AMD?",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag Supports Older RDNA GPUs",
+      "title_es": "VKD3D-Proton 3.0 Agrega Soporte a AMD FSR4 Anti-Lag para GPUs RDNA Antiguas",
+      "source": "ps2bios",
+      "link_type": "article"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://markaicode.com/amd-rdna4-ray-tracing-optimization-guide/",
+      "title_en": "Optimizing Ray Tracing for AMD RDNA 4 GPUs",
+      "title_es": "Optimización de la iluminación por rayos para GPUs AMD RDNA 4",
+      "source": "markaicode",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://github.com/ryyReid/Reids-Steam-NTFS-Linux--Ubuntu-Drive-Fixer",
+      "title_en": "Steam NTFS Mount Fixer",
+      "title_es": "Corrector de montaje de NTFS de Steam",
+      "source": "github",
+      "link_type": "tool"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://www.reddit.com/r/LinuxCrackSupport/comments/tqjp3z/guide_running_steamworks_fixonline_fix_with_linux/",
+      "title_en": "Guide: Running Steamworks fix/Online fix with Linux Steam + Proton",
+      "title_es": "Guía: Ejecutar la corrección de Steamworks/Online con Steam + Proton en Linux",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://appuals.com/steam-set-launch-options-and-full-list/",
+      "title_en": "Steam Set Launch Options and Full List",
+      "title_es": "Opciones de inicio de Steam y lista completa",
+      "source": "appuals",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://steamcommunity.com/app/1160220/discussions/0/3275815819074540675/",
+      "title_en": "Is there any way to always launch dx12 directly?",
+      "title_es": "¿Hay alguna forma de lanzar dx12 directamente siempre?",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -143933,
+      "url": "https://forums.linuxmint.com/viewtopic.php?t=427582",
+      "title_en": "Steam games not launching - Linux Mint Forums",
+      "title_es": "Juegos de Steam no se lanzan - Foros de Linux Mint",
+      "source": "linuxmint",
+      "link_type": "forum"
+    },
+    {
+      "app_id": -125061,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -125061,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "Proton GitHub",
+      "title_es": "Proton en GitHub",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -125061,
+      "url": "https://store.steampowered.com/app/2328760/Pinball_FX/",
+      "title_en": "Pinball FX Steam Page",
+      "title_es": "Página de Pinball FX en Steam",
+      "source": "steam",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -125061,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/open-source-amd-linux/1604007-radeon-radv-driver-lands-another-ray-tracing-improvement-30-faster-on-rdna2/page2",
+      "title_en": "Phoronix Radeon RADV Driver",
+      "title_es": "Phoronix Radeon RADV Driver",
+      "source": "phoronix",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -125061,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0",
+      "title_es": "VKD3D-Proton 3.0",
+      "source": "ps2bios",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -125061,
+      "url": "https://www.youtube.com/watch?v=ouV8ZzaFVZo",
+      "title_en": "Steam Launch Options",
+      "title_es": "Opciones de lanzamiento de Steam",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": -456407,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -456407,
+      "url": "https://github.com/ValveSoftware/Proton/wiki/Requirements",
+      "title_en": "Proton Requirements",
+      "title_es": "Requisitos de Proton",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -456407,
+      "url": "https://steamcommunity.com/app/2012840/discussions/0/4365753515844583204/",
+      "title_en": "Portal with RTX General Discussions",
+      "title_es": "Discusiones generales de Portal with RTX",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -456407,
+      "url": "https://github.com/NightSightProductions/Portal-RTX-AMD-mod",
+      "title_en": "Portal RTX AMD Mod",
+      "title_es": "Portal RTX AMD Mod",
+      "source": "github",
+      "link_type": "mod"
+    },
+    {
+      "app_id": -456407,
+      "url": "https://www.pcgamingwiki.com/wiki/Portal",
+      "title_en": "Portal PCGamingWiki",
+      "title_es": "Portal PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -456407,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/zg8sut/i_got_portal_with_rtx_working_on_linux_but_its/",
+      "title_en": "I got Portal with RTX working on Linux but it's without RTX",
+      "title_es": "Obtuve Portal with RTX funcionando en Linux pero sin RTX",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -181029,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -181029,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "Proton GitHub",
+      "title_es": "Proton en GitHub",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -181029,
+      "url": "https://www.pcgamingwiki.com/wiki/Portal",
+      "title_en": "Portal PCGamingWiki",
+      "title_es": "Portal en PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -181029,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/zg8sut/i_got_portal_with_rtx_working_on_linux_but_its/",
+      "title_en": "Portal with RTX working on Linux",
+      "title_es": "Portal con RTX funcionando en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -563519,
+      "url": "https://www.protondb.com/app/1186640",
+      "title_en": "Pumpkin Jack Game Details on ProtonDB",
+      "title_es": "Detalles del juego Pumpkin Jack en ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -563519,
+      "url": "https://www.pcgamingwiki.com/wiki/Pumpkin_Jack",
+      "title_en": "Pumpkin Jack on PCGamingWiki",
+      "title_es": "Pumpkin Jack en PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -563519,
+      "url": "https://www.reddit.com/r/SteamDeck/comments/1ppah6u/heroic_games_launcher_on_steam_deck_updated_for/",
+      "title_en": "Heroic Games Launcher on Steam Deck - updated for 2025",
+      "title_es": "Heroic Games Launcher en Steam Deck - actualizado para 2025",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -563519,
+      "url": "https://github.com/ValveSoftware/Proton/issues/4312",
+      "title_en": "Pumpkin Jack (1186640) #4312 on GitHub",
+      "title_es": "Pumpkin Jack (1186640) #4312 en GitHub",
+      "source": "github",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -935524,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -935524,
+      "url": "https://www.pcgameshardware.de/Raytracing-Hardware-255905/News/Quake-2-RTX-mit-Radeon-Vulkan-Raytracing-1363692/",
+      "title_en": "Quake 2 RTX with Radeon Vulkan Raytracing",
+      "title_es": "Quake 2 RTX con Radeon Vulkan Raytracing",
+      "source": "pcgameshardware",
+      "link_type": "news"
+    },
+    {
+      "app_id": -935524,
+      "url": "https://www.reddit.com/r/SteamDeck/comments/wk2o8d/psa_protondbcom_is_the_best_source_for_finding/",
+      "title_en": "PSA: protondb.com is the best source for finding out if a game works on Steam Deck and Linux",
+      "title_es": "PSA: protondb.com es la mejor fuente para encontrar si un juego funciona en Steam Deck y Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -164193,
+      "url": "https://store.steampowered.com/app/730390/Raji_An_Ancient_Epic/",
+      "title_en": "Raji: An Ancient Epic on Steam",
+      "title_es": "Raji: An Ancient Epic en Steam",
+      "source": "steam",
+      "link_type": "game"
+    },
+    {
+      "app_id": -164193,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -164193,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "Proton GitHub",
+      "title_es": "Proton GitHub",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -164193,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Raytracing de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -164193,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "La raytracing ahora es posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -140060,
+      "url": "https://www.protondb.com/app/1091500",
+      "title_en": "Game information for Proton, Linux, Steam Deck, and SteamOS",
+      "title_es": "Información del juego para Proton, Linux, Steam Deck y SteamOS",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -140060,
+      "url": "https://github.com/ValveSoftware/Proton/issues/6968",
+      "title_en": "Ratchet & Clank: Rift Apart (1895880) · Issue #6968 · ValveSoftware/Proton",
+      "title_es": "Ratchet & Clank: Rift Apart (1895880) · Issue #6968 · ValveSoftware/Proton",
+      "source": "github",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -140060,
+      "url": "https://www.pcgamingwiki.com/wiki/Ratchet_&_Clank:_Rift_Apart",
+      "title_en": "Ratchet & Clank: Rift Apart - PCGamingWiki PCGW",
+      "title_es": "Ratchet & Clank: Rift Apart - PCGamingWiki PCGW",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -203593,
+      "url": "https://www.protondb.com/app/1294810/",
+      "title_en": "Redfall Game Details on ProtonDB",
+      "title_es": "Detalles del juego Redfall en ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -203593,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Ray Tracing on Linux",
+      "title_es": "Iluminación de rayos en hardware en Linux",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -203593,
+      "url": "https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-VULKAN.html",
+      "title_en": "AMD Vulkan Driver Support",
+      "title_es": "Soporte del driver Vulkan de AMD",
+      "source": "amd",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -430397,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Raytracing",
+      "title_es": "Ray tracing de hardware",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -430397,
+      "url": "https://github.com/HansKristian-Work/vkd3d-proton/releases",
+      "title_en": "VKD3D-Proton Releases",
+      "title_es": "Releases de VKD3D-Proton",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -430397,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "El ray tracing ahora es posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -430397,
+      "url": "https://github.com/Fincer/steam-launchoptions",
+      "title_en": "Steam Launch Options",
+      "title_es": "Opciones de inicio de Steam",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -430397,
+      "url": "https://steamcommunity.com/app/221410/discussions/8/3887225762855226571/",
+      "title_en": "Launch Options",
+      "title_es": "Opciones de inicio",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://linuxvox.com/blog/how-to-install-proton-on-linux/",
+      "title_en": "Installing Proton on Linux",
+      "title_es": "Instalación de Proton en Linux",
+      "source": "pcgamingwiki",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://github.com/kozec/proton-compatibility-list/blob/master/compatibility-list.md",
+      "title_en": "Proton Compatibility List",
+      "title_es": "Lista de compatibilidad de Proton",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "Ray Tracing ahora posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://www.phoronix.com/review/radeon-radv-rt-2025",
+      "title_en": "The Significant Performance Gains For Radeon RADV Ray-Tracing",
+      "title_es": "Las significativas ganancias de rendimiento para Radeon RADV Ray-Tracing",
+      "source": "phoronix",
+      "link_type": "article"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://steamcommunity.com/app/1712350/discussions/0/4407416886089815707/",
+      "title_en": "Anyone tried this in Linux?",
+      "title_es": "¿Alguien ha intentado esto en Linux?",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://www.gamersonlinux.com/forum/threads/riven-sequel-to-myst-guide.1287/",
+      "title_en": "Riven: Sequel To Myst Guide",
+      "title_es": "Guía de Riven: Secuela de Myst",
+      "source": "gamersonlinux",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://appuals.com/steam-set-launch-options-and-full-list/",
+      "title_en": "Steam Set Launch Options and Full List",
+      "title_es": "Opciones de inicio de Steam y lista completa",
+      "source": "appuals",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -268110,
+      "url": "https://cyan.com/docs/important-read-this-if-riven-crashes-on-startup/",
+      "title_en": "(IMPORTANT) Read this if Riven crashes on startup or during play!",
+      "title_es": "(IMPORTANT) Lee esto si Riven se cae al iniciar o durante el juego!",
+      "source": "cyan",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -989622,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -989622,
+      "url": "https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List",
+      "title_en": "FSR4 Compatibility List",
+      "title_es": "Lista de compatibilidad de FSR4",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -989622,
+      "url": "https://www.techpowerup.com/344284/modder-runs-amd-fsr-4-redstone-frame-generation-on-rdna-3-but-only-on-linux",
+      "title_en": "Modder Runs AMD FSR 4 Redstone Frame Generation on RDNA 3 but only on Linux",
+      "title_es": "Modder ejecuta AMD FSR 4 Redstone Frame Generation en RDNA 3 pero solo en Linux",
+      "source": "techpowerup",
+      "link_type": "article"
+    },
+    {
+      "app_id": -989622,
+      "url": "https://www.nexusmods.com/silenthillf/mods/49",
+      "title_en": "SHfFix",
+      "title_es": "SHfFix",
+      "source": "nexusmods",
+      "link_type": "mod"
+    },
+    {
+      "app_id": 3125250,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 3125250,
+      "url": "https://linuxvox.com/blog/how-to-install-proton-on-linux/",
+      "title_en": "Installing Proton on Linux: A Comprehensive Guide",
+      "title_es": "Instalación de Proton en Linux: Guía integral",
+      "source": "pcgamingwiki",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 3125250,
+      "url": "https://github.com/Trsnaqe/ProtonDB-Community-Extension",
+      "title_en": "ProtonDB Community Extension",
+      "title_es": "Extensión de la comunidad de ProtonDB",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -363978,
+      "url": "https://store.steampowered.com/app/1599660/Sackboy_A_Big_Adventure/",
+      "title_en": "Sackboy ™: A Big Adventure on Steam",
+      "title_es": "Sackboy ™: Una gran aventura en Steam",
+      "source": "steam",
+      "link_type": "game"
+    },
+    {
+      "app_id": -363978,
+      "url": "https://www.youtube.com/watch?v=3iHdvpA5Ww0",
+      "title_en": "Sackboy : A Big Adventure Steam - Dualsense Controller Fix",
+      "title_es": "Sackboy : Una gran aventura en Steam - Solución para el controlador Dualsense",
+      "source": "youtube",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -363978,
+      "url": "https://github.com/HansKristian-Work/vkd3d-proton/issues/2298",
+      "title_en": "[Game hang] Sackboy - A big adventure",
+      "title_es": "[Juego congelado] Sackboy - Una gran aventura",
+      "source": "github",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -804431,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -804431,
+      "url": "https://steamcommunity.com/app/1227690/discussions/0/3103516354859075894/",
+      "title_en": "Linux support for Severed Steel",
+      "title_es": "Compatibilidad de Linux para Severed Steel",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -804431,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/138dvfe/do_you_still_use_protondb/",
+      "title_en": "Do you still use ProtonDB?",
+      "title_es": "¿Todavía usas ProtonDB?",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -804431,
+      "url": "https://www.pcgamingwiki.com/wiki/Severed_Steel",
+      "title_en": "Severed Steel PCGamingWiki",
+      "title_es": "Severed Steel PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -804431,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "El ray tracing es posible ahora en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -804431,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/opengl-vulkan-mesa-gallium3d/1416217-mesa-s-radeon-vulkan-driver-has-become-much-more-capable-at-ray-tracing-thanks-to-valve/page2",
+      "title_en": "Mesa's Radeon Vulkan Driver Has Become Much More Capable At Ray-Tracing Thanks To Valve",
+      "title_es": "El driver de Vulkan de Mesa para Radeon se ha vuelto mucho más capaz en ray tracing gracias a Valve",
+      "source": "phoronix",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -804431,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/16pd7nb/enabling_raytracing_on_amd_gpus/",
+      "title_en": "Enabling raytracing on AMD GPUs",
+      "title_es": "Habilitar ray tracing en tarjetas gráficas AMD",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -854476,
+      "url": "https://www.protondb.com/app/750920",
+      "title_en": "Shadow of the Tomb Raider: Definitive Edition - ProtonDB",
+      "title_es": "Shadow of the Tomb Raider: Definitiva - ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -854476,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1aoxs85/shadow_of_the_tomb_raider_proton_setup/",
+      "title_en": "Shadow of the Tomb Raider: Proton setup",
+      "title_es": "Configuración de Shadow of the Tomb Raider con Proton",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -854476,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Ray tracing de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -854476,
+      "url": "https://www.youtube.com/watch?v=0kk7Mgo8bOs",
+      "title_en": "Shadow of the Tomb Raider - 1080p - Ray Tracing - RX 9070",
+      "title_es": "Shadow of the Tomb Raider - 1080p - Ray Tracing - RX 9070",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": -860684,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -860684,
+      "url": "https://github.com/ValveSoftware/Proton/issues/8512",
+      "title_en": "Marvel's Spider-Man 2 on Proton",
+      "title_es": "Marvel's Spider-Man 2 en Proton",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -860684,
+      "url": "https://www.howtogeek.com/ways-to-check-if-a-game-will-run-on-linux/",
+      "title_en": "4 Ways to Check If a Game Will Run on Linux",
+      "title_es": "4 formas de verificar si un juego funcionará en Linux",
+      "source": "howtogeek",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -860684,
+      "url": "https://linuxvox.com/blog/how-to-install-proton-on-linux/",
+      "title_en": "Installing Proton on Linux",
+      "title_es": "Instalar Proton en Linux",
+      "source": "linuxvox",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -860684,
+      "url": "https://www.pcgamingwiki.com/wiki/Marvel's_Spider-Man_2",
+      "title_en": "Marvel's Spider-Man 2 on PCGamingWiki",
+      "title_es": "Marvel's Spider-Man 2 en PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 1817070,
+      "url": "https://www.protondb.com/app/1817070?device=any",
+      "title_en": "Game Details for Marvel's Spider-Man Remastered",
+      "title_es": "Detalles del juego para Marvel's Spider-Man Remastered",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1817070,
+      "url": "https://github.com/ValveSoftware/Proton/issues/6088",
+      "title_en": "Compatibility Report for Marvel's Spider-Man Remastered",
+      "title_es": "Informe de compatibilidad para Marvel's Spider-Man Remastered",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": 1817070,
+      "url": "https://steamcommunity.com/app/1817070/discussions/0/4859966604384025778/",
+      "title_en": "Great Linux support day one!",
+      "title_es": "Excelente soporte de Linux desde el primer día!",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 1817070,
+      "url": "https://www.youtube.com/watch?v=3QzaLPI86VY",
+      "title_en": "Spider Man Remastered | Optimization Guide / BEST SETTINGS ...",
+      "title_es": "Spider Man Remasterizado | Guía de optimización / Mejores ajustes ...",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": 1817070,
+      "url": "https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955",
+      "title_en": "Setting Game Launch Options",
+      "title_es": "Configuración de opciones de lanzamiento del juego",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1817070,
+      "url": "https://appuals.com/steam-set-launch-options-and-full-list/",
+      "title_en": "Steam Set Launch Options and Full List",
+      "title_es": "Configuración de opciones de lanzamiento de Steam y lista completa",
+      "source": "appuals",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -907594,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -907594,
+      "url": "https://steamcommunity.com/app/1817190/discussions/0/4138311592813119080/",
+      "title_en": "Spiderman Miles Morales on Linux",
+      "title_es": "Spiderman Miles Morales en Linux",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -907594,
+      "url": "https://deckverified.games/app/1817190",
+      "title_en": "Marvel's Spider-Man: Miles Morales – Steam Deck Graphics",
+      "title_es": "Marvel's Spider-Man: Miles Morales – Gráficos de Steam Deck",
+      "source": "deckverified",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -907594,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1038kb4/how_come_raytracing_is_so_bad_on_amd_cards_but/",
+      "title_en": "How come raytracing is so bad on AMD cards but works great on NVIDIA?",
+      "title_es": "¿Cómo es que la iluminación por rayos es tan mala en tarjetas AMD pero funciona bien en NVIDIA?",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -907594,
+      "url": "https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List/5146aade64524fc717ea5dabcecdcbb74392b818",
+      "title_en": "FSR4 Compatibility List",
+      "title_es": "Lista de compatibilidad de FSR4",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -907594,
+      "url": "https://www.techpowerup.com/news-tags/OpenGL",
+      "title_en": "News Posts matching 'OpenGL'",
+      "title_es": "Entradas de noticias que coinciden con 'OpenGL'",
+      "source": "techpowerup",
+      "link_type": "news"
+    },
+    {
+      "app_id": -567299,
+      "url": "https://www.protondb.com/app/1283400",
+      "title_en": "ProtonDB Game Details for Steelrising",
+      "title_es": "Detalles del juego Steelrising en ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -567299,
+      "url": "https://www.pcgamingwiki.com/wiki/Steelrising",
+      "title_en": "Steelrising PCGamingWiki",
+      "title_es": "Steelrising en PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -567299,
+      "url": "https://www.reddit.com/r/LinuxCrackSupport/comments/xfx1o6/steelrising_crashing_using_steam_but_works_on/",
+      "title_en": "Steelrising crashing using Steam but works on Lutris",
+      "title_es": "Steelrising se cae utilizando Steam pero funciona en Lutris",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -567299,
+      "url": "https://github.com/ryyReid/Reids-Steam-NTFS-Linux--Ubuntu-Drive-Fixer",
+      "title_en": "Reids-Steam-NTFS-Linux--Ubuntu-Drive-Fixer",
+      "title_es": "Reids-Steam-NTFS-Linux--Ubuntu-Drive-Fixer",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.reddit.com/r/SteamDeck/comments/vctuz8/sword_and_fairy_7/",
+      "title_en": "Sword And Fairy 7 : r/SteamDeck",
+      "title_es": "Sword And Fairy 7 : r/SteamDeck",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.protondb.com/users/2025342406",
+      "title_en": "User Profile for guest - ProtonDB",
+      "title_es": "Perfil del usuario para invitado - ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.facebook.com/groups/KaliLinuxGroups/posts/3604932756452400/",
+      "title_en": "How to download games in Linux?",
+      "title_es": "¿Cómo descargar juegos en Linux?",
+      "source": "facebook",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.resetera.com/threads/linux-steamos-ot-its-a-linux-system…-i-know-this.557173/page-121",
+      "title_en": "Linux & SteamOS |OT| It's a Linux System… I Know This.",
+      "title_es": "Linux & SteamOS |OT| Es un sistema Linux… Lo sé.",
+      "source": "resetera",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.dexerto.com/tech/steam-deck-proton-8-is-here-and-finally-fixes-a-tonne-of-games-2117806/",
+      "title_en": "Steam Deck Proton 8 is here and finally fixes a tonne of games",
+      "title_es": "Steam Deck Proton 8 está aquí y finalmente arregla un montón de juegos",
+      "source": "dexerto",
+      "link_type": "news"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.comss.ru/page.php?id=18533",
+      "title_en": "AMD Radeon Software for Linux 25.20.3.",
+      "title_es": "AMD Radeon Software for Linux 25.20.3.",
+      "source": "comss",
+      "link_type": "news"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://store.steampowered.com/app/1543030/Sword_and_Fairy_7/",
+      "title_en": "Sword and Fairy 7 on Steam",
+      "title_es": "Sword and Fairy 7 en Steam",
+      "source": "steam",
+      "link_type": "game"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://10scopes.com/rdna-3-vs-rdna-2/",
+      "title_en": "RDNA 3 vs RDNA 2: What’s the Difference?",
+      "title_es": "RDNA 3 vs RDNA 2: ¿Cuál es la diferencia?",
+      "source": "10scopes",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.facebook.com/groups/GNUAndLinux/posts/10161899495645019/",
+      "title_en": "Game has compatibility issues on debian!? USE STEAMOS!! WE ...",
+      "title_es": "El juego tiene problemas de compatibilidad en Debian!? USE STEAMOS!! WE ...",
+      "source": "facebook",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://gaming.lenovo.com/legion-go/post/everything-just-works-install-a-linux-steam-deck-edition-WjDE4yy3QdntyGF",
+      "title_en": "EVERYTHING JUST WORKS!! Install a Linux Steam Deck Edition",
+      "title_es": "TODO FUNCIONA!! Instale una edición de Linux Steam Deck",
+      "source": "gaming.lenovo.com",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://www.techpowerup.com/307457/valves-proton-8-0-update-brings-more-games-to-linux?cp=1",
+      "title_en": "Valve's Proton 8.0 Update Brings More Games to Linux",
+      "title_es": "Actualización de Proton 8.0 de Valve: más juegos para Linux",
+      "source": "techpowerup",
+      "link_type": "news"
+    },
+    {
+      "app_id": -934449,
+      "url": "https://boilingsteam.com/proton-8-wine-rebase-and-updated-steam-runtime-on-debian-11/",
+      "title_en": "Proton 8: Wine Rebase and Updated Steam Runtime on Debian 11",
+      "title_es": "Proton 8: Rebase de Wine y tiempo de ejecución de Steam actualizado en Debian 11",
+      "source": "boilingsteam",
+      "link_type": "news"
+    },
+    {
+      "app_id": -524919,
+      "name": "AMID EVIL",
+      "url": "https://www.protondb.com/app/2320910",
+      "title_en": "ProtonDB reports (pending) — 0 reports",
+      "title_es": "Reportes ProtonDB (pending) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -842950,
+      "name": "Batora: Lost Haven",
+      "url": "https://www.protondb.com/app/1506440",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -114621,
+      "name": "Battlefield 2042",
+      "url": "https://www.protondb.com/app/1517290",
+      "title_en": "ProtonDB reports (borked) — 0 reports",
+      "title_es": "Reportes ProtonDB (borked) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -932742,
+      "name": "Battlefield V",
+      "url": "https://www.protondb.com/app/1238810",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -374239,
+      "name": "Black Myth: Wukong",
+      "url": "https://www.protondb.com/app/2358720",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -690026,
+      "name": "Blind Fate: Edo no Yami",
+      "url": "https://www.protondb.com/app/1294880",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -902051,
+      "name": "Brickadia",
+      "url": "https://www.protondb.com/app/2199420",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -675244,
+      "name": "Bright Memory",
+      "url": "https://www.protondb.com/app/955050",
+      "title_en": "ProtonDB reports (gold) — 14 reports",
+      "title_es": "Reportes ProtonDB (gold) — 14 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -220994,
+      "name": "Call of Duty: Black Ops Cold War",
+      "url": "https://www.protondb.com/app/1985810",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -689795,
+      "name": "Call of Duty: Modern Warfare",
+      "url": "https://www.protondb.com/app/7940",
+      "title_en": "ProtonDB reports (gold) — 52 reports",
+      "title_es": "Reportes ProtonDB (gold) — 52 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -157016,
+      "name": "Chernobylite",
+      "url": "https://www.protondb.com/app/1016800",
+      "title_en": "ProtonDB reports (gold) — 6 reports",
+      "title_es": "Reportes ProtonDB (gold) — 6 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -673580,
+      "name": "Chernobylite 2: Exclusion Zone",
+      "url": "https://www.protondb.com/app/2075100",
+      "title_en": "ProtonDB reports (pending) — 0 reports",
+      "title_es": "Reportes ProtonDB (pending) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -654825,
+      "name": "Control",
+      "url": "https://www.protondb.com/app/870780",
+      "title_en": "ProtonDB reports (platinum) — 7 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 7 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -157298,
+      "name": "Cronos: The New Dawn",
+      "url": "https://www.protondb.com/app/2101960",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -751128,
+      "name": "Crysis 2 Remastered",
+      "url": "https://www.protondb.com/app/2096600",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -153866,
+      "name": "Crysis 3 Remastered",
+      "url": "https://www.protondb.com/app/2096610",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -312533,
+      "name": "Crysis Remastered",
+      "url": "https://www.protondb.com/app/1715130",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -566466,
+      "name": "Cyberpunk 2077",
+      "url": "https://www.protondb.com/app/1091500",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -133680,
+      "name": "DESORDRE: A Puzzle Game Adventure",
+      "url": "https://www.protondb.com/app/2097490",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -809872,
+      "name": "DOOM Eternal",
+      "url": "https://www.protondb.com/app/782330",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -497488,
+      "name": "DOOM: The Dark Ages",
+      "url": "https://www.protondb.com/app/3017860",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -313546,
+      "name": "Dead Island 2",
+      "url": "https://www.protondb.com/app/934700",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -333361,
+      "name": "Dead Take",
+      "url": "https://www.protondb.com/app/3352690",
+      "title_en": "ProtonDB reports (pending) — 0 reports",
+      "title_es": "Reportes ProtonDB (pending) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -506052,
+      "name": "Deathloop",
+      "url": "https://www.protondb.com/app/1252330",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -566793,
+      "name": "Deliver Us Mars",
+      "url": "https://www.protondb.com/app/1345890",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -403763,
+      "name": "Deliver Us The Moon",
+      "url": "https://www.protondb.com/app/428660",
+      "title_en": "ProtonDB reports (gold) — 7 reports",
+      "title_es": "Reportes ProtonDB (gold) — 7 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -130156,
+      "name": "Delta Force",
+      "url": "https://www.protondb.com/app/2507950",
+      "title_en": "ProtonDB reports (bronze) — 0 reports",
+      "title_es": "Reportes ProtonDB (bronze) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -522735,
+      "name": "DiRT 5",
+      "url": "https://www.protondb.com/app/1038250",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -349687,
+      "name": "Diablo IV",
+      "url": "https://www.protondb.com/app/2344520",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -665336,
+      "name": "Dolmen",
+      "url": "https://www.protondb.com/app/831050",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -875404,
+      "name": "Dragon's Dogma 2",
+      "url": "https://www.protondb.com/app/2054970",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -984252,
+      "name": "Dying Light: The Beast",
+      "url": "https://www.protondb.com/app/3008130",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -109215,
+      "name": "EVOTINCTION",
+      "url": "https://www.protondb.com/app/2005090",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -476477,
+      "name": "Echo Point Nova",
+      "url": "https://www.protondb.com/app/1836730",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -469409,
+      "name": "Elden Ring",
+      "url": "https://www.protondb.com/app/1245620",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -994602,
+      "name": "Escape From Naraka",
+      "url": "https://www.protondb.com/app/1390670",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -750400,
+      "name": "Everspace 2",
+      "url": "https://www.protondb.com/app/1128920",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -816274,
+      "name": "F.I.S.T.: Forged In Shadow Torch",
+      "url": "https://www.protondb.com/app/1330470",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -684817,
+      "name": "F1 25",
+      "url": "https://www.protondb.com/app/3059520",
+      "title_en": "ProtonDB reports (borked) — 0 reports",
+      "title_es": "Reportes ProtonDB (borked) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -968704,
+      "name": "FBC: Firebreak",
+      "url": "https://www.protondb.com/app/2272540",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -283137,
+      "name": "Far Cry 6",
+      "url": "https://www.protondb.com/app/2369390",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -304943,
+      "name": "Five Nights At Freddy's: Security Breach",
+      "url": "https://www.protondb.com/app/747660",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -503621,
+      "name": "Forza Horizon 5",
+      "url": "https://www.protondb.com/app/1551360",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -106512,
+      "name": "FragPunk",
+      "url": "https://www.protondb.com/app/2943650",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -387829,
+      "name": "Ghostrunner",
+      "url": "https://www.protondb.com/app/1139900",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -866566,
+      "name": "Ghostrunner 2",
+      "url": "https://www.protondb.com/app/2144740",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -782940,
+      "name": "Ghostwire: Tokyo",
+      "url": "https://www.protondb.com/app/1475810",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -547075,
+      "name": "Godfall",
+      "url": "https://www.protondb.com/app/928960",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -436841,
+      "name": "Gotham Knights",
+      "url": "https://www.protondb.com/app/1496790",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -649815,
+      "name": "Grand Theft Auto V Enhanced",
+      "url": "https://www.protondb.com/app/3240220",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -102512,
+      "name": "Gray Zone Warfare",
+      "url": "https://www.protondb.com/app/2479810",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -477449,
+      "name": "Gungrave G.O.R.E",
+      "url": "https://www.protondb.com/app/1630110",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -378065,
+      "name": "Half-Life 2 RTX Demo",
+      "url": "https://www.protondb.com/app/2477290",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -516871,
+      "name": "Hell Pie",
+      "url": "https://www.protondb.com/app/889910",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -251952,
+      "name": "Hellblade: Senua's Sacrifice",
+      "url": "https://www.protondb.com/app/414340",
+      "title_en": "ProtonDB reports (platinum) — 129 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 129 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -977110,
+      "name": "Hello Neighbor 2",
+      "url": "https://www.protondb.com/app/1321680",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -262169,
+      "name": "Hogwarts Legacy",
+      "url": "https://www.protondb.com/app/990080",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -187811,
+      "name": "INDUSTRIA",
+      "url": "https://www.protondb.com/app/1172650",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -642619,
+      "name": "Incurison Red River",
+      "url": "https://www.protondb.com/app/2116120",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -595763,
+      "name": "Infinity Nikki",
+      "url": "https://www.protondb.com/app/3164330",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -733801,
+      "name": "Jurassic World Evolution 2",
+      "url": "https://www.protondb.com/app/1244460",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -924752,
+      "name": "Jurassic World Evolution 3",
+      "url": "https://www.protondb.com/app/2958130",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -495115,
+      "name": "Justice / Sword of Justice",
+      "url": "https://www.protondb.com/app/2782500",
+      "title_en": "ProtonDB reports (bronze) — 0 reports",
+      "title_es": "Reportes ProtonDB (bronze) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -535704,
+      "name": "LEGO Builder's Journey",
+      "url": "https://www.protondb.com/app/1544360",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -746776,
+      "name": "Layers of Fear",
+      "url": "https://www.protondb.com/app/1946700",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -327812,
+      "name": "Little Nightmares III",
+      "url": "https://www.protondb.com/app/1392860",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -505384,
+      "name": "Lost Soul Aside",
+      "url": "https://www.protondb.com/app/3378960",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -859041,
+      "name": "Marvel's Guardians of the Galaxy",
+      "url": "https://www.protondb.com/app/1088850",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -423540,
+      "name": "Marvel's Midnight Suns",
+      "url": "https://www.protondb.com/app/368260",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -433468,
+      "name": "MechWarrior 5: Mercenaries",
+      "url": "https://www.protondb.com/app/784080",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -170236,
+      "name": "Metro Exodus",
+      "url": "https://www.protondb.com/app/412020",
+      "title_en": "ProtonDB reports (gold) — 23 reports",
+      "title_es": "Reportes ProtonDB (gold) — 23 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -706410,
+      "name": "Metro Exodus PC Enhanced Edition",
+      "url": "https://www.protondb.com/app/412020",
+      "title_en": "ProtonDB reports (gold) — 23 reports",
+      "title_es": "Reportes ProtonDB (gold) — 23 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -344594,
+      "name": "Microsoft Flight Simulator 2024",
+      "url": "https://www.protondb.com/app/2537590",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -747330,
+      "name": "Minecraft with RTX",
+      "url": "https://www.protondb.com/app/2012840",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -328886,
+      "name": "Monster Hunter Wilds",
+      "url": "https://www.protondb.com/app/2246340",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -658037,
+      "name": "Mortal Shell",
+      "url": "https://www.protondb.com/app/1110910",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -194596,
+      "name": "NARAKA: BLADEPOINT",
+      "url": "https://www.protondb.com/app/1203220",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -205998,
+      "name": "NINJA GAIDEN 2 Black",
+      "url": "https://www.protondb.com/app/3287520",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -268912,
+      "name": "Observer: System Redux",
+      "url": "https://www.protondb.com/app/1386900",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -792915,
+      "name": "PERISH",
+      "url": "https://www.protondb.com/app/1016360",
+      "title_en": "ProtonDB reports (pending) — 0 reports",
+      "title_es": "Reportes ProtonDB (pending) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -688348,
+      "name": "Paradise Killer",
+      "url": "https://www.protondb.com/app/1160220",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -641554,
+      "name": "Pinball FX",
+      "url": "https://www.protondb.com/app/2328760",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -411263,
+      "name": "Portal with RTX",
+      "url": "https://www.protondb.com/app/2012840",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -755389,
+      "name": "Portal: Prelude RTX",
+      "url": "https://www.protondb.com/app/2410180",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -858783,
+      "name": "Pumpkin Jack",
+      "url": "https://www.protondb.com/app/1186640",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -721655,
+      "name": "Quake II RTX",
+      "url": "https://www.protondb.com/app/1089130",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -740065,
+      "name": "Raji: An Ancient Epic",
+      "url": "https://www.protondb.com/app/730390",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -205523,
+      "name": "Ratchet & Clank: Rift Apart",
+      "url": "https://www.protondb.com/app/1895880",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -666193,
+      "name": "Redfall",
+      "url": "https://www.protondb.com/app/1294810",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -597302,
+      "name": "Resident Evil 2",
+      "url": "https://www.protondb.com/app/883710",
+      "title_en": "ProtonDB reports (platinum) — 59 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 59 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -235288,
+      "name": "Resident Evil 3",
+      "url": "https://www.protondb.com/app/952060",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -162857,
+      "name": "Resident Evil 4 Remake",
+      "url": "https://www.protondb.com/app/2050650",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -711989,
+      "name": "Resident Evil 7",
+      "url": "https://www.protondb.com/app/418370",
+      "title_en": "ProtonDB reports (gold) — 23 reports",
+      "title_es": "Reportes ProtonDB (gold) — 23 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -623048,
+      "name": "Resident Evil Requiem",
+      "url": "https://www.protondb.com/app/3764200",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -643233,
+      "name": "Resident Evil Village",
+      "url": "https://www.protondb.com/app/1196590",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -632801,
+      "name": "Returnal",
+      "url": "https://www.protondb.com/app/1649240",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -674679,
+      "name": "Riven",
+      "url": "https://www.protondb.com/app/1712350",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -200104,
+      "name": "SILENT HILL 2",
+      "url": "https://www.protondb.com/app/2124490",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -296851,
+      "name": "SILENT HILL f",
+      "url": "https://www.protondb.com/app/2947440",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -279140,
+      "name": "STORROR Parkour Pro",
+      "url": "https://www.protondb.com/app/3125250",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -301947,
+      "name": "Sackboy: A Big Adventure",
+      "url": "https://www.protondb.com/app/1599660",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -931287,
+      "name": "Shadow of the Tomb Raider",
+      "url": "https://www.protondb.com/app/750920",
+      "title_en": "ProtonDB reports (gold) — 98 reports",
+      "title_es": "Reportes ProtonDB (gold) — 98 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -682418,
+      "name": "Spider-Man 2",
+      "url": "https://www.protondb.com/app/2651280",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -911842,
+      "name": "Spider-Man Remastered",
+      "url": "https://www.protondb.com/app/1817070",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -482792,
+      "name": "Spider-Man: Miles Morales",
+      "url": "https://www.protondb.com/app/1817190",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -557109,
+      "name": "Star Wars Jedi: Survivor",
+      "url": "https://www.protondb.com/app/1774580",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -387423,
+      "name": "Star Wars Outlaws",
+      "url": "https://www.protondb.com/app/2842040",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -527473,
+      "name": "Sword and Fairy 7",
+      "url": "https://www.protondb.com/app/1543030",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -345196,
+      "name": "THE FINALS",
+      "url": "https://www.protondb.com/app/2073850",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -829937,
+      "name": "The Ascent",
+      "url": "https://www.protondb.com/app/979690",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -481942,
+      "name": "The Callisto Protocol",
+      "url": "https://www.protondb.com/app/1544020",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -716131,
+      "name": "The Elder Scrolls IV: Oblivion Remastered",
+      "url": "https://www.protondb.com/app/2623190",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -560024,
+      "name": "The Fabled Woods",
+      "url": "https://www.protondb.com/app/1299480",
+      "title_en": "ProtonDB reports (bronze) — 0 reports",
+      "title_es": "Reportes ProtonDB (bronze) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -687019,
+      "name": "The First Descendant",
+      "url": "https://www.protondb.com/app/2074920",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -756026,
+      "name": "The Medium",
+      "url": "https://www.protondb.com/app/1293160",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -164015,
+      "name": "The Outer Worlds 2",
+      "url": "https://www.protondb.com/app/1449110",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -649685,
+      "name": "The Persistence",
+      "url": "https://www.protondb.com/app/1140100",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -182790,
+      "name": "The Sinking City Remastered",
+      "url": "https://www.protondb.com/app/750130",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -131867,
+      "name": "The Talos Principle: Reawakened",
+      "url": "https://www.protondb.com/app/2806640",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -850335,
+      "name": "The Witcher 3: Wild Hunt",
+      "url": "https://www.protondb.com/app/292030",
+      "title_en": "ProtonDB reports (platinum) — 465 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 465 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -280471,
+      "name": "Titan Station",
+      "url": "https://www.protondb.com/app/1881120",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -374179,
+      "name": "Torque Drift 2",
+      "url": "https://www.protondb.com/app/3116640",
+      "title_en": "ProtonDB reports (pending) — 0 reports",
+      "title_es": "Reportes ProtonDB (pending) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -507778,
+      "name": "Tower of Fantasy",
+      "url": "https://www.protondb.com/app/2064650",
+      "title_en": "ProtonDB reports (silver) — 0 reports",
+      "title_es": "Reportes ProtonDB (silver) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -951494,
+      "name": "Until Dawn",
+      "url": "https://www.protondb.com/app/2172010",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -876707,
+      "name": "Vampire: The Masquerade - Bloodlines 2",
+      "url": "https://www.protondb.com/app/532790",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -604350,
+      "name": "War Thunder",
+      "url": "https://www.protondb.com/app/236390",
+      "title_en": "ProtonDB reports (gold) — 30 reports",
+      "title_es": "Reportes ProtonDB (gold) — 30 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -684689,
+      "name": "Warhammer 40,000: Darktide",
+      "url": "https://www.protondb.com/app/1361210",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -563312,
+      "name": "Watch Dogs: Legion",
+      "url": "https://www.protondb.com/app/2239550",
+      "title_en": "ProtonDB reports (platinum) — 0 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -139128,
+      "name": "Wolfenstein: Youngblood",
+      "url": "https://www.protondb.com/app/1056960",
+      "title_en": "ProtonDB reports (gold) — 32 reports",
+      "title_es": "Reportes ProtonDB (gold) — 32 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -689453,
+      "name": "Wrench",
+      "url": "https://www.protondb.com/app/936720",
+      "title_en": "ProtonDB reports (platinum) — 1 reports",
+      "title_es": "Reportes ProtonDB (platinum) — 1 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -421701,
+      "name": "Wuthering Waves",
+      "url": "https://www.protondb.com/app/3513350",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -456365,
+      "name": "inZOI",
+      "url": "https://www.protondb.com/app/2456740",
+      "title_en": "ProtonDB reports (gold) — 0 reports",
+      "title_es": "Reportes ProtonDB (gold) — 0 reportes",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://www.protondb.com/app/2073850",
+      "title_en": "Game Details for THE FINALS - ProtonDB",
+      "title_es": "Detalles del juego para THE FINALS - ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1m80ozv/the_finals_devs_are_committed_to_ensuring/",
+      "title_en": "THE FINALS devs are committed to ensuring compatibility",
+      "title_es": "Los desarrolladores de THE FINALS están comprometidos con garantizar la compatibilidad",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://www.gamingonlinux.com/2025/01/proton-hotfix-updated-to-get-the-finals-working-again-on-linux-steam-deck/",
+      "title_en": "Proton Hotfix updated to get THE FINALS working again on Linux ...",
+      "title_es": "Proton Hotfix actualizado para que THE FINALS vuelva a funcionar en Linux ...",
+      "source": "gamingonlinux",
+      "link_type": "news"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://steamcommunity.com/app/2073850/discussions/0/3877096256093778436/",
+      "title_en": "Where is Linux support?",
+      "title_es": "¿Dónde está el soporte para Linux?",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://steamdeckhq.com/news/proton-hotfix-fixes-the-finals-on-steam-deck/",
+      "title_en": "Proton Hotfix Update Fixes THE FINALS on Steam Deck",
+      "title_es": "Actualización de Proton Hotfix corrige THE FINALS en Steam Deck",
+      "source": "steamdeckhq",
+      "link_type": "news"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Iluminación por rayos - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/open-source-amd-linux/1546121-mesa-25-2-radv-merges-ray-tracing-improvements-for-radeon-rx-9070-series-rdna4",
+      "title_en": "Mesa 25.2 RADV Merges Ray-Tracing Improvements For ...",
+      "title_es": "Mesa 25.2 RADV Merges Mejoras de Iluminación por Rayos Para ...",
+      "source": "phoronix",
+      "link_type": "news"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://github.com/HansKristian-Work/vkd3d-proton/issues/2611",
+      "title_en": "Silent Hill 2 Remake – Ray tracing broken on Linux (RADV ...",
+      "title_es": "Silent Hill 2 Remake – Iluminación por rayos rota en Linux (RADV ...",
+      "source": "github",
+      "link_type": "issue"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/194yurj/how_to_play_the_finals_on_linux/",
+      "title_en": "How to play \"THE FINALS\" on Linux",
+      "title_es": "Cómo jugar \"THE FINALS\" en Linux",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1hfpoi4/the_finals_not_launching/",
+      "title_en": "The Finals not launching",
+      "title_es": "THE FINALS no se lanza",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://steamcommunity.com/app/2073850/discussions/0/4511002214534241111/",
+      "title_en": "[LINUX] Steps to Fix CRASH",
+      "title_es": "[LINUX] Pasos para solucionar errores de crash",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://github.com/pollux78/the-finals-linux-troubleshoot-guide",
+      "title_en": "A Guide for Troubleshooting THE FINALS on Linux",
+      "title_es": "Guía para solucionar problemas de THE FINALS en Linux",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 2073850,
+      "url": "https://forums.linuxmint.com/viewtopic.php?t=456828",
+      "title_en": "Steam games close after launching",
+      "title_es": "Los juegos de Steam se cierran después de lanzarse",
+      "source": "linuxmint",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -792870,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -792870,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/open-source-amd-linux/1604007-radeon-radv-driver-lands-another-ray-tracing-improvement-30-faster-on-rdna2/page2",
+      "title_en": "Radeon RADV Driver Lands Another Ray-Tracing Improvement",
+      "title_es": "Radeon RADV Driver Lands Another Ray-Tracing Improvement",
+      "source": "phoronix",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -792870,
+      "url": "https://docs.mesa3d.org/drivers/radv.html",
+      "title_en": "RADV",
+      "title_es": "RADV",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -792870,
+      "url": "https://www.positioniseverything.net/steam-set-launch-options-and-full-list/",
+      "title_en": "Steam Set Launch Options and Full List",
+      "title_es": "Steam Set Launch Options and Full List",
+      "source": "pcgamingwiki",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -792870,
+      "url": "https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955",
+      "title_en": "Setting Game Launch Options",
+      "title_es": "Configuración de opciones de lanzamiento de juegos",
+      "source": "steam",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -792870,
+      "url": "https://wiki.archlinux.org/title/Steam/Troubleshooting",
+      "title_en": "Steam/Troubleshooting",
+      "title_es": "Steam/Troubleshooting",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://www.pcgamingwiki.com/wiki/The_Callisto_Protocol",
+      "title_en": "The Callisto Protocol PCGamingWiki",
+      "title_es": "The Callisto Protocol PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://www.reddit.com/r/TheCallistoProtocol/comments/1bsenhw/looks_like_god_has_sent_me_to_fix_these_problems/",
+      "title_en": "Reddit - The Callisto Protocol",
+      "title_es": "Reddit - The Callisto Protocol",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://github.com/bubblegoth/proton-ge-custom",
+      "title_en": "Proton-GE-Custom",
+      "title_es": "Proton-GE-Custom",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://www.gamingonlinux.com/guides/view/how-to-check-game-compatibility-for-linux-steamos-and-steam-deck/",
+      "title_en": "How to check game compatibility for Linux, SteamOS and Steam Deck",
+      "title_es": "Cómo verificar la compatibilidad de juegos para Linux, SteamOS y Steam Deck",
+      "source": "gamingonlinux",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://deckverified.games/app/1544020",
+      "title_en": "The Callisto Protocol - DeckVerified",
+      "title_es": "The Callisto Protocol - DeckVerified",
+      "source": "deckverified",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Ray Tracing - ArchWiki",
+      "title_es": "Iluminación de rayos de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag Supports Older RDNA GPUs",
+      "title_es": "VKD3D-Proton 3.0 Agrega FSR4 Anti-Lag de AMD Soporta GPUs más antiguas de RDNA",
+      "source": "ps2bios",
+      "link_type": "news"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "La iluminación de rayos ahora es posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://markaicode.com/amd-rdna4-ray-tracing-optimization-guide/",
+      "title_en": "Optimizing Ray Tracing for AMD RDNA 4 GPUs",
+      "title_es": "Optimización de la iluminación de rayos para GPUs AMD RDNA 4",
+      "source": "markaicode",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://mygamingtutorials.com/2025/05/25/the-callisto-protocol-performance-and-graphics-optimization-guide/",
+      "title_en": "The Callisto Protocol: Performance and Graphics Optimization Guide",
+      "title_es": "Guía de optimización de rendimiento y gráficos de The Callisto Protocol",
+      "source": "mygamingtutorials",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2896575238",
+      "title_en": "Collection of fixes to reduce stutter",
+      "title_es": "Colección de soluciones para reducir la estutter",
+      "source": "steam",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://www.gamehelper.io/games/the-callisto-protocol/articles/how-to-fix-crashing-in-the-callisto-protocol-complete-troubleshooting-guide",
+      "title_en": "Fix Callisto Protocol Crashing (5 Fixes)",
+      "title_es": "Solución de problemas de Callisto Protocol (5 soluciones)",
+      "source": "gamehelper",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -978677,
+      "url": "https://www.youtube.com/watch?v=_4j5VUAANGA",
+      "title_en": "How to FIX The Callisto Protocol Not Launching/Won't Launch Games do not run after 'Preparing to Launch'",
+      "title_es": "Cómo solucionar el problema de que The Callisto Protocol no se inicia o no se ejecuta después de 'Preparar para iniciar'",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://www.protondb.com/app/1299480",
+      "title_en": "ProtonDB Game Details",
+      "title_es": "Detalles del juego en ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://www.youtube.com/watch?v=Y918edpGjWM",
+      "title_en": "What is ProtonDB and Steam Proton?",
+      "title_es": "¿Qué es ProtonDB y Steam Proton?",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://steamcommunity.com/app/1299480/discussions/0/3109144584169412228/",
+      "title_en": "Linux support for The Fabled Woods",
+      "title_es": "Compatibilidad de Linux para The Fabled Woods",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://github.com/GloriousEggroll/proton-ge-custom",
+      "title_en": "GloriousEggroll/proton-ge-custom",
+      "title_es": "GloriousEggroll/proton-ge-custom",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing",
+      "title_es": "Raytracing de hardware",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "El ray tracing ahora es posible en Linux en Polaris, Vega y RDNA1",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/open-source-amd-linux/1604007-radeon-radv-driver-lands-another-ray-tracing-improvement-30-faster-on-rdna2/page2",
+      "title_en": "Radeon RADV Driver Lands Another Ray-Tracing Improvement",
+      "title_es": "El driver Radeon RADV obtiene otra mejora en el ray tracing",
+      "source": "phoronix",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://forum.manjaro.org/t/raytracing-with-rdna3-card-was-working-with-rdna2/157538",
+      "title_en": "Raytracing with RDNA3 card (was working with RDNA2)",
+      "title_es": "Raytracing con tarjeta RDNA3 (funcionaba con RDNA2)",
+      "source": "manjaro",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://steamcommunity.com/app/1299480/discussions/0/3130541756149017391/",
+      "title_en": "How to get the game running smoothly on Linux -- with RTX!",
+      "title_es": "Cómo obtener el juego funcionando correctamente en Linux -- con RTX!",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1299480,
+      "url": "https://github.com/Fincer/steam-launchoptions",
+      "title_en": "Fincer/steam-launchoptions",
+      "title_es": "Fincer/steam-launchoptions",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://www.protondb.com/app/2074920",
+      "title_en": "ProtonDB Game Details",
+      "title_es": "Detalles del juego en ProtonDB",
+      "source": "protondb",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://github.com/ValveSoftware/Proton/issues/7873",
+      "title_en": "Proton Issue #7873",
+      "title_es": "Issue #7873 en Proton",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1ef8kb0/the_first_descendant_on_ubuntu_2204_steam_proton/",
+      "title_en": "The First Descendant on Ubuntu 22.04 (Steam, Proton Experimental)",
+      "title_es": "The First Descendant en Ubuntu 22.04 (Steam, Proton Experimental)",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Raytracing - ArchWiki",
+      "title_es": "Iluminación de rayos en hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/open-source-amd-linux/1604007-radeon-radv-driver-lands-another-ray-tracing-improvement-30-faster-on-rdna2/page2",
+      "title_en": "Radeon RADV Driver Lands Another Ray-Tracing Improvement",
+      "title_es": "El driver Radeon RADV obtiene otra mejora en la iluminación de rayos",
+      "source": "phoronix",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag Supports Older RDNA GPUs",
+      "title_es": "VKD3D-Proton 3.0 agrega FSR4 Anti-Lag de AMD a GPUs más antiguas de RDNA",
+      "source": "ps2bios",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://www.xda-developers.com/linux-runs-most-pc-games-now-and-you-dont-need-steamos-to-do-it/",
+      "title_en": "Linux Runs Most PC Games Now, and You Don't Need SteamOS to Do It",
+      "title_es": "Linux ejecuta la mayoría de los juegos de PC ahora, y no necesita SteamOS para hacerlo",
+      "source": "xda-developers",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -531361,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing Now Possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "La iluminación de rayos ahora es posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://www.xda-developers.com/how-to-play-windows-games-on-linux/",
+      "title_en": "How to play Windows games on Linux using Proton",
+      "title_es": "Cómo jugar juegos de Windows en Linux utilizando Proton",
+      "source": "xda-developers",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing",
+      "title_es": "Ray tracing de hardware",
+      "source": "archlinux",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://docs.mesa3d.org/drivers/radv.html",
+      "title_en": "RADV",
+      "title_es": "RADV",
+      "source": "mesa3d",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-VULKAN.html",
+      "title_en": "Vulkan Driver Support",
+      "title_es": "Soporte del controlador Vulkan",
+      "source": "amd",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://github.com/HansKristian-Work/vkd3d-proton/issues/2611",
+      "title_en": "Silent Hill 2 Remake - Ray tracing broken on Linux (RADV ...",
+      "title_es": "Silent Hill 2 Remake - Ray tracing roto en Linux (RADV ...",
+      "source": "github",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/opengl-vulkan-mesa-gallium3d/1416217-mesa-s-radeon-vulkan-driver-has-become-much-more-capable-at-ray-tracing-thanks-to-valve/page2",
+      "title_en": "Mesa's Radeon Vulkan Driver Has Become Much More Capable At Ray-Tracing ...",
+      "title_es": "El controlador Radeon de Vulkan de Mesa se ha vuelto mucho más capaz en la ray tracing ...",
+      "source": "phoronix",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://steamcommunity.com/app/221410/discussions/8/3887225762855226571/",
+      "title_en": "Launch Options :: Steam for Linux Steam Play",
+      "title_es": "Opciones de inicio :: Steam para Linux Steam Play",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://github.com/Fincer/steam-launchoptions",
+      "title_en": "steam-launchoptions",
+      "title_es": "steam-launchoptions",
+      "source": "github",
+      "link_type": "script"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://wiki.archlinux.org/title/Steam",
+      "title_en": "Steam",
+      "title_es": "Steam",
+      "source": "archlinux",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -312240,
+      "url": "https://www.youtube.com/watch?v=Kj94_zJ0uwc",
+      "title_en": "ProtonDB Reality Check: Where Winds Meet",
+      "title_es": "ProtonDB Reality Check: Donde los vientos se encuentran",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": -563081,
+      "url": "https://www.protondb.com/app/1449110",
+      "title_en": "Game Details for The Outer Worlds 2 - ProtonDB",
+      "title_es": "Detalles del juego para The Outer Worlds 2 - ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -563081,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1oypdgu/the_outer_worlds_2_without_having_ray_tracing/",
+      "title_en": "The Outer Worlds 2 without having ray tracing?",
+      "title_es": "The Outer Worlds 2 sin tener ray tracing?",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -563081,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Ray tracing de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -563081,
+      "url": "https://www.gamingonlinux.com/2023/11/vkd3d-proton-211-released-with-directx-raytracing-enabled-by-default/",
+      "title_en": "VKD3D-Proton 2.11 released with DirectX Raytracing enabled by default",
+      "title_es": "VKD3D-Proton 2.11 lanzado con DirectX Raytracing habilitado por defecto",
+      "source": "gamingonlinux",
+      "link_type": "news"
+    },
+    {
+      "app_id": -230447,
+      "url": "https://www.protondb.com/app/553420",
+      "title_en": "Game Details for TUNIC - ProtonDB",
+      "title_es": "Detalles del juego para TUNIC - ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -230447,
+      "url": "https://www.protondb.com/app/2116120",
+      "title_en": "Game Details for Incursion Red River - ProtonDB",
+      "title_es": "Detalles del juego para Incursion Red River - ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -230447,
+      "url": "https://www.protondb.com/app/253230",
+      "title_en": "Game Details for A Hat in Time - ProtonDB",
+      "title_es": "Detalles del juego para A Hat in Time - ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -230447,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Raytracing de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -230447,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "Ray Tracing ahora posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -230447,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag Supports Older RDNA GPUs",
+      "title_es": "VKD3D-Proton 3.0 Agrega soporte a AMD FSR4 Anti-Lag para GPUs RDNA más antiguas",
+      "source": "gitlab",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -230447,
+      "url": "https://www.phoronix.com/forums/forum/linux-graphics-x-org-drivers/open-source-amd-linux/1561469-additional-amd-rdna3-rdna4-ray-tracing-improvements-for-mesa-25-2-radv",
+      "title_en": "Additional AMD RDNA3 & RDNA4 Ray-Tracing Improvements For Mesa 25.2 RADV",
+      "title_es": "Mejoras adicionales de raytracing AMD RDNA3 y RDNA4 para Mesa 25.2 RADV",
+      "source": "phoronix",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://www.protondb.com/app/750130",
+      "title_en": "ProtonDB Game Details",
+      "title_es": "Detalles del juego en ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1fhe93w/tell_me_your_real_linux_gaming_experience/",
+      "title_en": "Linux Gaming Experience",
+      "title_es": "Experiencia de juego en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://linuxgamenews.com/page/2",
+      "title_en": "Linux Game News",
+      "title_es": "Noticias de juegos en Linux",
+      "source": "linuxgamenews",
+      "link_type": "news"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://www.protondb.com/users/1051076267",
+      "title_en": "ProtonDB User Profile",
+      "title_es": "Perfil de usuario en ProtonDB",
+      "source": "protondb",
+      "link_type": "user"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://news.ycombinator.com/item?id=46795864",
+      "title_en": "Microsoft forced me to switch to Linux",
+      "title_es": "Microsoft me obligó a cambiar a Linux",
+      "source": "hackernews",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Ray Tracing",
+      "title_es": "Iluminación rayo en hardware",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing on AMD",
+      "title_es": "Iluminación rayo en AMD",
+      "source": "reddit",
+      "link_type": "news"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://steamcommunity.com/app/750130/discussions/0/594032928485447540/",
+      "title_en": "Fatar error on AMD",
+      "title_es": "Fatar error en AMD",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://forum.manjaro.org/t/raytracing-with-rdna3-card-was-working-with-rdna2/157538",
+      "title_en": "Ray Tracing on RDNA3",
+      "title_es": "Iluminación rayo en RDNA3",
+      "source": "manjaro",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://www.dsogaming.com/pc-performance-analyses/the-sinking-city-remastered-pc-performance-analysis/",
+      "title_en": "The Sinking City Remastered PC Performance Analysis",
+      "title_es": "Análisis de rendimiento de The Sinking City Remastered",
+      "source": "dsogaming",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://steamcommunity.com/app/750130/discussions/0/4138312226659242769/",
+      "title_en": "Use steam to launch error",
+      "title_es": "Error al iniciar con Steam",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955",
+      "title_en": "Setting Game Launch Options",
+      "title_es": "Configuración de opciones de inicio de juego",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://www.pcgamingwiki.com/wiki/The_Sinking_City_Remastered",
+      "title_en": "The Sinking City Remastered PCGamingWiki",
+      "title_es": "The Sinking City Remastered en PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://wiki.archlinux.org/title/Steam/Game-specific_troubleshooting",
+      "title_en": "Steam/Game-specific troubleshooting",
+      "title_es": "Resolución de problemas específicos de Steam",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -761324,
+      "url": "https://www.reddit.com/r/TheSinkingCity/comments/ttkc9c/crash_on_launch_fix/",
+      "title_en": "Crash on launch fix",
+      "title_es": "Solución para el error al iniciar",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -147171,
+      "url": "https://www.protondb.com/app/257510",
+      "title_en": "Game Details for The Talos Principle",
+      "title_es": "Detalles del juego para The Talos Principle",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -147171,
+      "url": "https://www.protondb.com/users/41723393",
+      "title_en": "User Profile for Trismegistus",
+      "title_es": "Perfil del usuario para Trismegistus",
+      "source": "protondb",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -147171,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Raytracing de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -147171,
+      "url": "https://github.com/HansKristian-Work/vkd3d-proton/issues/2364",
+      "title_en": "The Talos Principle Reawakened Demo (UE5) - Artifacting on vkd3d",
+      "title_es": "El demo de The Talos Principle Reawakened (UE5) - Artifacting en vkd3d",
+      "source": "github",
+      "link_type": "video"
+    },
+    {
+      "app_id": -147171,
+      "url": "https://forums.developer.nvidia.com/t/talos-principle-reawakened-freezes-when-rt-activated/361257",
+      "title_en": "Talos Principle Reawakened freezes when RT activated",
+      "title_es": "El juego se congela cuando se activa RT",
+      "source": "nvidia forums",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -934612,
+      "url": "https://www.protondb.com/app/292030",
+      "title_en": "Game Details for The Witcher 3: Wild Hunt - ProtonDB",
+      "title_es": "Detalles del juego para The Witcher 3: Wild Hunt - ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -934612,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Ray tracing de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -934612,
+      "url": "https://www.nexusmods.com/witcher3/mods/7979",
+      "title_en": "All-in-One RT Performance Tweaks at The Witcher 3 Nexus",
+      "title_es": "Tweaks de rendimiento de RT en una sola página en The Witcher 3 Nexus",
+      "source": "nexusmods",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://github.com/bubblegoth/proton-ge-custom",
+      "title_en": "Proton-GE-Custom",
+      "title_es": "Proton-GE-Custom",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://www.gamingonlinux.com/guides/view/how-to-check-game-compatibility-for-linux-steamos-and-steam-deck/",
+      "title_en": "How to check game compatibility for Linux, SteamOS and Steam Deck",
+      "title_es": "Cómo verificar la compatibilidad de juegos para Linux, SteamOS y Steam Deck",
+      "source": "pcgamingwiki",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://www.xda-developers.com/how-to-play-windows-games-on-linux/",
+      "title_en": "How to play Windows games on Linux using Proton",
+      "title_es": "Cómo jugar juegos de Windows en Linux utilizando Proton",
+      "source": "xda-developers",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://www.tiktok.com/@clewless4/video/7504975568576924974",
+      "title_en": "Gaming on Linux with AMD GPU: Performance Boost Explained",
+      "title_es": "Jugando en Linux con GPU AMD: Explicación del aumento de rendimiento",
+      "source": "tiktok",
+      "link_type": "video"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List",
+      "title_en": "FSR4 Compatibility List",
+      "title_es": "Lista de compatibilidad de FSR4",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://www.notebookcheck.net/Newsarchive-2025-11.1152390.0.html",
+      "title_en": "Newsarchive 2025 11",
+      "title_es": "Noticias de 2025 11",
+      "source": "notebookcheck",
+      "link_type": "news"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://www.techpowerup.com/news-archive?month=0124",
+      "title_en": "News Archive",
+      "title_es": "Archivo de noticias",
+      "source": "techpowerup",
+      "link_type": "news"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://wiki.archlinux.org/title/Steam/Game-specific_troubleshooting",
+      "title_en": "Steam/Game-specific troubleshooting",
+      "title_es": "Steam/Resolución de problemas específicos de juegos",
+      "source": "archlinux",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://github.com/sonic2kk/steamtinkerlaunch",
+      "title_en": "Steam Tinker Launch",
+      "title_es": "Steam Tinker Launch",
+      "source": "github",
+      "link_type": "tool"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://www.steamcommunity.com/app/221410/discussions/8/3887225762855226571/",
+      "title_en": "Launch Options",
+      "title_es": "Opciones de lanzamiento",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://appuals.com/steam-set-launch-options-and-full-list/",
+      "title_en": "Steam Set Launch Options and Full List",
+      "title_es": "Configurar opciones de lanzamiento de Steam y lista completa",
+      "source": "appuals",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -402235,
+      "url": "https://forums.linuxmint.com/viewtopic.php?t=353144",
+      "title_en": "SOLVED (Steam/Proton) Games are ...",
+      "title_es": "SOLUCIONADO (Steam/Proton) Juegos son ...",
+      "source": "linuxmint",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -851074,
+      "url": "https://www.protondb.com/app/650510",
+      "title_en": "ProtonDB App Page",
+      "title_es": "Página de la aplicación de ProtonDB",
+      "source": "protondb",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -851074,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1fuzwoc/list_of_games_working_on_linux_mint_steam_heroic/",
+      "title_en": "List of Games working on Linux Mint",
+      "title_es": "Lista de juegos que funcionan en Linux Mint",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -851074,
+      "url": "https://bikmantech.com/blogs/blogs/steam-deck-top-10-questions-and-answers?srsltid=AfmBOorv45SPFH9qgzWjL9xSXHNBRV-aA01tm4igrBjdLEKLRIZs2udT",
+      "title_en": "Steam Deck - Top 10 Questions and Answers",
+      "title_es": "Preguntas y respuestas de Steam Deck - Top 10",
+      "source": "bikmantech",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -851074,
+      "url": "https://www.youtube.com/playlist?list=PLztkDgxXRINDaDb0JjAYWGLwItx-pnwqP",
+      "title_en": "Emulate Hardware Ray Tracing on Old GPUs",
+      "title_es": "Emular iluminación por rayos en GPUs antiguas",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": -911640,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -911640,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "La iluminación de rayos ahora es posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -911640,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing",
+      "title_es": "Iluminación de rayos de hardware",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -911640,
+      "url": "https://www.techpowerup.com/346251/linux-gamers-on-radeon-graphics-get-ray-tracing-performance-boost-in-mesa-26-0-0-update",
+      "title_en": "Linux Gamers on Radeon Graphics Get Ray Tracing Performance Boost in Mesa 26.0.0 Update",
+      "title_es": "Los jugadores de Linux en gráficos Radeon obtienen un aumento de rendimiento de iluminación de rayos en la actualización de Mesa 26.0.0",
+      "source": "techpowerup",
+      "link_type": "news"
+    },
+    {
+      "app_id": -911640,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag Supports Older RDNA GPUs",
+      "title_es": "VKD3D-Proton 3.0 Agrega Soporte a FSR4 Anti-Lag para GPUs RDNA más antiguas",
+      "source": "gitlab",
+      "link_type": "news"
+    },
+    {
+      "app_id": -911640,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/wk4udd/tower_of_fantasy_dosent_start/",
+      "title_en": "Tower of Fantasy doesn't start",
+      "title_es": "Tower of Fantasy no arranca",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -911640,
+      "url": "https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955",
+      "title_en": "Setting Game Launch Options",
+      "title_es": "Configuración de opciones de inicio de juego",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -610171,
+      "url": "https://www.protondb.com/app/1966900",
+      "title_en": "Game Details for 20 Minutes Till Dawn",
+      "title_es": "Detalles del juego para 20 minutos hasta el amanecer",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -610171,
+      "url": "https://www.pcgamingwiki.com/wiki/Until_Dawn",
+      "title_en": "Until Dawn - PCGamingWiki",
+      "title_es": "Hasta el amanecer - PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -610171,
+      "url": "https://steamcommunity.com/app/2172010/discussions/0/594010406470619764/",
+      "title_en": "Until Dawn - Steam Community",
+      "title_es": "Hasta el amanecer - Comunidad de Steam",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -610171,
+      "url": "https://github.com/Fincer/steam-launchoptions",
+      "title_en": "Steam Launch Options and Full List",
+      "title_es": "Opciones de inicio de Steam y lista completa",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://www.protondb.com/app/2600?device=steamDeck",
+      "title_en": "Game Details for Vampire: The Masquerade - Bloodlines - ProtonDB",
+      "title_es": "Detalles del juego para Vampire: The Masquerade - Bloodlines - ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/v14d0m/has_anyone_managed_to_play_vampire_the_masquerade/",
+      "title_en": "Has anyone managed to play vampire the masquerade bloodlines with ...",
+      "title_es": "¿Alguien ha logrado jugar vampiro la masquerade bloodlines con ...",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://www.protondb.com/users/1759760212",
+      "title_en": "User Profile for t3g - ProtonDB",
+      "title_es": "Perfil del usuario para t3g - ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://steamcommunity.com/app/1675200/discussions/0/6929437446236393690/",
+      "title_en": "Some games crash the entire device (solution found) - Steam Community",
+      "title_es": "Algunos juegos hacen que el dispositivo se estrelle por completo (solución encontrada) - Steam Community",
+      "source": "steam",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://www.pcgamingwiki.com/wiki/Vampire:_The_Masquerade_-_Bloodlines_2",
+      "title_en": "Vampire: The Masquerade - Bloodlines 2 - PCGamingWiki PCGW",
+      "title_es": "Vampire: The Masquerade - Bloodlines 2 - PCGamingWiki PCGW",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1g0hk35/need_help_to_play_vampire_the_masquarade/",
+      "title_en": "Need help to play Vampire The Masquarade Bloodlines on Linux ...",
+      "title_es": "Necesito ayuda para jugar Vampire The Masquarade Bloodlines en Linux ...",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?l=french",
+      "title_en": "Clan Quest Linux Installation and Troubleshooting - Steam Community",
+      "title_es": "Instalación y resolución de problemas de Clan Quest en Linux - Steam Community",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://www.techpowerup.com/news-tags/DX12?page=1",
+      "title_en": "News Posts matching 'DX12' | TechPowerUp",
+      "title_es": "Noticias que coinciden con 'DX12' | TechPowerUp",
+      "source": "techpowerup",
+      "link_type": "news"
+    },
+    {
+      "app_id": -366879,
+      "url": "https://www.techpowerup.com/news-archive?month=0124",
+      "title_en": "News Archive - TechPowerUp",
+      "title_es": "Archivo de noticias - TechPowerUp",
+      "source": "techpowerup",
+      "link_type": "news"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://www.protondb.com/app/236390",
+      "title_en": "War Thunder Game Details on ProtonDB",
+      "title_es": "Detalles del juego War Thunder en ProtonDB",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/12gcux9/war_thunder_native_or_proton/",
+      "title_en": "War Thunder Native or Proton on Linux",
+      "title_es": "War Thunder nativo o Proton en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://forum.warthunder.com/t/manjaro-fatal-error-libev-err-10045/",
+      "title_en": "Manjaro Fatal Error libev err 10045",
+      "title_es": "Error fatal Manjaro libev err 10045",
+      "source": "warthunder",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://steamcommunity.com/app/236390/discussions/0/597391837559297298/",
+      "title_en": "Proton working for anyone else?",
+      "title_es": "¿Funciona Proton para alguien más?",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Raytracing on Arch Linux",
+      "title_es": "Iluminación por rayos en Arch Linux",
+      "source": "archwiki",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://warthunder.com/en/news/9199-development-ray-tracing-in-war-thunder-en",
+      "title_en": "Ray Tracing in War Thunder",
+      "title_es": "Iluminación por rayos en War Thunder",
+      "source": "warthunder",
+      "link_type": "news"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/16pd7nb/enabling_raytracing_on_amd_gpus/",
+      "title_en": "Enabling Ray Tracing on AMD GPUs",
+      "title_es": "Habilitar iluminación por rayos en GPUs AMD",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag",
+      "title_es": "VKD3D-Proton 3.0 Agrega FSR4 Anti-Lag AMD",
+      "source": "ps2bios",
+      "link_type": "news"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://markaicode.com/amd-rdna4-ray-tracing-optimization-guide/",
+      "title_en": "AMD RDNA4 Ray Tracing Optimization Guide",
+      "title_es": "Guía de optimización de iluminación por rayos AMD RDNA4",
+      "source": "markaicode",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://steamcommunity.com/app/236390/discussions/0/603022666611366916/",
+      "title_en": "Steam is crashing after it logs in",
+      "title_es": "Steam se cae después de iniciar sesión",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://forum.warthunder.com/t/game-fails-to-start-on-linux-after-sons-of-attila/",
+      "title_en": "Game fails to start on Linux after Sons of Attila",
+      "title_es": "El juego no se inicia en Linux después de Sons of Attila",
+      "source": "warthunder",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://github.com/ryyReid/Reids-Steam-NTFS-Linux--Ubuntu-Drive-Fixer",
+      "title_en": "Steam NTFS Mount Fixer",
+      "title_es": "Corrector de montaje de NTFS de Steam",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://wiki.archlinux.org/title/Steam/Game-specific_troubleshooting",
+      "title_en": "Steam Game-Specific Troubleshooting",
+      "title_es": "Resolución de problemas específicos de juegos de Steam",
+      "source": "archwiki",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -479940,
+      "url": "https://help.steampowered.com/en/faqs/view/7D01-D2DD-D75E-2955",
+      "title_en": "Setting Game Launch Options",
+      "title_es": "Configuración de opciones de inicio de juego",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -714664,
+      "url": "https://www.reddit.com/r/DarkTide/comments/y49vcz/guide_to_playing_darktide_beta_on_linux/",
+      "title_en": "Guide to playing Darktide Beta on Linux",
+      "title_es": "Guía para jugar la beta de Darktide en Linux",
+      "source": "reddit",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -714664,
+      "url": "https://www.gamingonlinux.com/2024/03/proton-90-has-another-beta-release-fixing-deathloop-and-warhammer-40000-darktide/",
+      "title_en": "Proton 9.0 has another Beta release fixing DEATHLOOP and Warhammer 40,000: Darktide",
+      "title_es": "Proton 9.0 tiene otra versión beta que arregla DEATHLOOP y Warhammer 40,000: Darktide",
+      "source": "gamingonlinux",
+      "link_type": "fix"
+    },
+    {
+      "app_id": -714664,
+      "url": "https://github.com/thyazide/Darktide-Performance-Optimizations",
+      "title_en": "In-game settings, mods, ini edits, and dll replacements for darktide.",
+      "title_es": "Configuraciones de juego, mods, ediciones de ini y reemplazos de dll para darktide.",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -940691,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/14itn46/watchdogslegion_proton_platinum_fails_to_launch/",
+      "title_en": "Watchdogs:Legion Proton (platinum) fails to launch",
+      "title_es": "Watchdogs:Legion Proton (plata) falla al iniciar",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -940691,
+      "url": "https://steamcommunity.com/app/2239550/discussions/0/7336985412178260023/",
+      "title_en": "Not running on Linux Proton v7, v8, Experimental",
+      "title_es": "No funciona en Linux Proton v7, v8, Experimental",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -940691,
+      "url": "https://help.steampowered.com/en/faqs/view/5814-D9A3-BE42-62DF",
+      "title_en": "Games do not run after 'Preparing to Launch'",
+      "title_es": "Los juegos no funcionan después de 'Preparando para iniciar'",
+      "source": "steam",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -940691,
+      "url": "https://appuals.com/steam-set-launch-options-and-full-list/",
+      "title_en": "Steam Set Launch Options and Full List",
+      "title_es": "Configuración de opciones de inicio de Steam y lista completa",
+      "source": "appuals",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -940691,
+      "url": "https://www.youtube.com/watch?v=X6zIrbN5TI4",
+      "title_en": "watchdogs legion Not launching/Startup error fix",
+      "title_es": "watchdogs legion No inicia/ error de inicio de arranque",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": -316048,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -316048,
+      "url": "https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List",
+      "title_en": "FSR4 Compatibility List",
+      "title_es": "Lista de compatibilidad de FSR4",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -316048,
+      "url": "https://www.pcgamingwiki.com/wiki/Wolfenstein:_Youngblood",
+      "title_en": "Wolfenstein: Youngblood PCGamingWiki",
+      "title_es": "Wolfenstein: Youngblood PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://www.protondb.com/",
+      "title_en": "ProtonDB",
+      "title_es": "ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "Proton GitHub",
+      "title_es": "Proton GitHub",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware Raytracing ArchWiki",
+      "title_es": "Hardware Raytracing ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://www.techpowerup.com/346251/linux-gamers-on-radeon-graphics-get-ray-tracing-performance-boost-in-mesa-26-0-0-update",
+      "title_en": "Linux Gamers on Radeon Graphics Get Ray Tracing Performance Boost in Mesa 26.0.0 Update",
+      "title_es": "Los jugadores de Linux en gráficos Radeon obtienen un aumento de rendimiento de ray tracing en la actualización de Mesa 26.0.0",
+      "source": "techpowerup",
+      "link_type": "news"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://ps2bios.gitlab.io/blog/vkd3d-proton-30-adds-amd-fsr4--anti-lag-supports-older-rdna-gpus/",
+      "title_en": "VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag Supports Older RDNA GPUs",
+      "title_es": "VKD3D-Proton 3.0 Agrega Soporte a AMD FSR4 Anti-Lag para GPUs RDNA Antiguas",
+      "source": "ps2bios",
+      "link_type": "news"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://github.com/sonic2kk/steamtinkerlaunch",
+      "title_en": "Steam Tinker Launch GitHub",
+      "title_es": "Steam Tinker Launch GitHub",
+      "source": "github",
+      "link_type": "tool"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://steamcommunity.com/app/221410/discussions/8/3887225762855226571/",
+      "title_en": "Launch Options :: Steam for Linux Steam Play",
+      "title_es": "Opciones de lanzamiento :: Steam para Linux Steam Play",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -991725,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/u5wz7p/redirecting_steam_to_launch_a_different/",
+      "title_en": "Redirecting Steam To Launch a Different",
+      "title_es": "Redireccionar Steam para lanzar una diferente",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -890630,
+      "url": "https://www.gamingonlinux.com/2025/04/wuthering-waves-arrives-on-steam-another-with-anti-cheat-problems-on-steam-deck-and-desktop-linux/",
+      "title_en": "Wuthering Waves arrives on Steam, another with anti-cheat problems on Steam Deck and Desktop Linux",
+      "title_es": "Wuthering Waves llega a Steam, otro con problemas de anti-cheat en Steam Deck y Desktop Linux",
+      "source": "pcgamingwiki",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -890630,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "Proton GitHub repository",
+      "title_es": "Repositorio de GitHub de Proton",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -890630,
+      "url": "https://www.youtube.com/watch?v=Y918edpGjWM",
+      "title_en": "What is ProtonDB and Steam Proton?",
+      "title_es": "¿Qué es ProtonDB y Steam Proton?",
+      "source": "youtube",
+      "link_type": "video"
+    },
+    {
+      "app_id": -601478,
+      "url": "https://www.protondb.com/app/1249800?device=chromeOs",
+      "title_en": "Game Details for Xuan-Yuan Sword VII",
+      "title_es": "Detalles del juego Xuan-Yuan Sword VII",
+      "source": "protondb",
+      "link_type": "guide"
+    },
+    {
+      "app_id": -601478,
+      "url": "https://store.steampowered.com/app/1249800/XuanYuan_Sword_VII/",
+      "title_en": "Xuan-Yuan Sword VII on Steam",
+      "title_es": "Xuan-Yuan Sword VII en Steam",
+      "source": "steam",
+      "link_type": "gamepage"
+    },
+    {
+      "app_id": -601478,
+      "url": "https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/",
+      "title_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "title_es": "Ray Tracing ahora posible en Polaris, Vega y RDNA1 en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -601478,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Ray tracing de hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 2456740,
+      "url": "https://www.protondb.com/app/2456740",
+      "title_en": "Game Details for inZOI - ProtonDB",
+      "title_es": "Detalles del juego inZOI - ProtonDB",
+      "source": "protondb",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 2456740,
+      "url": "https://www.lemon8-app.com/@islandgyaltech/7485396189177840170?region=us",
+      "title_en": "Ultimate Inzoi Tutorial for Steam Deck Users",
+      "title_es": "Tutorial Inzoi Ultimate para usuarios de Steam Deck",
+      "source": "lemon8",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 2456740,
+      "url": "https://wiki.archlinux.org/title/Hardware_raytracing",
+      "title_en": "Hardware raytracing - ArchWiki",
+      "title_es": "Iluminación por rayos en hardware - ArchWiki",
+      "source": "archwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 2456740,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/18xl5n3/whats_the_deal_with_raytracing_on_linux/",
+      "title_en": "What's the deal with raytracing on Linux?",
+      "title_es": "¿Qué hay detrás de la iluminación por rayos en Linux?",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 2456740,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1jfnnpq/inzoi_creative_studio_works_flawlessly_on_linux/",
+      "title_en": "inZOI Creative Studio works flawlessly on Linux",
+      "title_es": "inZOI Creative Studio funciona sin problemas en Linux",
+      "source": "reddit",
+      "link_type": "discussion"
     }
   ]
 }

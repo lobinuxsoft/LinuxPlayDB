@@ -25,33 +25,22 @@ NVIDIA_URL = (
     "nvidia-rtx-games-engines-apps/dlss-rt-games-apps-overrides.json"
 )
 
-# Timeout for the HTTP request (seconds).
 REQUEST_TIMEOUT = 30
 
 
-def _has_value(field: str) -> bool:
+def _has_value(field: str | None) -> bool:
     """Check if an NVIDIA JSON field has a truthy value (not empty string)."""
     return bool(field and field.strip())
 
 
-def _parse_rt_type(ray_tracing: str) -> str:
+def _parse_rt_type(ray_tracing: str | None) -> str:
     """Map NVIDIA ray_tracing field to our rt_type enum."""
     if not ray_tracing or not ray_tracing.strip():
         return "none"
     val = ray_tracing.strip().lower()
-    if "path tracing" in val:
+    if "path" in val:
         return "pt"
-    if "full rt" in val:
-        return "rt"
-    # Generic "Yes" or any other truthy value.
     return "rt"
-
-
-def _find_game_by_name(cur: sqlite3.Cursor, name: str) -> int | None:
-    """Find a game by exact name match. Returns app_id or None."""
-    cur.execute("SELECT app_id FROM games WHERE name = ?", (name,))
-    row = cur.fetchone()
-    return row[0] if row else None
 
 
 def _generate_placeholder_id(name: str) -> int:
@@ -61,9 +50,6 @@ def _generate_placeholder_id(name: str) -> int:
 
 def fetch(db_path: Path) -> int:
     """Fetch NVIDIA RTX data and upsert into the database.
-
-    Args:
-        db_path: Path to the SQLite database file.
 
     Returns:
         Number of game entries processed.
@@ -90,10 +76,18 @@ def fetch(db_path: Path) -> int:
 
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
-    processed = 0
+
+    # Build name index for matching
+    cur.execute("SELECT app_id, name FROM games")
+    name_index = {}
+    for row in cur.fetchall():
+        name_index[row[1].strip().lower()] = row[0]
+
+    inserted = 0
+    updated = 0
 
     for entry in entries:
-        entry_type = entry.get("type", "").strip()
+        entry_type = (entry.get("type") or "").strip()
         if entry_type != "Game":
             continue
 
@@ -104,14 +98,15 @@ def fetch(db_path: Path) -> int:
         if not name:
             continue
 
-        rt_raw = entry.get("ray_tracing", "")
-        dlss_sr_raw = entry.get("dlss_super_resolution", "")
-        dlss_fg_raw = entry.get("dlss_frame_generation", "")
-        dlss_rr_raw = entry.get("dlss_ray_reconstruction", "")
-        dlss_mfg_raw = entry.get("dlss_multi_frame_generation", "")
+        # NVIDIA JSON uses spaces in keys, not underscores
+        rt_raw = entry.get("ray tracing", "")
+        dlss_sr_raw = entry.get("dlss super resolution", "")
+        dlss_fg_raw = entry.get("dlss frame generation", "")
+        dlss_rr_raw = entry.get("dlss ray reconstruction", "")
+        dlss_mfg_raw = entry.get("dlss multi frame generation", "")
         dlaa_raw = entry.get("dlaa", "")
 
-        # Skip entries with zero useful data.
+        # Skip entries with zero useful data
         has_any = any(
             _has_value(f)
             for f in [rt_raw, dlss_sr_raw, dlss_fg_raw, dlss_rr_raw, dlss_mfg_raw, dlaa_raw]
@@ -126,23 +121,37 @@ def fetch(db_path: Path) -> int:
         dlss_mfg = int(_has_value(dlss_mfg_raw))
         dlaa = int(_has_value(dlaa_raw))
 
-        # Try to match existing game or create a new one.
-        app_id = _find_game_by_name(cur, name)
+        # Try to match existing game by name or create new
+        name_lower = name.lower()
+        app_id = name_index.get(name_lower)
+
         if app_id is None:
+            # New game — generate placeholder ID
             app_id = _generate_placeholder_id(name)
             cur.execute(
                 "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
                 (app_id, name),
             )
+            # Create linux_compat row
+            cur.execute(
+                "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
+                (app_id,),
+            )
+            name_index[name_lower] = app_id
+            inserted += 1
+        else:
+            updated += 1
 
-        # Upsert graphics features — preserve existing FSR/XeSS data.
+        # Upsert graphics features — preserve existing data
         cur.execute(
             """INSERT INTO graphics_features
                    (app_id, rt_type, dlss_sr, dlss_fg, dlss_rr, dlss_mfg, dlaa)
                VALUES (?, ?, ?, ?, ?, ?, ?)
                ON CONFLICT(app_id) DO UPDATE SET
-                   rt_type  = CASE WHEN excluded.rt_type != 'none'
-                                   THEN excluded.rt_type ELSE graphics_features.rt_type END,
+                   rt_type  = CASE WHEN excluded.rt_type = 'pt' THEN 'pt'
+                                   WHEN graphics_features.rt_type = 'pt' THEN 'pt'
+                                   WHEN excluded.rt_type != 'none' THEN excluded.rt_type
+                                   ELSE graphics_features.rt_type END,
                    dlss_sr  = MAX(graphics_features.dlss_sr,  excluded.dlss_sr),
                    dlss_fg  = MAX(graphics_features.dlss_fg,  excluded.dlss_fg),
                    dlss_rr  = MAX(graphics_features.dlss_rr,  excluded.dlss_rr),
@@ -152,21 +161,19 @@ def fetch(db_path: Path) -> int:
             (app_id, rt_type, dlss_sr, dlss_fg, dlss_rr, dlss_mfg, dlaa),
         )
 
-        processed += 1
-
-    # Record source metadata.
+    # Record source metadata
     now = datetime.now(timezone.utc).isoformat()
     cur.execute(
         """INSERT OR REPLACE INTO data_sources
                (source_id, last_updated, entries_count, url, notes)
            VALUES ('nvidia', ?, ?, ?, 'NVIDIA RTX/DLSS database')""",
-        (now, processed, NVIDIA_URL),
+        (now, inserted + updated, NVIDIA_URL),
     )
 
     conn.commit()
     conn.close()
-    logger.info("NVIDIA fetch complete: %d games processed", processed)
-    return processed
+    print(f"[OK] NVIDIA: {inserted + updated} games ({inserted} new, {updated} updated)")
+    return inserted + updated
 
 
 if __name__ == "__main__":
@@ -175,5 +182,4 @@ if __name__ == "__main__":
     if not db.exists():
         print(f"ERROR: Database not found at {db}", file=sys.stderr)
         sys.exit(1)
-    count = fetch(db)
-    print(f"Processed {count} NVIDIA game entries")
+    fetch(db)

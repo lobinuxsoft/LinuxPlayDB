@@ -560,6 +560,300 @@
       "amd_status": "amd_ok",
       "notes_en": "Works with Proton 6.3-8 through Proton 8.0-3 without issue.",
       "notes_es": "Funciona con Proton 6.3-8 hasta Proton 8.0-3 sin problemas."
+    },
+    {
+      "app_id": 1203220,
+      "name": "NARAKA: BLADEPOINT",
+      "amd_status": "amd_ok",
+      "notes_en": "Naraka Bladepoint works well on Linux with AMD RDNA2+ GPUs, ray tracing is enabled by default from mesa 23.2.",
+      "notes_es": "Naraka Bladepoint funciona bien en Linux con GPUs AMD RDNA2+, la iluminación por rayos se habilita por defecto desde mesa 23.2."
+    },
+    {
+      "app_id": -675772,
+      "name": "NINJA GAIDEN 2 Black",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on AMD RDNA2+ GPUs, path tracing also works.",
+      "notes_es": "La iluminación por rayos funciona en los GPUs AMD RDNA2+, también funciona la iluminación por patrones."
+    },
+    {
+      "app_id": -820627,
+      "name": "Observer: System Redux",
+      "amd_status": "amd_ok",
+      "notes_en": "Uses Proton, latest vkd3d-proton-git & Dx12 ingame API.",
+      "notes_es": "Utiliza Proton, último vkd3d-proton-git & Dx12 ingame API."
+    },
+    {
+      "app_id": -980671,
+      "name": "PERISH",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "notes_es": "Ray Tracing ahora posible en Polaris, Vega y RDNA1 en Linux"
+    },
+    {
+      "app_id": -143933,
+      "name": "Paradise Killer",
+      "amd_status": "amd_rt_only",
+      "notes_en": "Ray tracing works but path tracing does NOT on AMD. See https://steamcommunity.com/app/1160220/discussions/0/3193621324028744364/ for more information.",
+      "notes_es": "La iluminación por rayos funciona pero la iluminación por trayectoria NO funciona en AMD. Consulte https://steamcommunity.com/app/1160220/discussions/0/3193621324028744364/ para obtener más información."
+    },
+    {
+      "app_id": -125061,
+      "name": "Pinball FX",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on AMD, thanks to VKD3D-Proton 3.0 and AMD FSR 4 support.",
+      "notes_es": "La iluminación por rayos funciona en AMD, gracias al soporte de VKD3D-Proton 3.0 y AMD FSR 4."
+    },
+    {
+      "app_id": -456407,
+      "name": "Portal with RTX",
+      "amd_status": "amd_ok",
+      "notes_en": "Portal with RTX works with AMD GPUs using the Portal RTX AMD mod, which includes a runtime patch for RDNA 2 and RDNA 3 GPUs and adds FSR 3.1 for superior performance.",
+      "notes_es": "Portal with RTX funciona con tarjetas gráficas AMD utilizando el Portal RTX AMD mod, que incluye una parche de tiempo de ejecución para GPUs RDNA 2 y RDNA 3 y agrega FSR 3.1 para una mejor rendimiento."
+    },
+    {
+      "app_id": -181029,
+      "name": "Portal: Prelude RTX",
+      "amd_status": "amd_ok",
+      "notes_en": "Portal: Prelude RTX runs without issues on the default Proton 8.0-104 and relatively ancient nvidia-driver 525.116.03. Edit: Did you set the launch options to enable RT and DLSS?",
+      "notes_es": "Portal: Prelude RTX corre sin problemas con el Proton 8.0-104 y un driver nvidia relativamente antiguo 525.116.03. Edit: ¿Has configurado las opciones de lanzamiento para habilitar RT y DLSS?"
+    },
+    {
+      "app_id": -563519,
+      "name": "Pumpkin Jack",
+      "amd_status": "amd_ok",
+      "notes_en": "Pumpkin Jack has native support that works correctly only in DX11 mode. Add -d3d11 to the launch options to launch the game in DX11. Ray tracing (RT). Shadows work on AMD RDNA2+ GPUs.",
+      "notes_es": "Pumpkin Jack tiene soporte nativo que funciona correctamente solo en modo DX11. Agregar -d3d11 a las opciones de inicio para lanzar el juego en DX11. La trazabilidad de rayos (RT). Las sombras funcionan en GPUs AMD RDNA2+."
+    },
+    {
+      "app_id": -935524,
+      "name": "Quake II RTX",
+      "amd_status": "amd_ok",
+      "notes_en": "Quake 2 RTX works with Radeon-Grafikkarten, including RDNA GPUs, according to pcgameshardware.de.",
+      "notes_es": "Quake 2 RTX funciona con Radeon-Grafikkarten, incluyendo RDNA GPUs, según pcgameshardware.de."
+    },
+    {
+      "app_id": -164193,
+      "name": "Raji: An Ancient Epic",
+      "amd_status": "amd_ok",
+      "notes_en": "AMD RDNA2 GPUs offer hardware raytracing support through onboard compute units, current performance is mixed. Since mesa 23, raytracing is enabled on a per game basis, and from mesa 23.2 raytracing will be enabled by default for all applications.",
+      "notes_es": "Las GPUs AMD RDNA2 ofrecen soporte a la raytracing a través de unidades de cómputo integradas, el rendimiento actual es mixto. Desde mesa 23, la raytracing se habilita por juego, y desde mesa 23.2 la raytracing se habilitará por defecto para todas las aplicaciones."
+    },
+    {
+      "app_id": -140060,
+      "name": "Ratchet & Clank: Rift Apart",
+      "amd_status": "amd_ok",
+      "notes_en": "Ratchet & Clank: Rift Apart gets Linux-specific patch! and FSR4 Compatibility List - GitHub",
+      "notes_es": "Ratchet & Clank: Rift Apart obtiene parche específico de Linux! y FSR4 Compatibility List - GitHub"
+    },
+    {
+      "app_id": -203593,
+      "name": "Redfall",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing acceleration structures from pre-compressed Dense Geometry Format (DGF) geometry data is supported on Linux with Proton, VKD3D is required, DXVK will not work.",
+      "notes_es": "La aceleración de rayos de estructuras de datos de DGF se soporta en Linux con Proton, VKD3D es requerido, DXVK no funcionará."
+    },
+    {
+      "app_id": -430397,
+      "name": "Returnal",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux with Mesa 23.2-git and latest Proton-GE or Wine-GE.",
+      "notes_es": "El ray tracing ahora es posible en Polaris, Vega y RDNA1 en Linux con Mesa 23.2-git y la última versión de Proton-GE o Wine-GE."
+    },
+    {
+      "app_id": -268110,
+      "name": "Riven",
+      "amd_status": "amd_ok",
+      "notes_en": "Riven works with AMD GPUs, including ray tracing, according to search results.",
+      "notes_es": "Riven funciona con tarjetas gráficas AMD, incluyendo ray tracing, según los resultados de búsqueda."
+    },
+    {
+      "app_id": -989622,
+      "name": "SILENT HILL f",
+      "amd_status": "amd_ok",
+      "notes_en": "Silent Hill f works with AMD RDNA 3 GPUs, but FSR4 FP8 has performance overhead.",
+      "notes_es": "Silent Hill f funciona con tarjetas gráficas AMD RDNA 3, pero FSR4 FP8 tiene un rendimiento de sobrecarga."
+    },
+    {
+      "app_id": 3125250,
+      "name": "STORROR Parkour Pro",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing (graphics) - Wikipedia mentions ray tracing, but no specific information about AMD RT status. However, RDNA 3 vs RDNA 2: What’s the Difference? [Deep Dive 2024] mentions Radeon RX 7900 XTX is currently the best ray-tracing AMD GPU on the best.",
+      "notes_es": "Ray tracing (graphics) - Wikipedia menciona ray tracing, pero no hay información específica sobre el estado AMD RT. Sin embargo, RDNA 3 vs RDNA 2: ¿Qué es la diferencia? [Deep Dive 2024] menciona que Radeon RX 7900 XTX es actualmente el mejor GPU de ray tracing de AMD en el mejor."
+    },
+    {
+      "app_id": -363978,
+      "name": "Sackboy: A Big Adventure",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing now possible on Polaris, Vega and RDNA1 on Linux, and the game is finally fixed with no stuttering on ray-tracing turned on.",
+      "notes_es": "La iluminación de rayos ahora es posible en Polaris, Vega y RDNA1 en Linux, y el juego está finalmente arreglado con ningún estuttering con la iluminación de rayos encendida."
+    },
+    {
+      "app_id": -804431,
+      "name": "Severed Steel",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing is now possible on Polaris, Vega and RDNA1 on Linux with Mesa 23.2-git (and 23.2 final when it's released).",
+      "notes_es": "El ray tracing es posible ahora en Polaris, Vega y RDNA1 en Linux con Mesa 23.2-git (y 23.2 final cuando se libere)."
+    },
+    {
+      "app_id": -854476,
+      "name": "Shadow of the Tomb Raider",
+      "amd_status": "amd_ok",
+      "notes_en": "AMD RDNA2+ GPUs support ray tracing and path tracing, but some issues may occur with shadows or camera direction.",
+      "notes_es": "Las GPUs AMD RDNA2+ admiten ray tracing y path tracing, pero pueden ocurrir problemas con sombras o dirección de la cámara."
+    },
+    {
+      "app_id": -860684,
+      "name": "Spider-Man 2",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works correctly on AMD RDNA2+ GPUs. VKD3D 3.0 brings AMD FSR4 to Proton.",
+      "notes_es": "La iluminación por rayos funciona correctamente en las tarjetas gráficas AMD RDNA2+."
+    },
+    {
+      "app_id": 1817070,
+      "name": "Spider-Man Remastered",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on AMD, but path tracing has issues. To fix crashes, use PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr11 %command%.",
+      "notes_es": "La iluminación por rayos funciona en AMD, pero la iluminación por trayectoria tiene problemas. Para solucionar los errores, utilice PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr11 %command%."
+    },
+    {
+      "app_id": -907594,
+      "name": "Spider-Man: Miles Morales",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on Intel, AMD, and NVIDIA GPUs on Linux.",
+      "notes_es": "La iluminación por rayos funciona en los procesadores Intel, AMD y NVIDIA en Linux."
+    },
+    {
+      "app_id": -567299,
+      "name": "Steelrising",
+      "amd_status": "amd_ok",
+      "notes_en": "Steelrising works with ray tracing on AMD RDNA2+ GPUs.",
+      "notes_es": "Steelrising funciona con ray tracing en tarjetas gráficas AMD RDNA2+."
+    },
+    {
+      "app_id": -934449,
+      "name": "Sword and Fairy 7",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing is not supported on AMD graphics in this version, but it will be optimized and supported in the future.",
+      "notes_es": "La iluminación por rayos no está disponible en gráficos AMD en esta versión, pero se optimizará y se apoyará en el futuro."
+    },
+    {
+      "app_id": 2073850,
+      "name": "THE FINALS",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works correctly on AMD RDNA2+ GPUs, according to search results.",
+      "notes_es": "La iluminación por rayos funciona correctamente en tarjetas gráficas AMD RDNA2+."
+    },
+    {
+      "app_id": -792870,
+      "name": "The Ascent",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux with Mesa 23.2-git and latest Proton-GE or Wine-GE.",
+      "notes_es": "El ray tracing ahora es posible en Polaris, Vega y RDNA1 en Linux con Mesa 23.2-git y la última versión de Proton-GE o Wine-GE."
+    },
+    {
+      "app_id": -978677,
+      "name": "The Callisto Protocol",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux, and VKD3D-Proton 3.0 Adds AMD FSR4 Anti-Lag Supports Older RDNA GPUs",
+      "notes_es": "La iluminación de rayos ahora es posible en Polaris, Vega y RDNA1 en Linux, y VKD3D-Proton 3.0 Agrega FSR4 Anti-Lag de AMD Soporta GPUs más antiguas de RDNA"
+    },
+    {
+      "app_id": -531361,
+      "name": "The First Descendant",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing now possible on Polaris, Vega and RDNA1 on Linux, and VKD3D-Proton 3.0 adds AMD FSR4 Anti-Lag supports older RDNA GPUs.",
+      "notes_es": "La iluminación de rayos ahora es posible en Polaris, Vega y RDNA1 en Linux, y VKD3D-Proton 3.0 agrega FSR4 Anti-Lag de AMD a GPUs más antiguas de RDNA."
+    },
+    {
+      "app_id": -563081,
+      "name": "The Outer Worlds 2",
+      "amd_status": "amd_ok",
+      "notes_en": "The Outer Worlds 2 performs beautifully on openSUSE, and ray tracing is enabled by default on AMD RDNA2 GPUs since mesa 23.",
+      "notes_es": "The Outer Worlds 2 se ejecuta perfectamente en openSUSE, y la ray tracing está habilitada por defecto en los GPUs AMD RDNA2 desde mesa 23."
+    },
+    {
+      "app_id": -761324,
+      "name": "The Sinking City Remastered",
+      "amd_status": "nvidia_only",
+      "notes_en": "The game crashes with a \"Fatar error\" on AMD graphics when ray tracing is enabled. It can be worked around by setting \"Reflections Quality\" to \"High\" in the config file.",
+      "notes_es": "El juego se bloquea con un \"Fatar error\" en gráficos AMD cuando se habilita la iluminación rayo. Se puede evitar esto configurando \"Reflections Quality\" a \"High\" en el archivo de configuración."
+    },
+    {
+      "app_id": -147171,
+      "name": "The Talos Principle: Reawakened",
+      "amd_status": "amd_ok",
+      "notes_en": "The same card in the AMD worked just fine.",
+      "notes_es": "La misma tarjeta en el AMD funcionó correctamente."
+    },
+    {
+      "app_id": -934612,
+      "name": "The Witcher 3: Wild Hunt",
+      "amd_status": "amd_ok",
+      "notes_en": "AMD RDNA2 GPUs offer hardware raytracing support through onboard compute units, current performance is mixed.",
+      "notes_es": "Las GPUs AMD RDNA2 ofrecen soporte a hardware de ray tracing a través de unidades de cómputo integradas, el rendimiento actual es mixto."
+    },
+    {
+      "app_id": -851074,
+      "name": "Torque Drift 2",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing is enabled on a per game basis, and from mesa 23.2 raytracing will be enabled by default for all applications.",
+      "notes_es": "La iluminación por rayos se habilita por juego, y desde mesa 23.2 la iluminación por rayos se habilitará por defecto para todas las aplicaciones."
+    },
+    {
+      "app_id": -911640,
+      "name": "Tower of Fantasy",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing now possible on Polaris, Vega and RDNA1 on Linux (https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/)",
+      "notes_es": "La iluminación de rayos ahora es posible en Polaris, Vega y RDNA1 en Linux (https://www.reddit.com/r/Amd/comments/14yhy2a/ray_tracing_now_possible_on_polaris_vega_and/)"
+    },
+    {
+      "app_id": -366879,
+      "name": "Vampire: The Masquerade - Bloodlines 2",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on AMD, but path tracing has issues. AMD has released Adrenalin Edition 25.10.2 driver, adding support for the new Ryzen AI 5 330 processor alongside Vampire: The Masquerade - Bloodlines 2 (DX12) and Battlefield 6 (DX12).",
+      "notes_es": "La iluminación por rayos funciona en AMD, pero la iluminación por trayectoria tiene problemas. AMD ha lanzado la versión Adrenalin Edition 25.10.2 del controlador, que agrega soporte para el nuevo procesador Ryzen AI 5 330 junto con Vampire: The Masquerade - Bloodlines 2 (DX12) y Battlefield 6 (DX12)."
+    },
+    {
+      "app_id": -479940,
+      "name": "War Thunder",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on AMD RDNA2+ GPUs, path tracing also works.",
+      "notes_es": "La iluminación por rayos funciona en las GPUs AMD RDNA2+, también funciona la iluminación por trayectoria."
+    },
+    {
+      "app_id": -714664,
+      "name": "Warhammer 40,000: Darktide",
+      "amd_status": "amd_ok",
+      "notes_en": "Linux devs managed to get FSR ML FG (Redstone) working on RDNA 4 and RDNA3 (slight performance overhead compared to FSR 3.1 FG for RDNA3)",
+      "notes_es": "Los desarrolladores de Linux lograron hacer que FSR ML FG (Redstone) funcionara en RDNA 4 y RDNA3 (sobrecarga de rendimiento ligeramente mayor que FSR 3.1 FG para RDNA3)"
+    },
+    {
+      "app_id": -316048,
+      "name": "Wolfenstein: Youngblood",
+      "amd_status": "amd_ok",
+      "notes_en": "Wolfenstein: Youngblood has ray tracing support on AMD GPUs, including RDNA 2+ GPUs.",
+      "notes_es": "Wolfenstein: Youngblood tiene soporte para ray tracing en tarjetas gráficas AMD, incluyendo GPUs RDNA 2+."
+    },
+    {
+      "app_id": -890630,
+      "name": "Wuthering Waves",
+      "amd_status": "nvidia_only",
+      "notes_en": "Ray tracing support is currently available for select NVIDIA graphics cards in Wuthering Waves, and will soon extend to AMD, Intel, and other GPUs.",
+      "notes_es": "El soporte de ray tracing está disponible actualmente para tarjetas gráficas NVIDIA selectas en Wuthering Waves, y pronto se extenderá a AMD, Intel y otras GPUs."
+    },
+    {
+      "app_id": -601478,
+      "name": "Xuan-Yuan Sword VII",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
+      "notes_es": "Ray Tracing ahora posible en Polaris, Vega y RDNA1 en Linux"
+    },
+    {
+      "app_id": 2456740,
+      "name": "inZOI",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works in Linux, both Nvidia and AMD, though performance is worse on Linux. You might need to set a launch option to get it working in games though.",
+      "notes_es": "La iluminación por rayos funciona en Linux, tanto en Nvidia como en AMD, aunque el rendimiento es peor en Linux. Es posible que debas establecer una opción de inicio para obtenerlo funcionando en juegos."
     }
   ]
 }

@@ -207,7 +207,69 @@
       "anticheat": null,
       "anticheat_linux": null,
       "notes_en": "The game runs with Proton 3.16-4 but has issues with microfreezes and resolution support. Some users reported success with Wine.",
-      "notes_es": "El juego se ejecuta con Proton 3.16-4 pero tiene problemas con microcongelamientos y soporte de resolución. Algunos usuarios informaron éxito con Wine."
+      "notes_es": "El juego se ejecuta con Proton 3.16-4 pero tiene problemas con microcongelamientos y soporte de resolución. Algunos usuarios informaron éxito con Wine.",
+      "protondb_configs": [
+        {
+          "date": "2019-07-13",
+          "rating": "Platinum",
+          "proton": "4.2-9",
+          "os": "Arch Linux",
+          "gpu_driver": "4.5 Mesa 19.2.0-devel (git-22b5ea1648)",
+          "specs": "",
+          "notes": "Runs fine out of the box, running mesa with the new ACO compiler (version 19.2.0_devel.113855.7157929d52c-1 as of writing)",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-07-13)"
+        },
+        {
+          "date": "2019-06-14",
+          "rating": "Platinum",
+          "proton": "4.2-7",
+          "os": "Linux",
+          "gpu_driver": "NVIDIA 430.26",
+          "specs": "",
+          "notes": "maxed graphics, vsync on and fps stayed at 60 for most of the time. ocassional drops to about 40 when a lot of action was going on. also didnt experience any graphical glitches at all. played about 30 minutes and everything worked like a charm. running on opensuse tumbleweed",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-06-14)"
+        },
+        {
+          "date": "2019-05-27",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Linux Mint 19.1 Tessa",
+          "gpu_driver": "NVIDIA 418.56",
+          "specs": "",
+          "notes": "played it from start to finish, worked the whole way through",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-05-27)"
+        },
+        {
+          "date": "2019-03-11",
+          "rating": "Platinum",
+          "proton": "Beta (3.16-8)",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 418.43",
+          "specs": "",
+          "notes": "Runs great with no tweaks.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-03-11)"
+        },
+        {
+          "date": "2019-02-17",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Ubuntu 18.04.1 LTS",
+          "gpu_driver": "NVIDIA 415.27",
+          "specs": "",
+          "notes": "There's a lot of stutter between short cut scenes, of which there are many. And it appears vsync doesn't work, when enabled. Still perfectly playable, if you don't mind a little stutter. ",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-02-17)"
+        }
+      ]
     },
     {
       "app_id": 1178830,
@@ -341,8 +403,10 @@
     {
       "app_id": -791350,
       "name": "AMID EVIL",
-      "launch_options": null,
-      "env_vars": {},
+      "launch_options": "Use Launch Options: \"PROTON_NO_ESYNC=1 DefaultLimitNOFILE=1048576 %command%",
+      "env_vars": {
+        "PROTON_NO_ESYNC": "1"
+      },
       "proton_version": "Proton 8.0-4",
       "linux_status": "works",
       "protondb_tier": "platinum",
@@ -350,7 +414,71 @@
       "anticheat": null,
       "anticheat_linux": null,
       "notes_en": "AMID EVIL works great in Proton, flawless OOB on Steam Deck.",
-      "notes_es": "AMID EVIL funciona perfectamente en Proton, sin problemas OOB en Steam Deck."
+      "notes_es": "AMID EVIL funciona perfectamente en Proton, sin problemas OOB en Steam Deck.",
+      "protondb_configs": [
+        {
+          "date": "2019-10-15",
+          "rating": "Platinum",
+          "proton": "4.2-7",
+          "os": "Debian GNU/Linux 10 (buster)",
+          "gpu_driver": "NVIDIA 418.74",
+          "specs": "",
+          "notes": "Runs perfectly with no tweaking neccesary",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-15)"
+        },
+        {
+          "date": "2019-09-30",
+          "rating": "Gold",
+          "proton": "4.11-6",
+          "os": "Freedesktop.org 19.08.2 (Flatpak runtime)",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "With the latest Proton version, I've experienced zero issues running this game. Graphics, sound, etc all behave as I expected and it performs well, even with frantic combat going on.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-30)"
+        },
+        {
+          "date": "2019-07-27",
+          "rating": "Silver",
+          "proton": "4.2-9",
+          "os": "Freedesktop.org 18.08.34 (Flatpak runtime)",
+          "gpu_driver": "NVIDIA 418.56",
+          "specs": "",
+          "notes": "Use Launch Options: \"PROTON_NO_ESYNC=1 DefaultLimitNOFILE=1048576 %command%\". \n\nWorks fine on low and medium graphics settings. Above that, hard freezes can occur. With my setup, I average ~90 FPS in hallways, and ~60 FPS in combat (on medium graphics) so performance is fine to me. More importantly, I saw little difference between medium and epic graphics, so unless you really want the state of the art lighting effects ,the game works fine on medium. ",
+          "env_vars": {
+            "PROTON_NO_ESYNC": "1"
+          },
+          "launch_options": "Use Launch Options: \"PROTON_NO_ESYNC=1 DefaultLimitNOFILE=1048576 %command%",
+          "source": "ProtonDB report (2019-07-27)"
+        },
+        {
+          "date": "2019-07-09",
+          "rating": "Platinum",
+          "proton": "4.2-9",
+          "os": "Pop!_OS 19.04",
+          "gpu_driver": "4.5 Mesa 19.0.2",
+          "specs": "",
+          "notes": "Great permormance out of the box, 180-200fps on high settings, working perfectly with my 144hz monitor. No issues found at all.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-07-09)"
+        },
+        {
+          "date": "2019-06-28",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Manjaro Linux",
+          "gpu_driver": "4.5 Mesa 19.0.3",
+          "specs": "",
+          "notes": "F&CKING PLATINUM.\n\nGame runs on EPIC, straight out of box. Not only no tweaks were required but also the game is great.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-06-28)"
+        }
+      ]
     },
     {
       "app_id": -433213,
@@ -545,7 +673,9 @@
       "app_id": -409598,
       "name": "EVE Online",
       "launch_options": null,
-      "env_vars": {},
+      "env_vars": {
+        "PROTON_NO_FSYNC": "1"
+      },
       "proton_version": "Proton-6.14-GE-2",
       "linux_status": "works",
       "protondb_tier": "platinum",
@@ -553,7 +683,69 @@
       "anticheat": null,
       "anticheat_linux": null,
       "notes_en": "Enabling PROTON_LOG and PROTON_USE_WINED3D has fixed compatibility issues for some users. Using Proton-6.14-GE-2 has also been recommended.",
-      "notes_es": "Habilitar PROTON_LOG y PROTON_USE_WINED3D ha resuelto problemas de compatibilidad para algunos usuarios. Usar Proton-6.14-GE-2 también se ha recomendado."
+      "notes_es": "Habilitar PROTON_LOG y PROTON_USE_WINED3D ha resuelto problemas de compatibilidad para algunos usuarios. Usar Proton-6.14-GE-2 también se ha recomendado.",
+      "protondb_configs": [
+        {
+          "date": "2019-10-26",
+          "rating": "Platinum",
+          "proton": "4.11-7",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "Played 300h it just works.\nFor some reason if I have 2 clients side by side on my 4k screen the PC freezes after a while, but having 4 clients, one in each corner works perfect.\nI have weird issues like that in other games too, I'm just a linux noob, maybe my system is not configured correctly",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-26)"
+        },
+        {
+          "date": "2019-10-03",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Nothing needed, works perfectly, very good performance.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-03)"
+        },
+        {
+          "date": "2019-09-30",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Manjaro Linux",
+          "gpu_driver": "4.5 Mesa 19.1.5",
+          "specs": "",
+          "notes": "Nothing needed, works great.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-30)"
+        },
+        {
+          "date": "2019-09-06",
+          "rating": "Platinum",
+          "proton": "Beta (3.16-8)",
+          "os": "Ubuntu 18.04.2 LTS",
+          "gpu_driver": "NVIDIA 390.116",
+          "specs": "",
+          "notes": "It runs perfect but if i play in windowed mode the game starts to going bad with a lot of lag",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-06)"
+        },
+        {
+          "date": "2019-09-02",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Arch Linux(64비트)",
+          "gpu_driver": "4.5 Mesa 19.1.5",
+          "specs": "",
+          "notes": "I thinks it works well",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-02)"
+        }
+      ]
     },
     {
       "app_id": -871933,
@@ -814,7 +1006,10 @@
       "app_id": -784678,
       "name": "Hellblade: Senua's Sacrifice",
       "launch_options": "-dx11",
-      "env_vars": {},
+      "env_vars": {
+        "PROTON_USE_WINED3D": "1",
+        "PROTON_NO_ESYNC": "1"
+      },
       "proton_version": "Proton 4.11-1",
       "linux_status": "works",
       "protondb_tier": "platinum",
@@ -822,7 +1017,69 @@
       "anticheat": null,
       "anticheat_linux": null,
       "notes_en": "Works on Linux with Proton, Platinum rating on ProtonDB",
-      "notes_es": "Funciona en Linux con Proton, calificación de platino en ProtonDB"
+      "notes_es": "Funciona en Linux con Proton, calificación de platino en ProtonDB",
+      "protondb_configs": [
+        {
+          "date": "2019-10-06",
+          "rating": "Platinum",
+          "proton": "4.11-6",
+          "os": "Freedesktop.org 18.08.35 (Flatpak runtime)",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Works very well, only  crashed 3 times from during 10 hours of gameplay.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-06)"
+        },
+        {
+          "date": "2019-09-15",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "KDE neon User Edition 5.16",
+          "gpu_driver": "4.5 Mesa 19.1.2 - padoka PPA",
+          "specs": "",
+          "notes": "the game runs ok but it's more like a console like experience compared to windows. On windows I get over 50 fps and with proton I get about 30 fps . It's ok it's playable for me because the combat were you need some reflexes is not that frantic.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-15)"
+        },
+        {
+          "date": "2019-09-13",
+          "rating": "Platinum",
+          "proton": "4.11-3",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 430.26",
+          "specs": "",
+          "notes": "Due to the fact that \"Gold\" means, that the game works after tweaks, I am using \"Platinum\" rank.\nIt does have some stuttering going on when loading new environments. Though it doesn't happen often.\nThe game runs smooth so far, with no crashes or problems, other than those already mentioned.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-13)"
+        },
+        {
+          "date": "2019-09-08",
+          "rating": "Platinum",
+          "proton": "4.11-3",
+          "os": "Ubuntu 18.04.3 LTS",
+          "gpu_driver": "NVIDIA 396.54",
+          "specs": "",
+          "notes": "Fully completed without issues. Audio out of sync is a problem in Windows as I have read in some reviews of the game",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-08)"
+        },
+        {
+          "date": "2019-08-26",
+          "rating": "Platinum",
+          "proton": "4.11-2",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "Works perfectly out of the box with decent performance. I don't know how it compares to Windows, but I got 65-100fps on max settings with my OCed RTX 2080S on 1440p. There was a bit of stuttering in the beginning, but it went away after about 10 minutes of playing.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-26)"
+        }
+      ]
     },
     {
       "app_id": -219007,
@@ -947,7 +1204,9 @@
       "app_id": -659388,
       "name": "Metro Exodus",
       "launch_options": null,
-      "env_vars": {},
+      "env_vars": {
+        "WINEPREFIX": "/home/xnick26/.local/share/Steam/steamapps/compatdata/412020/pfx"
+      },
       "proton_version": "GE-Proton",
       "linux_status": "works",
       "protondb_tier": "gold",
@@ -955,7 +1214,71 @@
       "anticheat": null,
       "anticheat_linux": null,
       "notes_en": "Metro Exodus Enhanced Edition brings a number of updates to the Ray Tracing implementation seen in the initial PC release of Metro Exodus and its subsequent DLCs.",
-      "notes_es": "Metro Exodus Enhanced Edition trae una serie de actualizaciones en la implementación del ray tracing vista en la primera versión de PC de Metro Exodus y sus DLC posteriores."
+      "notes_es": "Metro Exodus Enhanced Edition trae una serie de actualizaciones en la implementación del ray tracing vista en la primera versión de PC de Metro Exodus y sus DLC posteriores.",
+      "protondb_configs": [
+        {
+          "date": "2019-09-17",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Gentoo Linux",
+          "gpu_driver": "4.5 Mesa 19.0.8",
+          "specs": "",
+          "notes": "Worked fine after I set Windows 8.1 in winecfg",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-17)"
+        },
+        {
+          "date": "2019-08-23",
+          "rating": "Gold",
+          "proton": "4.11-2",
+          "os": "Pop!_OS 19.04",
+          "gpu_driver": "NVIDIA 430.34",
+          "specs": "",
+          "notes": "So I recently posted saying this game is borked because it now requires a certain windows patch and if you just launch the game through steam with proton it won't work and will tell you your game has not met the system requirements. Luckily there is a way to fix this. You need to change your wineconfig to 8.1. You need to do this by adding the games directory in terminal like this. WINEPREFIX=/home/xnick26/.local/share/Steam/steamapps/compatdata/412020/pfx winecfg\nYou will have to change that li",
+          "env_vars": {
+            "WINEPREFIX": "/home/xnick26/.local/share/Steam/steamapps/compatdata/412020/pfx"
+          },
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-23)"
+        },
+        {
+          "date": "2019-08-22",
+          "rating": "Gold",
+          "proton": "4.11-2",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "I changed the prefix to use 8.1 and it worked",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-22)"
+        },
+        {
+          "date": "2019-05-31",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 418.56",
+          "specs": "",
+          "notes": "Running through Lutris with ge-faudio-protonified-4.8. Cracked verison can run without epic launcher. ",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-05-31)"
+        },
+        {
+          "date": "2019-05-29",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 430.14",
+          "specs": "",
+          "notes": "Runs perfectly with ge-faudio-protonified-4.8",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-05-29)"
+        }
+      ]
     },
     {
       "app_id": -816941,
@@ -973,7 +1296,71 @@
       "anticheat": "no",
       "anticheat_linux": "no",
       "notes_en": "The game allows to skip intro video by pressing E. To always skip them, follow these instructions. Enable manual saving in Ranger mode. The game only saves at certain checkpoints or after sleeping (note the save icon in the bottom right corner).",
-      "notes_es": "El juego permite saltar la introducción presionando E. Para saltar siempre, sigue estas instrucciones. Habilita la guardado manual en modo Ranger. El juego solo guarda en ciertos puntos de control o después de dormir (nota el icono de guardado en la esquina inferior derecha)."
+      "notes_es": "El juego permite saltar la introducción presionando E. Para saltar siempre, sigue estas instrucciones. Habilita la guardado manual en modo Ranger. El juego solo guarda en ciertos puntos de control o después de dormir (nota el icono de guardado en la esquina inferior derecha).",
+      "protondb_configs": [
+        {
+          "date": "2019-09-17",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Gentoo Linux",
+          "gpu_driver": "4.5 Mesa 19.0.8",
+          "specs": "",
+          "notes": "Worked fine after I set Windows 8.1 in winecfg",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-17)"
+        },
+        {
+          "date": "2019-08-23",
+          "rating": "Gold",
+          "proton": "4.11-2",
+          "os": "Pop!_OS 19.04",
+          "gpu_driver": "NVIDIA 430.34",
+          "specs": "",
+          "notes": "So I recently posted saying this game is borked because it now requires a certain windows patch and if you just launch the game through steam with proton it won't work and will tell you your game has not met the system requirements. Luckily there is a way to fix this. You need to change your wineconfig to 8.1. You need to do this by adding the games directory in terminal like this. WINEPREFIX=/home/xnick26/.local/share/Steam/steamapps/compatdata/412020/pfx winecfg\nYou will have to change that li",
+          "env_vars": {
+            "WINEPREFIX": "/home/xnick26/.local/share/Steam/steamapps/compatdata/412020/pfx"
+          },
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-23)"
+        },
+        {
+          "date": "2019-08-22",
+          "rating": "Gold",
+          "proton": "4.11-2",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "I changed the prefix to use 8.1 and it worked",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-22)"
+        },
+        {
+          "date": "2019-05-31",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 418.56",
+          "specs": "",
+          "notes": "Running through Lutris with ge-faudio-protonified-4.8. Cracked verison can run without epic launcher. ",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-05-31)"
+        },
+        {
+          "date": "2019-05-29",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 430.14",
+          "specs": "",
+          "notes": "Runs perfectly with ge-faudio-protonified-4.8",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-05-29)"
+        }
+      ]
     },
     {
       "app_id": -103948,
@@ -1014,6 +1401,1631 @@
       "proton_version": null,
       "protondb_tier": "platinum",
       "linux_status": "works"
+    },
+    {
+      "app_id": 1013910,
+      "name": "Aron's Adventure",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "pending",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 3159330,
+      "name": "Assassin's Creed Shadows",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1203220,
+      "name": "NARAKA: BLADEPOINT",
+      "launch_options": "gamemoderun, PROTON_ENABLE_NVAPI=1, DXVK_ASYNC=1",
+      "env_vars": {
+        "WINEFSYNC": "1"
+      },
+      "proton_version": "Proton 8.x, 9.x, or Proton Experimental",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": "anti-cheat prevents it from working at all",
+      "anticheat_linux": "anti-cheat prevents it from working at all",
+      "notes_en": "Naraka Bladepoint works on Linux with AMD RDNA2+ GPUs, but may have stutters on NVIDIA due to driver bugs.",
+      "notes_es": "Naraka Bladepoint funciona en Linux con GPUs AMD RDNA2+, pero puede tener problemas de estabilidad en NVIDIA debido a errores de los controladores."
+    },
+    {
+      "app_id": -675772,
+      "name": "NINJA GAIDEN 2 Black",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton Experimental",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Works on Proton, requires Proton Experimental, some users report issues with ray tracing on AMD.",
+      "notes_es": "Funciona en Proton, requiere Proton Experimental, algunos usuarios reportan problemas con la iluminación por rayos en AMD."
+    },
+    {
+      "app_id": -820627,
+      "name": "Observer: System Redux",
+      "launch_options": null,
+      "env_vars": {
+        "PROTON_NO_FSYNC": "1",
+        "PROTON_NO_ESYNC": "1",
+        "PROTON_NO_SECCOMP": "1"
+      },
+      "proton_version": "GE-Proton",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Uses Proton, latest vkd3d-proton-git & Dx12 ingame API.",
+      "notes_es": "Utiliza Proton, último vkd3d-proton-git & Dx12 ingame API."
+    },
+    {
+      "app_id": -456407,
+      "name": "Portal with RTX",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton Hotfix",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Portal with RTX runs perfectly fine on Linux with Proton, but requires the latest NVIDIA proprietary drivers (418.49.04 or newer) or the Portal RTX AMD mod for AMD GPUs.",
+      "notes_es": "Portal with RTX funciona perfectamente en Linux con Proton, pero requiere los últimos controladores propietarios de NVIDIA (418.49.04 o posterior) o el Portal RTX AMD mod para tarjetas gráficas AMD."
+    },
+    {
+      "app_id": -181029,
+      "name": "Portal: Prelude RTX",
+      "launch_options": "-dx9 -gamepadui",
+      "env_vars": {
+        "VKD3D_PROTON": "1"
+      },
+      "proton_version": "Proton 8.0-104",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Portal: Prelude RTX runs without issues on the default Proton 8.0-104 and relatively ancient nvidia-driver 525.116.03. Edit: Did you set the launch options to enable RT and DLSS?",
+      "notes_es": "Portal: Prelude RTX corre sin problemas con el Proton 8.0-104 y un driver nvidia relativamente antiguo 525.116.03. Edit: ¿Has configurado las opciones de lanzamiento para habilitar RT y DLSS?"
+    },
+    {
+      "app_id": -563519,
+      "name": "Pumpkin Jack",
+      "launch_options": "-d3d11",
+      "env_vars": {},
+      "proton_version": null,
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Pumpkin Jack is playable with standard proton but cutscenes are not viewable. It works on Steam Deck with a 30% rating on ProtonDB.",
+      "notes_es": "Pumpkin Jack es jugable con proton estándar pero las escenas de corte no son visibles. Funciona en Steam Deck con una calificación del 30% en ProtonDB."
+    },
+    {
+      "app_id": -935524,
+      "name": "Quake II RTX",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Quake 2 RTX works out-of-the-box with no need for additional configuration, according to ProtonDB.",
+      "notes_es": "Quake 2 RTX funciona sin necesidad de configuración adicional, según ProtonDB."
+    },
+    {
+      "app_id": -164193,
+      "name": "Raji: An Ancient Epic",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton 8/9 and vkd3d-proton ≥ 2.11",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Raji: An Ancient Epic is an action-adventure game set in ancient India. A young girl named Raji has been chosen by the gods to stand against the demonic invasion of the human realm.",
+      "notes_es": "Raji: An Ancient Epic es un juego de acción-aventura ambientado en la India antigua. Una joven llamada Raji ha sido elegida por los dioses para enfrentarse a la invasión demoníaca del reino humano."
+    },
+    {
+      "app_id": -203593,
+      "name": "Redfall",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Redfall works on Linux with Proton, but some users experience issues with ray tracing.",
+      "notes_es": "Redfall funciona en Linux con Proton, pero algunos usuarios experimentan problemas con la iluminación de rayos."
+    },
+    {
+      "app_id": -430397,
+      "name": "Returnal",
+      "launch_options": null,
+      "env_vars": {
+        "RADV_PERFTEST": "emulate_rt",
+        "VKD3D_CONFIG": "dxr"
+      },
+      "proton_version": "Proton Experimental",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Proton Experimental is recommended for optimal performance. Some cutscenes are missing and some placeholders are used to fill the void.",
+      "notes_es": "Se recomienda Proton Experimental para una óptima experiencia de juego. Algunas escenas cortas faltan y algunos rellenos se utilizan para llenar el vacío."
+    },
+    {
+      "app_id": -268110,
+      "name": "Riven",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton 9",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Riven works on Linux with Proton, but may require specific launch options or environment variables.",
+      "notes_es": "Riven funciona en Linux con Proton, pero puede requerir opciones de inicio o variables de entorno específicas."
+    },
+    {
+      "app_id": 3125250,
+      "name": "STORROR Parkour Pro",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Switching the compatibility tool from the Linux Runtime to a version of Proton forces the Windows version to download and makes it playable. Proton is a revolutionary compatibility layer developed by Valve that enables Linux users to play Windows-based games on their Linux systems.",
+      "notes_es": "Cambiar la herramienta de compatibilidad desde el entorno de ejecución de Linux a una versión de Proton fuerza a descargar la versión de Windows y la hace jugable. Proton es una capa de compatibilidad revolucionaria desarrollada por Valve que permite a los usuarios de Linux jugar juegos basados en Windows en sus sistemas Linux."
+    },
+    {
+      "app_id": -854476,
+      "name": "Shadow of the Tomb Raider",
+      "launch_options": "VK_ICD_FILENAMES=\"/usr/share/vulkan/icd.d/amd_icd64.json\" %command%",
+      "env_vars": {},
+      "proton_version": "Proton 8.x, 9.x, or Proton Experimental",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Shadow of the Tomb Raider works on Linux with Proton, but may require Proton Experimental for ray tracing. Some users experience GPU hangs when ray tracing is enabled.",
+      "notes_es": "Shadow of the Tomb Raider funciona en Linux con Proton, pero puede requerir Proton Experimental para el ray tracing. Algunos usuarios experimentan colgues de GPU cuando el ray tracing está habilitado.",
+      "protondb_configs": [
+        {
+          "date": "2019-10-20",
+          "rating": "Platinum",
+          "proton": "4.11-7",
+          "os": "Arch Linux",
+          "gpu_driver": "4.5 Mesa 19.3.0-devel (git-2f23d925b8)",
+          "specs": "",
+          "notes": "It works fine.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-20)"
+        },
+        {
+          "date": "2019-10-20",
+          "rating": "Platinum",
+          "proton": "4.11-7",
+          "os": "Pop!_OS 19.04",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Update to a previous post -  Since the latest proton update, this game not only runs flawlessly for me but there has been almost zero studdering in new areas or during cinematics. Plays almost smooth as butter.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-20)"
+        },
+        {
+          "date": "2019-10-14",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Fedora release 30 (Thirty)",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "Runs out of the box (ignoring the launcher warning about not finding a video adapter) and plays great most of the time. The game has a few glitches, but those are reported by Windows users as well -- nothing Proton-related.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-14)"
+        },
+        {
+          "date": "2019-10-10",
+          "rating": "Platinum",
+          "proton": "4.11-6",
+          "os": "Pop!_OS 19.04",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Have not run into any issues as of yet. So far running flawless with graphic settings set to Highest at 1920x1080. I get between 80 and 100 FPS depending on where I am at in the environment. Typically, only falling to low 80's when things get really busy.  I'm not sure Feral needs to spend time porting this title with as well as it runs in Proton.  Well done Steam. Keep up the great work.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-10)"
+        },
+        {
+          "date": "2019-10-06",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Debian GNU/Linux 10 (buster)",
+          "gpu_driver": "NVIDIA 430.26",
+          "specs": "",
+          "notes": "The in-game benchmark shows a throughput between 30 and 60fps at 1440p. Disabling Esync is mandatory for the game to run. Feral Game Mode daemon can optimise the use of both CPUs and GPU for a small (but significant) gain in frame rate.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-06)"
+        }
+      ]
+    },
+    {
+      "app_id": -860684,
+      "name": "Spider-Man 2",
+      "launch_options": null,
+      "env_vars": {
+        "PROTON_ENABLE_NVAPI": "1",
+        "VKD3D_CONFIG": "dxr11"
+      },
+      "proton_version": "Proton Experimental version or 9.0.4",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "ProtonDB is a site dedicated to compatibility reports for Linux and Steam Deck. Installing and using Proton on Linux opens up a world of Windows-only games to Linux users.",
+      "notes_es": "ProtonDB es un sitio dedicado a informar sobre la compatibilidad de juegos en Linux y Steam Deck. Instalar y usar Proton en Linux abre un mundo de juegos de Windows solo para usuarios de Linux."
+    },
+    {
+      "app_id": 1817070,
+      "name": "Spider-Man Remastered",
+      "launch_options": "PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr11 %command%",
+      "env_vars": {
+        "PROTON_ENABLE_NVAPI": "1",
+        "VKD3D_CONFIG": "dxr11"
+      },
+      "proton_version": "Experimental & GE-Proton22",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "To fix crashes, use PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr11 %command%. FSR4 works on Linux now for this game.",
+      "notes_es": "Para solucionar los errores, utilice PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr11 %command%. FSR4 funciona en Linux ahora para este juego."
+    },
+    {
+      "app_id": -567299,
+      "name": "Steelrising",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton7-33",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Steelrising works on Linux with Proton, but may require specific launch options or environment variables. Some users report issues with high-end hardware.",
+      "notes_es": "Steelrising funciona en Linux con Proton, pero puede requerir opciones de inicio o variables de entorno específicas. Algunos usuarios informan problemas con hardware de alta gama."
+    },
+    {
+      "app_id": -934449,
+      "name": "Sword and Fairy 7",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton 10-8",
+      "linux_status": "broken",
+      "protondb_tier": "silver",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "The game has compatibility issues on Debian, but it can be fixed by using SteamOS.",
+      "notes_es": "El juego tiene problemas de compatibilidad en Debian, pero se pueden solucionar utilizando SteamOS."
+    },
+    {
+      "app_id": 1506440,
+      "name": "Batora: Lost Haven",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1517290,
+      "name": "Battlefield 2042",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "borked",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 2358720,
+      "name": "Black Myth: Wukong",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2199420,
+      "name": "Brickadia",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 7940,
+      "name": "Call of Duty: Modern Warfare",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "4.11-6",
+      "protondb_tier": "platinum",
+      "linux_status": "works",
+      "protondb_configs": [
+        {
+          "date": "2019-10-11",
+          "rating": "Gold",
+          "proton": "4.11-7",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "SP works fine but not able to run MP as get prompted for PunkBuster to install/update but receive error \"PunkBuster not running\"",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-11)"
+        },
+        {
+          "date": "2019-10-08",
+          "rating": "Platinum",
+          "proton": "4.11-6",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "I have no issue's with this game. I posted a steamcommunity video at: https://www.youtube.com/watch?v=t5fOEK6pQ5g&feature=youtu.be",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-08)"
+        },
+        {
+          "date": "2019-10-05",
+          "rating": "Platinum",
+          "proton": "4.11-6",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 418.56",
+          "specs": "",
+          "notes": "runs perfectly out of the box",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-05)"
+        },
+        {
+          "date": "2019-07-24",
+          "rating": "Platinum",
+          "proton": "4.2-7",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "4.5 Mesa 19.0.2",
+          "specs": "",
+          "notes": "No issues playing Single Player - punkbuster failed to install but didn't prevent game launching.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-07-24)"
+        },
+        {
+          "date": "2019-07-07",
+          "rating": "Platinum",
+          "proton": "4.2-9",
+          "os": "Linux Mint 19 Tara",
+          "gpu_driver": "NVIDIA 430.26",
+          "specs": "",
+          "notes": "You need to downgrade the game from 1.8 to 1.7 or you'll have very few servers, url: https://cod4x.me/index.php?/forums/topic/2622-steam-cod4-patch-breaks-game-our-official-repair-guide/\nThe PunkBuster installation fail. This is not important most servers don't use it. If it is needed see comments below.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-07-07)"
+        }
+      ]
+    },
+    {
+      "app_id": 1016800,
+      "name": "Chernobylite",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "4.11-7",
+      "protondb_tier": "borked",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 1091500,
+      "name": "Cyberpunk 2077",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2097490,
+      "name": "DESORDRE: A Puzzle Game Adventure",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "silver",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 782330,
+      "name": "DOOM Eternal",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 3017860,
+      "name": "DOOM: The Dark Ages",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 934700,
+      "name": "Dead Island 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 3352690,
+      "name": "Dead Take",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "pending",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 428660,
+      "name": "Deliver Us The Moon",
+      "launch_options": "DXVK_CONFIG_FILE=\"/path/to/dxvk.conf\" %command%",
+      "env_vars": {
+        "DXVK_CONFIG_FILE": "\"/path/to/dxvk.conf\""
+      },
+      "proton_version": "Beta (3.16-3)",
+      "protondb_tier": "gold",
+      "linux_status": "works",
+      "protondb_configs": [
+        {
+          "date": "2019-10-14",
+          "rating": "Gold",
+          "proton": "4.11-3",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Installing Media Foundation libraries is required. Otherwise the game gets stuck in the splash screen. ProtonDB text formatting isn't great, so instructions are on Steam: https://steamcommunity.com/app/428660/discussions/0/1735468061764944319/#c3175526477767880551",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-14)"
+        },
+        {
+          "date": "2019-01-11",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Ubuntu 18.04.1 LTS",
+          "gpu_driver": "NVIDIA 396.54",
+          "specs": "",
+          "notes": "Game is free of glitches and errors, performance is degraded at certain times but could play game through from start to finish",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-01-11)"
+        },
+        {
+          "date": "2018-10-28",
+          "rating": "Gold",
+          "proton": "Beta (3.16-3)",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 396.54.09",
+          "specs": "",
+          "notes": "Faking GPU information to get better performance on nvidia. Into steam launch options:\nDXVK_CONFIG_FILE=\"/path/to/dxvk.conf\" %command%\ncontents of the file:\ndxgi.customDeviceId = E366\ndxgi.customVendorId = 1002\n2560x1440 all Epic, resolution scale 100%, 50-120 fps, mostly around 70 on Earth and around 80 on SpaceStation, haven't reached to the Moon yet. Has some heavy stutters when loading new scenery, sometimes freezes for 1-2 sec",
+          "env_vars": {
+            "DXVK_CONFIG_FILE": "\"/path/to/dxvk.conf\""
+          },
+          "launch_options": "DXVK_CONFIG_FILE=\"/path/to/dxvk.conf\" %command%",
+          "source": "ProtonDB report (2018-10-28)"
+        }
+      ]
+    },
+    {
+      "app_id": 1038250,
+      "name": "DiRT 5",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2344520,
+      "name": "Diablo IV",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 831050,
+      "name": "Dolmen",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2054970,
+      "name": "Dragon's Dogma 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "silver",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 2005090,
+      "name": "EVOTINCTION",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1836730,
+      "name": "Echo Point Nova",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1245620,
+      "name": "Elden Ring",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1390670,
+      "name": "Escape From Naraka",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1330470,
+      "name": "F.I.S.T.: Forged In Shadow Torch",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2488620,
+      "name": "F1 24",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "borked",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 3059520,
+      "name": "F1 25",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "borked",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 2272540,
+      "name": "FBC: Firebreak",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1139900,
+      "name": "Ghostrunner",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2144740,
+      "name": "Ghostrunner 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 928960,
+      "name": "Godfall",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1496790,
+      "name": "Gotham Knights",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2477290,
+      "name": "Half-Life 2 RTX Demo",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "silver",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 1321680,
+      "name": "Hello Neighbor 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 990080,
+      "name": "Hogwarts Legacy",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1172650,
+      "name": "INDUSTRIA",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2116120,
+      "name": "Incurison Red River",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2958130,
+      "name": "Jurassic World Evolution 3",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2782500,
+      "name": "Justice / Sword of Justice",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "bronze",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 1544360,
+      "name": "LEGO Builder's Journey",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2428810,
+      "name": "LEGO Horizon Adventures",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 3378960,
+      "name": "Lost Soul Aside",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1088850,
+      "name": "Marvel's Guardians of the Galaxy",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 368260,
+      "name": "Marvel's Midnight Suns",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2012840,
+      "name": "Minecraft with RTX",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "silver",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 2246340,
+      "name": "Monster Hunter Wilds",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "silver",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 1110910,
+      "name": "Mortal Shell",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1016360,
+      "name": "PERISH",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "pending",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 1160220,
+      "name": "Paradise Killer",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2328760,
+      "name": "Pinball FX",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1895880,
+      "name": "Ratchet & Clank: Rift Apart",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 883710,
+      "name": "Resident Evil 2",
+      "launch_options": null,
+      "env_vars": {
+        "WINEPREFIX": "\"/home/your"
+      },
+      "proton_version": "4.2-9",
+      "protondb_tier": "gold",
+      "linux_status": "works",
+      "protondb_configs": [
+        {
+          "date": "2019-10-10",
+          "rating": "Gold",
+          "proton": "4.11-7",
+          "os": "Linux Mint 19.2 Tina",
+          "gpu_driver": "NVIDIA 430.50",
+          "specs": "",
+          "notes": "Game runs flawlessly, FPS was very smooth and my Xbox One controller worked great with the game (including rumble feedback). You will need to install the Media Foundation tweak to get cutscenes to work properly otherwise the game will crash anytime a cutscene is shown (basically this workaround is MANDATORY as you won't be able to make it very far into the game otherwise). Here's a step-by-step guide, it's really not too difficult:\n\nStep 1. Download RE2: Remake in Steam (if you haven't already).",
+          "env_vars": {
+            "WINEPREFIX": "\"/home/user-name/.steam/steam/steamapps/compatdata/883710/pfx\""
+          },
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-10)"
+        },
+        {
+          "date": "2019-09-14",
+          "rating": "Gold",
+          "proton": "4.11-4",
+          "os": "Linux Mint 19.2 Tina",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "I used (https://github.com/z0z0z/mf-install) for install Media Foundation, WINEPREFIX=\"/home/your name/.steam/steam/steamapps/compatdata/883710/pfx\" /home/your name/mf-install/install-mf.sh Game works perfect!",
+          "env_vars": {
+            "WINEPREFIX": "\"/home/your"
+          },
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-14)"
+        },
+        {
+          "date": "2019-09-09",
+          "rating": "Platinum",
+          "proton": "Default",
+          "os": "Pop!_OS 19.04",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Ran around in the garage, watched two cutscenes, shot a few zombie dogs. Minimal hiccuping from quick turns with the mouse. ",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-09)"
+        },
+        {
+          "date": "2019-08-07",
+          "rating": "Platinum",
+          "proton": "4.11-1",
+          "os": "Ubuntu 16.04.6 LTS (64 бит)",
+          "gpu_driver": "NVIDIA 418.56",
+          "specs": "",
+          "notes": "Game runs perfectly.  https://youtu.be/hPx3GLaHuzI",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-07)"
+        },
+        {
+          "date": "2019-08-03",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Manjaro Linux (64 位元)",
+          "gpu_driver": "4.5 Mesa 19.1.3",
+          "specs": "",
+          "notes": "Follow the instruction here: https://steamcommunity.com/sharedfiles/filedetails/?id=1654060648&searchtext=linux\nYou must to do it step by step.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-03)"
+        }
+      ]
+    },
+    {
+      "app_id": 952060,
+      "name": "Resident Evil 3",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2050650,
+      "name": "Resident Evil 4 Remake",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 418370,
+      "name": "Resident Evil 7",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Beta (3.16-6)",
+      "protondb_tier": "borked",
+      "linux_status": "check",
+      "protondb_configs": [
+        {
+          "date": "2019-08-02",
+          "rating": "Gold",
+          "proton": "4.2-9",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 430.34",
+          "specs": "",
+          "notes": "After install Media Foundation libraries, RE7 still can crash randomly when shows the intro movie, but then when you are in game, everything run perfectly.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-02)"
+        },
+        {
+          "date": "2019-07-20",
+          "rating": "Gold",
+          "proton": "4.2-9",
+          "os": "Ubuntu 18.04.2 LTS（64 位）",
+          "gpu_driver": "NVIDIA 430.26",
+          "specs": "",
+          "notes": "Game runs very good.You need to do a lot of tweaks in order to be able to play the game   https://github.com/doitsujin/dxvk/issues/728#issuecomment-459839962\n",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-07-20)"
+        },
+        {
+          "date": "2019-05-26",
+          "rating": "Gold",
+          "proton": "4.2-4",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 418.74",
+          "specs": "",
+          "notes": "Haven't tested full gameplay, but thus far it's been running well. Required MF workaround as mentioned in other reports. In previous installs I experienced a few crashes before some cutscenes that couldn't be reproduced after playing those cutscenes again. Latest install appears to be running crashless. Performance is fine, although slightly worse than Windows install and setting shadows to Very High causes way too big of a performance hit.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-05-26)"
+        },
+        {
+          "date": "2019-02-05",
+          "rating": "Gold",
+          "proton": "Beta (3.16-6)",
+          "os": "Ubuntu 18.10 (64 бит)",
+          "gpu_driver": "4.5 Mesa 19.1.0-devel - padoka PPA",
+          "specs": "",
+          "notes": "Work nice after fixes. Need to install DXVK 0.95 or higher, and ms wmf from here https://github.com/doitsujin/dxvk/issues/728#issuecomment-459839962 (instructions included). High fps without freezes on ultra-settings",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-02-05)"
+        },
+        {
+          "date": "2019-02-03",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Manjaro Linux",
+          "gpu_driver": "3.0 Mesa 18.3.2",
+          "specs": "",
+          "notes": "You need to do a lot of tweaks in order to be able to play the game\n\nhttps://github.com/doitsujin/dxvk/issues/728#issuecomment-459839962",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-02-03)"
+        }
+      ]
+    },
+    {
+      "app_id": 3764200,
+      "name": "Resident Evil Requiem",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1196590,
+      "name": "Resident Evil Village",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2124490,
+      "name": "SILENT HILL 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2947440,
+      "name": "SILENT HILL f",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1599660,
+      "name": "Sackboy: A Big Adventure",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1817190,
+      "name": "Spider-Man: Miles Morales",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1774580,
+      "name": "Star Wars Jedi: Survivor",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2842040,
+      "name": "Star Wars Outlaws",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2073850,
+      "name": "THE FINALS",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 979690,
+      "name": "The Ascent",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1544020,
+      "name": "The Callisto Protocol",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2623190,
+      "name": "The Elder Scrolls IV: Oblivion Remastered",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1299480,
+      "name": "The Fabled Woods",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "bronze",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 2074920,
+      "name": "The First Descendant",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1293160,
+      "name": "The Medium",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1449110,
+      "name": "The Outer Worlds 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1140100,
+      "name": "The Persistence",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 750130,
+      "name": "The Sinking City Remastered",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2806640,
+      "name": "The Talos Principle: Reawakened",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 292030,
+      "name": "The Witcher 3: Wild Hunt",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "4.11-6",
+      "protondb_tier": "platinum",
+      "linux_status": "works",
+      "protondb_configs": [
+        {
+          "date": "2019-10-22",
+          "rating": "Platinum",
+          "proton": "4.11-7",
+          "os": "Arch Linux",
+          "gpu_driver": "4.5 Mesa 19.2.1",
+          "specs": "",
+          "notes": "Works with mods as well. Just perfect my dudes.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-22)"
+        },
+        {
+          "date": "2019-10-16",
+          "rating": "Gold",
+          "proton": "4.11-7",
+          "os": "Ubuntu 18.04.1 LTS",
+          "gpu_driver": "NVIDIA 390.77",
+          "specs": "",
+          "notes": "Runs as good or possibly even better than on Windows. Only problem is that in order to make the 4 mods that I use work, I have to copy the file `x64.final.redscripts` from content0 on my old Windows installation to the corresponding Linux folder, every 24 hours.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-16)"
+        },
+        {
+          "date": "2019-10-06",
+          "rating": "Platinum",
+          "proton": "4.11-6",
+          "os": "Arch Linux (64 bits)",
+          "gpu_driver": "4.5 Mesa 19.2.0",
+          "specs": "",
+          "notes": "Runs perfectly with two mods (over 9000 weight and quests obj on map).",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-06)"
+        },
+        {
+          "date": "2019-10-05",
+          "rating": "Platinum",
+          "proton": "4.11-6",
+          "os": "Linux Mint 19.1 Tessa",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "No problems what-so-ever. Performance is solid.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-05)"
+        },
+        {
+          "date": "2019-10-04",
+          "rating": "Platinum",
+          "proton": "4.11-6",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "No issues, great performance on max settings. Even added some mods copied from my Windows installation.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-04)"
+        }
+      ]
+    },
+    {
+      "app_id": 1881120,
+      "name": "Titan Station",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 3116640,
+      "name": "Torque Drift 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "pending",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 2064650,
+      "name": "Tower of Fantasy",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "silver",
+      "linux_status": "check"
+    },
+    {
+      "app_id": 2172010,
+      "name": "Until Dawn",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 532790,
+      "name": "Vampire: The Masquerade - Bloodlines 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 236390,
+      "name": "War Thunder",
+      "launch_options": "gamemoderun \"/mx500/SteamLibrary/steamapps/common/War Thunder/win64/aces.exe\" %command%",
+      "env_vars": {},
+      "proton_version": "4.11-7",
+      "protondb_tier": "borked",
+      "linux_status": "check",
+      "protondb_configs": [
+        {
+          "date": "2019-10-22",
+          "rating": "Gold",
+          "proton": "4.11-7",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "EAC isn't implemented yet, which means you can still play the game through Proton. Using these options, you don't need to set your config.blk file as read-only: \ngamemoderun \"/mx500/SteamLibrary/steamapps/common/War Thunder/win64/aces.exe\" %command% -safe -NoLauncher -noeac -forcestart -driver:vulkan",
+          "env_vars": {},
+          "launch_options": "gamemoderun \"/mx500/SteamLibrary/steamapps/common/War Thunder/win64/aces.exe\" %command%",
+          "source": "ProtonDB report (2019-10-22)"
+        },
+        {
+          "date": "2019-09-24",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Mageia 7",
+          "gpu_driver": "NVIDIA 430.50",
+          "specs": "",
+          "notes": "No additonal tweaks required. Works great out of the box with latest proton version. Only one bug occurs: you can't close the game normally, it will freeze. You have to use a task manager to kill it instead of shutting it down the normal way.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-24)"
+        },
+        {
+          "date": "2019-09-17",
+          "rating": "Platinum",
+          "proton": "4.11-4",
+          "os": "Arch Linux",
+          "gpu_driver": "4.5 Mesa 19.1.7",
+          "specs": "",
+          "notes": "Works perfectly with dxvk. No anti cheat issues.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-17)"
+        },
+        {
+          "date": "2019-09-07",
+          "rating": "Platinum",
+          "proton": "4.15-GE-2",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Worked flawlessly in game. Loading menu occasionally lags a tiny bit.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-09-07)"
+        },
+        {
+          "date": "2019-08-12",
+          "rating": "Platinum",
+          "proton": "4.11-2",
+          "os": "Ubuntu 19.04",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "When using proton with this game is a real performance boost! And when running native I often have sound issue's. I posted a steamcommunity video at https://www.youtube.com/watch?v=d7FW2VRCvFA",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-12)"
+        }
+      ]
+    },
+    {
+      "app_id": 1361210,
+      "name": "Warhammer 40,000: Darktide",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2239550,
+      "name": "Watch Dogs: Legion",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "platinum",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 1056960,
+      "name": "Wolfenstein: Youngblood",
+      "launch_options": "Radeon VII user listen!  RADV with LLVM or ACO both have very low frame-rate and are unplayable even on ultra what is far from the highest setting. Install AMDs AMDVLK and set the launch command to \"VK_ICD_FILENAMES=\"/etc/vulkan/icd.d/amd_icd64.json\"  %command%",
+      "env_vars": {},
+      "proton_version": "4.2-9",
+      "protondb_tier": "platinum",
+      "linux_status": "works",
+      "protondb_configs": [
+        {
+          "date": "2019-10-12",
+          "rating": "Gold",
+          "proton": "Default",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 435.21",
+          "specs": "",
+          "notes": "Game works pretty cool, but I had to limit the game to 144fps otherwise the game had some severe framedrops",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-10-12)"
+        },
+        {
+          "date": "2019-08-21",
+          "rating": "Platinum",
+          "proton": "4.11-2",
+          "os": "Ubuntu 18.04.3 LTS",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "runs perfect and super smooth",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-21)"
+        },
+        {
+          "date": "2019-08-05",
+          "rating": "Platinum",
+          "proton": "4.2-9",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 418.52.17",
+          "specs": "",
+          "notes": "Ran rock solid on 1080p with over 70 fps, game crashed once after first boss battle but smooth sailing after restarting it once.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-05)"
+        },
+        {
+          "date": "2019-08-05",
+          "rating": "Platinum",
+          "proton": "4.2-9",
+          "os": "Arch Linux",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "Runs great. Had a one-time crash during full play-through.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-05)"
+        },
+        {
+          "date": "2019-08-02",
+          "rating": "Platinum",
+          "proton": "4.11-1",
+          "os": "Linux Mint 19.1 Tessa",
+          "gpu_driver": "NVIDIA 430.40",
+          "specs": "",
+          "notes": "Out of the Box ;)",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-08-02)"
+        }
+      ]
+    },
+    {
+      "app_id": 936720,
+      "name": "Wrench",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "4.2-9",
+      "protondb_tier": "platinum",
+      "linux_status": "works",
+      "protondb_configs": [
+        {
+          "date": "2019-07-22",
+          "rating": "Platinum",
+          "proton": "4.2-9",
+          "os": "Manjaro Linux",
+          "gpu_driver": "NVIDIA 430.26",
+          "specs": "",
+          "notes": "Absolutely no tweaks or configuration needed, ran full-screen at high settings with performance seemingly equivalent to Windows (by sight and feel, not measured). No graphical, audio or input errors encountered. Note: Did NOT test the VR mode, only tested the regular mode with keyboard and mouse.",
+          "env_vars": {},
+          "launch_options": null,
+          "source": "ProtonDB report (2019-07-22)"
+        }
+      ]
+    },
+    {
+      "app_id": 3513350,
+      "name": "Wuthering Waves",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": 2456740,
+      "name": "inZOI",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": null,
+      "protondb_tier": "gold",
+      "linux_status": "works"
+    },
+    {
+      "app_id": -792870,
+      "name": "The Ascent",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "latest Proton-GE or Wine-GE",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Proton bundles modern Wine improvements, DXVK/vkd3d translation layers, and targeted patches to support game launchers, anti-cheat workarounds (where possible), and APIs that used to be Windows.",
+      "notes_es": "Proton agrupa mejoras modernas de Wine, capas de traducción DXVK/vkd3d y parches dirigidos para apoyar lanzadores de juegos, soluciones de anti-cheat (donde sea posible) y APIs que solían ser de Windows."
+    },
+    {
+      "app_id": -563081,
+      "name": "The Outer Worlds 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton 8/9 or Proton Experimental",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "The game runs flawlessly on Linux using default Steam settings and Proton. Ultra settings stable, no tweaks needed.",
+      "notes_es": "El juego se ejecuta sin problemas en Linux utilizando los ajustes de Steam por defecto y Proton. Configuración Ultra estable, sin ajustes necesarios."
+    },
+    {
+      "app_id": -147171,
+      "name": "The Talos Principle: Reawakened",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton Experimental",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "The game takes a 20% fps hit in Linux, but it's playable.",
+      "notes_es": "El juego toma un 20% de pérdida de FPS en Linux, pero es jugable."
+    },
+    {
+      "app_id": -934612,
+      "name": "The Witcher 3: Wild Hunt",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton",
+      "linux_status": "works",
+      "protondb_tier": "platinum",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Proton is not a program that 'launches'. It is a compatibility layer / mechanism that the game uses to make API calls to the operating system.",
+      "notes_es": "Proton no es un programa que 'inicia'. Es una capa de compatibilidad / mecanismo que el juego utiliza para hacer llamadas a la API del sistema operativo."
+    },
+    {
+      "app_id": -366879,
+      "name": "Vampire: The Masquerade - Bloodlines 2",
+      "launch_options": "-game Unofficial_Patch",
+      "env_vars": {},
+      "proton_version": "GE-Proton",
+      "linux_status": "cmd",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "The game works pretty well, not perfect, can install the patches by adding the patch installers to Steam as non Steam games and forcing Proton. If you only play campaign with Proton or Proton-6.9-GE-2, it will work fine.",
+      "notes_es": "El juego funciona bastante bien, no perfecto, puede instalar las actualizaciones agregando los instaladores de actualizaciones a Steam como juegos no de Steam y forzando Proton. Si solo juegas la campaña con Proton o Proton-6.9-GE-2, funcionará correctamente."
+    },
+    {
+      "app_id": -714664,
+      "name": "Warhammer 40,000: Darktide",
+      "launch_options": null,
+      "env_vars": {
+        "LD_PRELOAD": ""
+      },
+      "proton_version": "GE-Proton",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": "EasyAntiCheat",
+      "anticheat_linux": "EasyAntiCheat",
+      "notes_en": "Proton 9.0 has another Beta release fixing DEATHLOOP and Warhammer 40,000: Darktide. Linux launch options and environment variables: LD_PRELOAD=\"\"",
+      "notes_es": "Proton 9.0 tiene otra versión beta que arregla DEATHLOOP y Warhammer 40,000: Darktide. Opciones de inicio de Linux y variables de entorno: LD_PRELOAD=\"\""
+    },
+    {
+      "app_id": -601478,
+      "name": "Xuan-Yuan Sword VII",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton",
+      "linux_status": "works",
+      "protondb_tier": "gold",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "Works with the default Proton version, but each bootup asks to install Microsoft Visual C++",
+      "notes_es": "Funciona con la versión de Proton por defecto, pero cada arranque pide instalar Microsoft Visual C++"
     }
   ]
 }
