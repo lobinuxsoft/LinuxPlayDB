@@ -1,0 +1,26 @@
+{
+  "description": "Useful external links per game (ProtonDB, PCGamingWiki, Reddit, etc)",
+  "last_updated": "2026-03-01",
+  "schema": {
+    "app_id": "int — Steam App ID",
+    "url": "str — Full URL to the resource",
+    "title_en": "str — Link title in English",
+    "title_es": "str — Link title in Spanish",
+    "source": "str — One of: protondb | pcgamingwiki | reddit | github",
+    "link_type": "str — One of: fix | guide | discussion | wiki | video"
+  },
+  "source_values": {
+    "protondb": "ProtonDB game reports and ratings",
+    "pcgamingwiki": "PCGamingWiki technical articles",
+    "reddit": "Reddit threads (r/linux_gaming, r/SteamDeck, etc)",
+    "github": "GitHub issues, PRs, or repos with fixes"
+  },
+  "link_type_values": {
+    "fix": "Direct fix or workaround for a specific issue",
+    "guide": "Step-by-step guide for setup or optimization",
+    "discussion": "Community discussion with useful info",
+    "wiki": "Wiki article with technical details",
+    "video": "Video tutorial or demonstration"
+  },
+  "links": []
+}

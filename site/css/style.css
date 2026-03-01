@@ -1,0 +1,659 @@
+/* ============================================
+   LinuxPlayDB — Dark Theme (Cyan/Orange)
+   ============================================ */
+
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #232733;
+  --border: #2d3244;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --cyan: #06b6d4;
+  --cyan-dim: rgba(6, 182, 212, 0.15);
+  --cyan-half: rgba(6, 182, 212, 0.5);
+  --orange: #f97316;
+  --orange-light: #fb923c;
+  --orange-dim: rgba(249, 115, 22, 0.15);
+  --green: #22c55e;
+  --green-dim: rgba(34, 197, 94, 0.15);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.15);
+  --yellow: #eab308;
+  --yellow-dim: rgba(234, 179, 8, 0.15);
+  --purple: #a855f7;
+  --purple-dim: rgba(168, 85, 247, 0.15);
+  --amd-red: #ed1c24;
+  --amd-dim: rgba(237, 28, 36, 0.15);
+  --gradient: linear-gradient(90deg, var(--orange) 0%, var(--orange-light) 40%, var(--cyan) 100%);
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
+  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Layout ── */
+.lpdb-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* ── Header ── */
+.lpdb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.lpdb-header-left { flex: 1; }
+
+.lpdb-title {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.25rem;
+}
+
+.lpdb-subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.lpdb-subtitle a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.lpdb-subtitle a:hover { text-decoration: underline; }
+
+.lpdb-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Stats Bar ── */
+.lpdb-stats {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.lpdb-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.8rem;
+  text-align: center;
+  min-width: 90px;
+}
+
+.lpdb-stat-num {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.lpdb-stat-label {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lpdb-stat--cyan .lpdb-stat-num { color: var(--cyan); }
+.lpdb-stat--orange .lpdb-stat-num { color: var(--orange); }
+.lpdb-stat--green .lpdb-stat-num { color: var(--green); }
+.lpdb-stat--yellow .lpdb-stat-num { color: var(--yellow); }
+.lpdb-stat--red .lpdb-stat-num { color: var(--red); }
+.lpdb-stat--purple .lpdb-stat-num { color: var(--purple); }
+
+/* ── Glass Panel ── */
+.lpdb-glass {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.lpdb-glass--accent {
+  border-left: 4px solid var(--cyan);
+}
+
+/* ── Bazzite Reference ── */
+.lpdb-bazzite summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--cyan);
+  font-size: 0.95rem;
+}
+
+.lpdb-bazzite-content {
+  margin-top: 0.75rem;
+}
+
+.lpdb-bazzite-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.lpdb-bazzite h4 {
+  color: var(--cyan);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0.75rem 0 0.3rem;
+}
+
+.lpdb-bazzite h4:first-child { margin-top: 0; }
+
+/* ── Code Blocks ── */
+.lpdb-cmd {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--green);
+  overflow-x: auto;
+  margin: 0.4rem 0;
+  white-space: pre;
+  line-height: 1.5;
+  cursor: pointer;
+  position: relative;
+}
+
+.lpdb-cmd:hover { border-color: var(--cyan); }
+
+.lpdb-cmd::after {
+  content: attr(data-copy-label);
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+}
+
+.lpdb-cmd.copied::after { color: var(--green); }
+
+.lpdb-cmd .c { color: var(--text-muted); }  /* comment */
+.lpdb-cmd .v { color: var(--cyan); }         /* variable */
+.lpdb-cmd .s { color: var(--orange); }        /* value */
+
+/* ── Filter Bar ── */
+.lpdb-filters {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lpdb-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.lpdb-filter-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  min-width: 55px;
+  font-weight: 600;
+}
+
+/* ── Search ── */
+.lpdb-search {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.4rem 0.7rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.8rem;
+  outline: none;
+  font-family: var(--font-sans);
+}
+
+.lpdb-search:focus { border-color: var(--cyan); }
+.lpdb-search::placeholder { color: var(--text-muted); }
+
+/* ── Chips ── */
+.lpdb-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.55rem;
+  border-radius: 5px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-muted);
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.lpdb-chip:hover { border-color: var(--cyan); color: var(--text); }
+.lpdb-chip.active { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+.lpdb-chip.active-orange { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+.lpdb-chip.active-green { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+.lpdb-chip.active-purple { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+.lpdb-chip.active-red { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+
+/* ── Legend ── */
+.lpdb-legend {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.lpdb-legend-title {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.lpdb-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 0.08rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  margin: 1px;
+}
+
+.badge-rt { background: var(--cyan-dim); color: var(--cyan); border: 1px solid var(--cyan); }
+.badge-pt { background: var(--orange-dim); color: var(--orange); border: 1px solid var(--orange); }
+.badge-amd { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.badge-amd-warn { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
+.badge-nvidia { background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple); }
+.badge-nvidia-sm { background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple); font-size: 0.52rem; }
+.badge-tech { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+.badge-fsr { background: var(--amd-dim); color: var(--amd-red); border: 1px solid var(--amd-red); }
+.badge-linux { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.badge-linux-warn { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
+.badge-linux-maybe { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+.badge-broken { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+.badge-cmd { background: #0d1117; color: var(--green); border: 1px solid var(--green); font-family: var(--font-mono); font-size: 0.55rem; }
+
+/* Deck status badges */
+.badge-deck-verified { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.badge-deck-playable { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
+.badge-deck-unsupported { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+.badge-deck-unknown { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+
+/* ── Actions Bar ── */
+.lpdb-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lpdb-btn {
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  transition: all 0.15s;
+  font-family: var(--font-sans);
+}
+
+.lpdb-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.lpdb-btn--primary {
+  background: var(--gradient);
+  color: var(--bg);
+  border: none;
+  font-weight: 700;
+}
+
+.lpdb-btn--primary:hover { opacity: 0.9; color: var(--bg); }
+
+.lpdb-btn--lang {
+  background: var(--surface2);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 0.75rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.lpdb-btn--lang:hover {
+  background: var(--cyan-dim);
+}
+
+/* ── Status Messages ── */
+.lpdb-status {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.lpdb-status--ok { color: var(--green); }
+.lpdb-status--err { color: var(--red); }
+.lpdb-status--loading { color: var(--yellow); }
+
+/* ── Results Count ── */
+.lpdb-results {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.lpdb-results strong { color: var(--cyan); }
+
+/* ── Table ── */
+.lpdb-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.lpdb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.lpdb-table th {
+  background: var(--surface2);
+  color: var(--cyan);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+  border-bottom: 2px solid var(--cyan);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.lpdb-table th:hover { color: var(--orange); }
+
+.lpdb-table th .sort-arrow {
+  margin-left: 0.25rem;
+  font-size: 0.55rem;
+  opacity: 0.4;
+}
+
+.lpdb-table th.sorted .sort-arrow {
+  opacity: 1;
+  color: var(--orange);
+}
+
+.lpdb-table td {
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.lpdb-table tr:hover > td { background: var(--surface); }
+
+.lpdb-table tr.detail-row td {
+  padding: 0;
+  background: var(--surface);
+}
+
+.lpdb-game-name {
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.lpdb-game-name:hover { color: var(--cyan); }
+
+.lpdb-expand-icon {
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  margin-right: 0.3rem;
+}
+
+/* ── Detail Panel ── */
+.lpdb-detail {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  border-left: 3px solid var(--cyan);
+  margin: 0.3rem 0.5rem;
+}
+
+.lpdb-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.lpdb-detail h4 {
+  color: var(--cyan);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.lpdb-detail h4:first-child { margin-top: 0; }
+
+.lpdb-detail-cmd {
+  background: #0d1117;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  margin: 0.2rem 0;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  word-break: break-all;
+}
+
+.lpdb-detail-cmd:hover { border-color: var(--green); }
+
+.lpdb-detail-note {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  margin: 0.15rem 0;
+  line-height: 1.5;
+}
+
+.lpdb-detail-note strong { color: var(--text); }
+
+.lpdb-detail-links {
+  list-style: none;
+  padding: 0;
+}
+
+.lpdb-detail-links li {
+  margin: 0.15rem 0;
+}
+
+.lpdb-detail-links a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 0.7rem;
+}
+
+.lpdb-detail-links a:hover { text-decoration: underline; }
+
+/* ── Device Compat Table (nested) ── */
+.lpdb-device-table {
+  width: 100%;
+  font-size: 0.7rem;
+  border-collapse: collapse;
+  margin-top: 0.3rem;
+}
+
+.lpdb-device-table th {
+  background: var(--surface2);
+  color: var(--cyan);
+  font-size: 0.58rem;
+  padding: 0.3rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  position: static;
+}
+
+.lpdb-device-table td {
+  padding: 0.25rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Loading Overlay ── */
+.lpdb-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.lpdb-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: lpdb-spin 0.8s linear infinite;
+}
+
+@keyframes lpdb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.lpdb-loading-text {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ── Footer ── */
+.lpdb-footer {
+  margin-top: 2rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.lpdb-footer a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.lpdb-footer a:hover { text-decoration: underline; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+/* ── Toast ── */
+.lpdb-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--cyan);
+  border-radius: var(--radius);
+  padding: 0.6rem 1rem;
+  font-size: 0.75rem;
+  color: var(--text);
+  z-index: 1000;
+  animation: lpdb-toast-in 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.lpdb-toast.hiding {
+  animation: lpdb-toast-out 0.3s ease forwards;
+}
+
+@keyframes lpdb-toast-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lpdb-toast-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(1rem); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .lpdb-container { padding: 0.5rem; }
+  .lpdb-title { font-size: 1.3rem; }
+  .lpdb-detail-grid { grid-template-columns: 1fr; }
+  .lpdb-bazzite-grid { grid-template-columns: 1fr; }
+  .lpdb-header { flex-direction: column; }
+  .lpdb-game-name { max-width: 200px; }
+}
+
+@media print {
+  body { background: white; color: black; }
+  .lpdb-filters, .lpdb-actions, .lpdb-search, .lpdb-bazzite,
+  .lpdb-header-actions, .lpdb-legend { display: none; }
+  .lpdb-title { -webkit-text-fill-color: #333; background: none; }
+  .lpdb-table th { position: static; }
+}

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steam RT/PT Database — AMD + Linux + NVIDIA — Antigravity</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232733;
+    --border: #2d3244;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --cyan: #06b6d4;
+    --cyan-dim: rgba(6, 182, 212, 0.15);
+    --orange: #f97316;
+    --orange-dim: rgba(249, 115, 22, 0.15);
+    --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.15);
+    --yellow: #eab308;
+    --yellow-dim: rgba(234, 179, 8, 0.15);
+    --purple: #a855f7;
+    --purple-dim: rgba(168, 85, 247, 0.15);
+    --amd-red: #ed1c24;
+    --amd-dim: rgba(237, 28, 36, 0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.6; padding: 1.5rem;
+    max-width: 1600px; margin: 0 auto;
+  }
+  h1 {
+    font-size: 2rem;
+    background: linear-gradient(90deg, var(--orange), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 0.25rem;
+  }
+  h2 {
+    font-size: 1.2rem; color: var(--cyan);
+    margin: 1.5rem 0 0.75rem; padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  h3 { font-size: 1rem; color: var(--orange); margin: 1rem 0 0.5rem; }
+  .subtitle { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .subtitle a { color: var(--cyan); text-decoration: none; }
+  .subtitle a:hover { text-decoration: underline; }
+
+  /* Stats */
+  .stats-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .stat {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.4rem 0.8rem; text-align: center; min-width: 90px;
+  }
+  .stat-num { font-size: 1.4rem; font-weight: 700; }
+  .stat-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-cyan .stat-num { color: var(--cyan); }
+  .stat-orange .stat-num { color: var(--orange); }
+  .stat-green .stat-num { color: var(--green); }
+  .stat-yellow .stat-num { color: var(--yellow); }
+  .stat-red .stat-num { color: var(--red); }
+  .stat-purple .stat-num { color: var(--purple); }
+
+  /* Bazzite section */
+  .bazzite-box {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 1rem 1.25rem; margin-bottom: 1rem;
+    border-left: 4px solid var(--cyan);
+  }
+  .bazzite-box h3 { margin-top: 0; }
+  .cmd-block {
+    background: #0d1117; border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.6rem 0.8rem;
+    font-family: 'Cascadia Code','Fira Code',monospace;
+    font-size: 0.75rem; color: var(--green);
+    overflow-x: auto; margin: 0.4rem 0; white-space: pre; line-height: 1.5;
+    cursor: pointer; position: relative;
+  }
+  .cmd-block:hover { border-color: var(--cyan); }
+  .cmd-block::after {
+    content: 'click to copy'; position: absolute; top: 4px; right: 8px;
+    font-size: 0.55rem; color: var(--text-muted); font-family: system-ui;
+  }
+  .cmd-block.copied::after { content: 'copied!'; color: var(--green); }
+  .cmd-comment { color: var(--text-muted); }
+  .cmd-var { color: var(--cyan); }
+  .cmd-val { color: var(--orange); }
+
+  /* Filter bar */
+  .filter-bar {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 0.75rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .filter-row { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+  .filter-label {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); min-width: 55px; font-weight: 600;
+  }
+  .search-box {
+    flex: 1; min-width: 180px; padding: 0.4rem 0.7rem;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); font-size: 0.8rem; outline: none;
+  }
+  .search-box:focus { border-color: var(--cyan); }
+  .search-box::placeholder { color: var(--text-muted); }
+
+  /* Chips */
+  .chip {
+    display: inline-flex; align-items: center; padding: 0.25rem 0.55rem;
+    border-radius: 5px; font-size: 0.65rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer;
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text-muted); transition: all 0.15s; user-select: none;
+  }
+  .chip:hover { border-color: var(--cyan); color: var(--text); }
+  .chip.active { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+  .chip.active-orange { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+  .chip.active-green { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+  .chip.active-purple { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+  .chip.active-red { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  th {
+    background: var(--surface2); color: var(--cyan); font-weight: 600;
+    text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.05em;
+    padding: 0.55rem 0.6rem; text-align: left; border-bottom: 2px solid var(--cyan);
+    position: sticky; top: 0; z-index: 10; cursor: pointer; user-select: none; white-space: nowrap;
+  }
+  th:hover { color: var(--orange); }
+  th .sort-arrow { margin-left: 0.25rem; font-size: 0.55rem; opacity: 0.4; }
+  th.sorted .sort-arrow { opacity: 1; color: var(--orange); }
+  td { padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:hover > td { background: var(--surface); }
+  tr.detail-row td { padding: 0; background: var(--surface); }
+  tr.detail-row .detail-content {
+    padding: 0.5rem 1rem; font-size: 0.75rem;
+    border-left: 3px solid var(--cyan); margin: 0.3rem 0.5rem;
+  }
+  .game-name {
+    font-weight: 600; white-space: nowrap; max-width: 300px;
+    overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+  }
+  .game-name:hover { color: var(--cyan); }
+  .expand-icon { color: var(--text-muted); font-size: 0.6rem; margin-right: 0.3rem; }
+
+  /* Badges */
+  .badge {
+    display: inline-block; padding: 0.08rem 0.35rem; border-radius: 3px;
+    font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.03em; white-space: nowrap; margin: 1px;
+  }
+  .badge-rt { background: var(--cyan-dim); color: var(--cyan); border: 1px solid var(--cyan); }
+  .badge-pt { background: var(--orange-dim); color: var(--orange); border: 1px solid var(--orange); }
+  .badge-amd { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+  .badge-amd-warn { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
+  .badge-nvidia { background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple); }
+  .badge-nvidia-sm { background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple); font-size: 0.52rem; }
+  .badge-tech { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+  .badge-fsr { background: var(--amd-dim); color: var(--amd-red); border: 1px solid var(--amd-red); }
+  .badge-linux { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+  .badge-linux-warn { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
+  .badge-linux-maybe { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+  .badge-broken { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+  .badge-cmd { background: #0d1117; color: var(--green); border: 1px solid var(--green); font-family: monospace; font-size: 0.55rem; }
+
+  /* Actions */
+  .actions-bar { display: flex; gap: 0.4rem; margin: 0.75rem 0; flex-wrap: wrap; align-items: center; }
+  .btn {
+    padding: 0.35rem 0.7rem; border-radius: 6px; font-size: 0.7rem;
+    font-weight: 600; cursor: pointer; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-muted); transition: all 0.15s;
+  }
+  .btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .btn-primary {
+    background: linear-gradient(90deg, var(--orange), var(--cyan));
+    color: var(--bg); border: none; font-weight: 700;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  .status-msg { font-size: 0.7rem; color: var(--text-muted); padding: 0.2rem 0.5rem; }
+  .status-ok { color: var(--green); }
+  .status-err { color: var(--red); }
+  .status-loading { color: var(--yellow); }
+
+  /* Legend */
+  .legend {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.6rem 0.8rem; margin-bottom: 0.75rem; font-size: 0.7rem;
+    display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 0.25rem; }
+
+  .results-count { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .results-count strong { color: var(--cyan); }
+
+  /* Footer */
+  .footer {
+    margin-top: 2rem; padding-top: 0.75rem; border-top: 1px solid var(--border);
+    font-size: 0.65rem; color: var(--text-muted); text-align: center;
+  }
+
+  /* Detail panel inline */
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .detail-section h4 { color: var(--cyan); font-size: 0.7rem; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .detail-cmd {
+    background: #0d1117; padding: 0.4rem 0.6rem; border-radius: 4px;
+    font-family: 'Cascadia Code','Fira Code',monospace; font-size: 0.7rem;
+    color: var(--green); margin: 0.2rem 0; cursor: pointer; border: 1px solid var(--border);
+  }
+  .detail-cmd:hover { border-color: var(--green); }
+  .detail-note { color: var(--text-muted); font-size: 0.7rem; margin: 0.15rem 0; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+  @media (max-width: 768px) {
+    body { padding: 0.5rem; }
+    h1 { font-size: 1.3rem; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .bazzite-box { padding: 0.6rem; }
+  }
+  @media print {
+    body { background: white; color: black; }
+    .filter-bar, .actions-bar, .search-box, .bazzite-box { display: none; }
+    h1 { -webkit-text-fill-color: #333; background: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Steam RT/PT Games — AMD + NVIDIA + Linux</h1>
+<p class="subtitle">
+  Base de datos completa de Ray Tracing &middot; Compatible AMD RX 9070 XT (RDNA 4) &middot; Bazzite Linux &middot;
+  Fuentes: <a href="https://www.nvidia.com/en-us/geforce/news/nvidia-rtx-games-engines-apps/" target="_blank">NVIDIA RTX DB</a>,
+  <a href="https://www.pcgamingwiki.com/wiki/List_of_games_that_support_ray_tracing" target="_blank">PCGamingWiki</a>,
+  <a href="https://www.protondb.com/" target="_blank">ProtonDB</a>
+</p>
+
+<!-- Stats -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat stat-cyan"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total RT</div></div>
+  <div class="stat stat-orange"><div class="stat-num" id="statPT">0</div><div class="stat-label">Path Tracing</div></div>
+  <div class="stat stat-green"><div class="stat-num" id="statAMD">0</div><div class="stat-label">AMD OK</div></div>
+  <div class="stat stat-red"><div class="stat-num" id="statBroken">0</div><div class="stat-label">Broken Linux</div></div>
+  <div class="stat stat-yellow"><div class="stat-num" id="statCmd">0</div><div class="stat-label">Necesitan CMD</div></div>
+  <div class="stat stat-purple"><div class="stat-num" id="statFSR4">0</div><div class="stat-label">FSR4</div></div>
+</div>
+
+<!-- Bazzite Quick Reference -->
+<details class="bazzite-box" open>
+<summary style="cursor:pointer;font-weight:700;color:var(--cyan);font-size:0.95rem;">Bazzite Linux — RT Quick Reference (RX 9070 XT + Mesa 26.0 RADV)</summary>
+<div style="margin-top:0.75rem;">
+
+<div class="detail-grid">
+<div class="detail-section">
+<h4>Verificar setup</h4>
+<div class="cmd-block" onclick="copyCmd(this)"><span class="cmd-comment"># Verificar que RADV esta activo</span>
+vulkaninfo | grep driverName  <span class="cmd-comment"># Debe decir: radv</span>
+
+<span class="cmd-comment"># Verificar version Mesa</span>
+vulkaninfo | grep driverVersion
+
+<span class="cmd-comment"># Forzar RADV si AMDVLK interfiere</span>
+<span class="cmd-var">AMD_VULKAN_ICD</span>=<span class="cmd-val">RADV</span> %command%</div>
+
+<h4>FSR4 Redstone (RDNA4 nativo)</h4>
+<div class="cmd-block" onclick="copyCmd(this)"><span class="cmd-comment"># Activar FSR4 en cualquier juego DX12 via Proton</span>
+<span class="cmd-var">PROTON_FSR4_UPGRADE</span>=<span class="cmd-val">1</span> <span class="cmd-var">SteamDeck</span>=<span class="cmd-val">0</span> %command%
+
+<span class="cmd-comment"># Con indicador visual de FSR4</span>
+<span class="cmd-var">PROTON_FSR4_UPGRADE</span>=<span class="cmd-val">1</span> <span class="cmd-var">PROTON_FSR4_INDICATOR</span>=<span class="cmd-val">1</span> <span class="cmd-var">SteamDeck</span>=<span class="cmd-val">0</span> %command%</div>
+
+<h4>Gamescope + FSR (compositor)</h4>
+<div class="cmd-block" onclick="copyCmd(this)"><span class="cmd-comment"># Renderizar a 1800p, salida 4K con FSR</span>
+gamescope -h 1800 -H 2160 -F fsr -f -- %command%
+
+<span class="cmd-comment"># Con MangoHud</span>
+gamescope -h 1800 -H 2160 -F fsr -f -- <span class="cmd-var">MANGOHUD</span>=<span class="cmd-val">1</span> %command%</div>
+</div>
+
+<div class="detail-section">
+<h4>Variables RT utiles</h4>
+<div class="cmd-block" onclick="copyCmd(this)"><span class="cmd-comment"># Template para juegos RT problematicos</span>
+<span class="cmd-var">RADV_DEBUG</span>=<span class="cmd-val">nodcc</span> %command%
+
+<span class="cmd-comment"># Fix VRAM crashes con reBAR/SAM</span>
+<span class="cmd-var">VKD3D_CONFIG</span>=<span class="cmd-val">no_upload_hvv</span> %command%
+
+<span class="cmd-comment"># Combo problematico completo</span>
+<span class="cmd-var">AMD_VULKAN_ICD</span>=<span class="cmd-val">RADV</span> <span class="cmd-var">RADV_DEBUG</span>=<span class="cmd-val">nodcc</span> <span class="cmd-var">VKD3D_CONFIG</span>=<span class="cmd-val">no_upload_hvv</span> %command%
+
+<span class="cmd-comment"># Emular RT por software (GPUs sin HW RT)</span>
+<span class="cmd-var">RADV_PERFTEST</span>=<span class="cmd-val">emulate_rt</span> %command%</div>
+
+<h4>Capcom RE Engine (RE2, RE3, RE4, REV, RE Requiem, MHW)</h4>
+<div class="cmd-block" onclick="copyCmd(this)"><span class="cmd-comment"># Desbloquear RT en juegos Capcom que detectan Wine</span>
+%command% <span class="cmd-val">/WineDetectionEnabled:False</span></div>
+
+<h4>AFMF (Fluid Motion Frames)</h4>
+<div class="cmd-block" onclick="copyCmd(this)"><span class="cmd-comment"># AFMF NO disponible en Linux/Bazzite</span>
+<span class="cmd-comment"># Alternativa: FSR 3/4 Frame Gen integrado en juegos</span>
+<span class="cmd-comment"># funciona via Proton sin configuracion extra</span></div>
+</div>
+</div>
+
+<div style="margin-top:0.5rem;font-size:0.7rem;color:var(--text-muted);">
+  <strong>Mesa 26.0 RT improvements:</strong> Wave32 RT shaders (RDNA3/4), BVH8 traversal (RDNA4),
+  Triangle pair compression, Separated any-hit/intersection shaders.
+  RT habilitado por defecto — <code>RADV_PERFTEST=rt</code> y <code>VKD3D_CONFIG=dxr</code> ya NO son necesarios.
+</div>
+</div>
+</details>
+
+<!-- Filters -->
+<div class="filter-bar">
+  <div class="filter-row">
+    <span class="filter-label">Buscar</span>
+    <input type="text" class="search-box" id="searchInput" placeholder="Nombre del juego..." oninput="applyFilters()">
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">RT</span>
+    <span class="chip active" data-group="rtType" data-value="all" onclick="setFilter(this)">Todos</span>
+    <span class="chip" data-group="rtType" data-value="pt" onclick="setFilter(this)">Path Tracing</span>
+    <span class="chip" data-group="rtType" data-value="rt" onclick="setFilter(this)">RT Only</span>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">Tech</span>
+    <span class="chip" data-group="tech" data-value="rr" onclick="toggleFilter(this)">RR</span>
+    <span class="chip" data-group="tech" data-value="mfg" onclick="toggleFilter(this)">MFG</span>
+    <span class="chip" data-group="tech" data-value="fg" onclick="toggleFilter(this)">FG</span>
+    <span class="chip" data-group="tech" data-value="sr" onclick="toggleFilter(this)">SR</span>
+    <span class="chip" data-group="tech" data-value="fsr4" onclick="toggleFilter(this)">FSR4</span>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">AMD</span>
+    <span class="chip active-green" data-group="amd" data-value="all" onclick="setFilter(this)">Todos</span>
+    <span class="chip" data-group="amd" data-value="ok" onclick="setFilter(this)">AMD OK</span>
+    <span class="chip" data-group="amd" data-value="pt_too" onclick="setFilter(this)">AMD PT</span>
+    <span class="chip" data-group="amd" data-value="nvidia_only" onclick="setFilter(this)">NVIDIA Only</span>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">Linux</span>
+    <span class="chip active" data-group="linux" data-value="all" onclick="setFilter(this)">Todos</span>
+    <span class="chip" data-group="linux" data-value="works" onclick="setFilter(this)">Funciona</span>
+    <span class="chip" data-group="linux" data-value="cmd" onclick="setFilter(this)">Necesita CMD</span>
+    <span class="chip" data-group="linux" data-value="broken" onclick="setFilter(this)">Broken</span>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <span style="color:var(--text-muted);font-weight:600;">Leyenda:</span>
+  <span class="legend-item"><span class="badge badge-pt">PT</span> Path Tracing</span>
+  <span class="legend-item"><span class="badge badge-rt">RT</span> Ray Tracing</span>
+  <span class="legend-item"><span class="badge badge-nvidia-sm">RR</span> Ray Reconstruction</span>
+  <span class="legend-item"><span class="badge badge-tech">MFG</span> Multi Frame Gen</span>
+  <span class="legend-item"><span class="badge badge-fsr">FSR4</span> AMD FSR4</span>
+  <span class="legend-item"><span class="badge badge-amd">AMD</span> Compatible</span>
+  <span class="legend-item"><span class="badge badge-nvidia">NV</span> NVIDIA Excl.</span>
+  <span class="legend-item"><span class="badge badge-cmd">CMD</span> Necesita comando</span>
+  <span class="legend-item"><span class="badge badge-broken">BROKEN</span> No funciona</span>
+  <span class="legend-item" style="color:var(--text-muted);font-size:0.65rem;">Click en un juego para ver comandos Linux</span>
+</div>
+
+<!-- Actions -->
+<div class="actions-bar">
+  <button class="btn btn-primary" onclick="refreshFromNvidia()">Refresh desde NVIDIA</button>
+  <button class="btn" onclick="exportCSV()">Export CSV</button>
+  <button class="btn" onclick="exportJSON()">Export JSON</button>
+  <button class="btn" onclick="expandAll()">Expandir todo</button>
+  <button class="btn" onclick="collapseAll()">Colapsar todo</button>
+  <span class="status-msg" id="statusMsg"></span>
+</div>
+
+<div class="results-count" id="resultsCount"></div>
+
+<!-- Table -->
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th data-sort="name" onclick="sortTable('name')">Game <span class="sort-arrow">&#9650;</span></th>
+  <th data-sort="type" onclick="sortTable('type')">Type <span class="sort-arrow">&#9650;</span></th>
+  <th data-sort="amd" onclick="sortTable('amd')">AMD <span class="sort-arrow">&#9650;</span></th>
+  <th>Tech</th>
+  <th data-sort="linux" onclick="sortTable('linux')">Linux <span class="sort-arrow">&#9650;</span></th>
+  <th>CMD</th>
+</tr>
+</thead>
+<tbody id="gamesBody"></tbody>
+</table>
+</div>
+
+<div class="footer">
+  Fuentes: NVIDIA RTX DB, PCGamingWiki, ProtonDB, ArchWiki, Mesa docs, VKD3D-Proton &middot;
+  AMD/Linux research: Antigravity &middot; "For science. Obviously." &middot; <span id="lastUpdate"></span>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// NVIDIA ENDPOINT
+// ═══════════════════════════════════════════
+const NVIDIA_EP = 'https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/news/nvidia-rtx-games-engines-apps/dlss-rt-games-apps-overrides.json';
+
+// ═══════════════════════════════════════════
+// GAME DATABASE — ALL RT/PT GAMES
+// Fields: name, pt, rr, mfg, fg, sr, dlaa,
+//   amdStatus, linuxStatus, fsr4, proton, linuxCmd, linuxNotes
+// ═══════════════════════════════════════════
+const GAMES_DB = [
+  // ─── PATH TRACING ───
+  {name:"Alan Wake 2",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"cmd",proton:"Proton 8+ / GE-Proton",
+   linuxCmd:"",linuxNotes:"RT basico funciona. Path Tracing crashea/freeze en AMD. Texturas faltantes en Mesa."},
+  {name:"Black Myth: Wukong",pt:true,rr:false,mfg:true,fg:true,sr:true,dlaa:false,fsr4:true,
+   amdStatus:"nvidia_pt",linuxStatus:"works",proton:"Proton Experimental",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"FSR4 oficial. RT funciona pero PT NVIDIA-optimized, impracticable en AMD. Denuvo cuenta cambios de Proton como activaciones."},
+  {name:"Cyberpunk 2077",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"pt_too",linuxStatus:"works",proton:"Proton 8+",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"RT y PT Overdrive funcionan en AMD. FSR4 disponible. ~60 FPS PT a 1440p con FSR Performance. Rendimiento inferior a Windows."},
+  {name:"Dead Take",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_rt_only",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"PT solo NVIDIA (Ray Reconstruction). RT funciona en AMD."},
+  {name:"Death Relives",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_rt_only",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"PT solo NVIDIA. RT funciona en AMD."},
+  {name:"DESORDRE: A Puzzle Game Adventure",pt:true,rr:false,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"PT NVIDIA exclusive."},
+  {name:"DOOM: The Dark Ages",pt:true,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"pt_too",linuxStatus:"cmd",proton:"Proton Experimental",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"RT siempre activo (idTech 7 Vulkan). AMD PT funciona. Requiere Mesa >= 25.1. Desactivar iGPU en BIOS. Mesa 25.1+ incluye fix automatico para RADV."},
+  {name:"F1 25",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"pt_too",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"AMD PT soportado. FSR4 oficial."},
+  {name:"FBC: Firebreak",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"pt_too",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"AMD PT soportado oficialmente."},
+  {name:"Half-Life 2 RTX Demo",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"RTX Remix. NVIDIA exclusive PT."},
+  {name:"Indiana Jones and the Great Circle",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"pt_too",linuxStatus:"cmd",proton:"Proton Experimental",
+   linuxCmd:"radv_legacy_sparse_binding=true radv_zero_vram=true RADV_DEBUG=nodcc %command%",linuxNotes:"RT obligatorio. AMD PT desde Update 3. Necesita 16 GB VRAM. Para GPUs sin RT HW: RADV_PERFTEST=emulate_rt"},
+  {name:"Justice / Sword of Justice",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_rt_only",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"PT solo NVIDIA. RT funciona en AMD."},
+  {name:"Minecraft with RTX",pt:true,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"NVIDIA RTX exclusive. Bedrock Edition Windows only."},
+  {name:"Portal with RTX",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"RTX Remix. NVIDIA exclusive PT."},
+  {name:"Portal: Prelude RTX",pt:true,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"RTX Remix. NVIDIA exclusive PT."},
+  {name:"Quake II RTX",pt:true,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"works",proton:"Nativo Linux",
+   linuxCmd:"",linuxNotes:"Binario nativo Linux. Funciona en AMD via RADV. +14% perf en RDNA4 con Mesa 25.2+. BVH8 traversal."},
+  {name:"Resident Evil Requiem",pt:true,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"nvidia_pt",linuxStatus:"cmd",proton:"Proton Experimental",
+   linuxCmd:"%command% /WineDetectionEnabled:False",linuxNotes:"PT NVIDIA exclusive (DLSS Ray Reconstruction). RT funciona en AMD. Capcom detecta Wine y desactiva RT — el comando es OBLIGATORIO."},
+
+  // ─── RAY TRACING (AMD compatible) ───
+  {name:"A Plague Tale: Requiem",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Ambulance Life: A Paramedic Simulator",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"AMID EVIL",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Nativo Linux",linuxCmd:"",linuxNotes:"Tiene binario nativo Linux."},
+  {name:"ARC Raiders",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Assassin's Creed Shadows",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton-GE",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"RTGI + RT Reflections (3 modos, mandatorio). Usar Proton-GE. Black screen en inicio → pulsar F2. AMD tiene ventaja en este titulo. FSR4 oficial."},
+  {name:"Avatar: Frontiers of Pandora",pt:false,rr:true,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"Ray Reconstruction es NVIDIA exclusive pero RT base funciona en AMD."},
+  {name:"Avowed",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Battlefield 2042",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"Anti-cheat (EAC) no funciona en Linux."},
+  {name:"Battlefield V",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Bright Memory",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"NVIDIA-specific RT code. RT no aparece en AMD."},
+  {name:"Bright Memory: Infinite",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"NVIDIA-specific RT code."},
+  {name:"Call of Duty: Black Ops 7",pt:false,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"FSR Ray Regeneration soportado (equivalente a DLSS RR). FSR4 oficial."},
+  {name:"Chernobylite",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"RT Reflections + Caustics + DDGI. Requiere DX12."},
+  {name:"Control",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",
+   linuxCmd:"",linuxNotes:"VKD3D-Proton. RT Reflections funciona. SSR debe estar en Medium+ para RT en AMD."},
+  {name:"Cronos: The New Dawn",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Nativo Linux",linuxCmd:"",linuxNotes:"Tiene version nativa Linux. HW Lumen RT."},
+  {name:"Crysis Remastered",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",linuxCmd:"",linuxNotes:"Software RT (CryEngine). Funciona sin cores RT hardware."},
+  {name:"Crysis 2 Remastered",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",linuxCmd:"",linuxNotes:"AMD recibio 20-50% mejora de perf via hotfix."},
+  {name:"Crysis 3 Remastered",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",linuxCmd:"",linuxNotes:"AMD recibio hasta 50% mejora de perf."},
+  {name:"Dead Island 2",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"AMD-sponsored. RT + FSR (sin DLSS). No esta en la DB de NVIDIA."},
+  {name:"Dead Space",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",linuxCmd:"",linuxNotes:"RTAO. Funciona en Linux."},
+  {name:"Deathloop",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",linuxCmd:"",linuxNotes:"RT Reflections. VKD3D-Proton."},
+  {name:"Deliver Us Mars",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"RT broken en AMD — severe perf drops."},
+  {name:"Deliver Us The Moon",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"RT en AMD = severe perf drops (<30 FPS)."},
+  {name:"Diablo IV",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"FSR4 oficial."},
+  {name:"DiRT 5",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"DOOM Eternal",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",linuxCmd:"",linuxNotes:"RT update. Funciona bien en AMD Linux."},
+  {name:"Dragon Age: The Veilguard",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+",
+   linuxCmd:"",linuxNotes:"RT Reflections + RTAO. DEBE desactivar Strand Hair (crashea RADV). RT funciona despues de eso."},
+  {name:"Dragon's Dogma 2",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"RT greyed out en Proton. GPU page faults (vkd3d-proton #2007)."},
+  {name:"Dying Light 2 Stay Human",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"RT options no aparecen en menu con AMD/Linux."},
+  {name:"Elden Ring",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+ / Experimental",
+   linuxCmd:"AMD_VULKAN_ICD=RADV %command%",linuxNotes:"RTAO + RT Shadows. Usar RADV, NO AMDVLK. Eliminar paquete 32-bit AMDVLK. Mesa 26: no flags extras necesarios. RDNA4 BVH optimized."},
+  {name:"Everspace 2",pt:false,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"RR es NVIDIA exclusive pero RT base funciona en AMD."},
+  {name:"Far Cry 6",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"DXR shadows. FSR 1.0 (sin DLSS). No esta en DB NVIDIA."},
+  {name:"Forza Horizon 5",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"Anti-cheat issues en Linux."},
+  {name:"Forza Motorsport",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"Anti-cheat / DRM issues en Linux."},
+  {name:"Ghostrunner 2",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Ghostwire: Tokyo",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton Experimental",
+   linuxCmd:"",linuxNotes:"RT Shadows + Reflections. Compilacion RT 10x mas rapida con Mesa 26.0. Rendimiento RT 2x+ mejor."},
+  {name:"Gotham Knights",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"VKD3D-Proton. Alto costo de perf. Resultados mixtos."},
+  {name:"Grand Theft Auto V Enhanced",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Halo Infinite",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"Anti-cheat (EAC) bloquea Linux."},
+  {name:"Hellblade: Senua's Sacrifice",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"RADV crashea compilando RT pipelines. AMDVLK fatal error."},
+  {name:"Hogwarts Legacy",pt:false,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+",
+   linuxCmd:"AMD_VULKAN_ICD=RADV RADV_DEBUG=nodcc VKD3D_CONFIG=no_upload_hvv %command%",linuxNotes:"RT Shadows + Reflections + RTAO. Low FPS y artifacts sin flags. no_upload_hvv soluciona crashes VRAM con reBAR/SAM. FSR4 via OptiScaler."},
+  {name:"HITMAN World of Assassination",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"ICARUS",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Metro Exodus",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton 8+",linuxCmd:"",linuxNotes:"RT funciona via VKD3D-Proton."},
+  {name:"Metro Exodus PC Enhanced Edition",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"100% RT GI. Enhanced Edition es Windows exclusive."},
+  {name:"Microsoft Flight Simulator 2024",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"Requires Xbox/MS services. No funciona en Linux."},
+  {name:"Monster Hunter Wilds",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"Proton Hotfix",
+   linuxCmd:"%command% /WineDetectionEnabled:False",linuxNotes:"Capcom RE Engine detecta Wine → RT greyed out. /WineDetectionEnabled:False NO funciona para RT en este titulo. RT BLOQUEADO en AMD Linux actualmente. FSR4 funciona sin RT."},
+  {name:"NARAKA: BLADEPOINT",pt:false,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Ratchet & Clank: Rift Apart",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Redfall",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"Juego discontinuado por Bethesda. Servers cerrados."},
+  {name:"Resident Evil 2",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+",
+   linuxCmd:"%command% /WineDetectionEnabled:False",linuxNotes:"RE Engine. RT GI + Reflections + Shadows. Capcom desactiva RT si detecta Wine — comando OBLIGATORIO."},
+  {name:"Resident Evil 3",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+",
+   linuxCmd:"%command% /WineDetectionEnabled:False",linuxNotes:"RE Engine. RT GI + Reflections + Shadows. Comando obligatorio."},
+  {name:"Resident Evil 4 Remake",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+",
+   linuxCmd:"%command% /WineDetectionEnabled:False",linuxNotes:"AMD-sponsored. FSR 2 (sin DLSS). RT Reflections. RE Engine — comando obligatorio. No esta en DB NVIDIA."},
+  {name:"Resident Evil 7",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+",
+   linuxCmd:"%command% /WineDetectionEnabled:False",linuxNotes:"RE Engine. RT update. Comando obligatorio."},
+  {name:"Resident Evil Village",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton 8+",
+   linuxCmd:"%command% /WineDetectionEnabled:False",linuxNotes:"RE Engine. RT GI + Reflections. Mejorado con Mesa 26. Comando obligatorio."},
+  {name:"Returnal",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"RT Shadows + Reflections. Documentacion limitada para AMD+Linux."},
+  {name:"SILENT HILL 2",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"RT ROTO en AMD Linux: iluminacion fullbright + caida masiva de FPS (vkd3d-proton #2611). Probado con todos los Proton. FSR4 funciona pero RT no. Desactivar RT."},
+  {name:"Shadow of the Tomb Raider",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",linuxCmd:"",linuxNotes:"Version nativa Linux NO tiene RT. DX12 via Proton falla para RT."},
+  {name:"Spider-Man Remastered",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Proton 8+",linuxCmd:"",linuxNotes:"RT Reflections. Puede aparecer greyed out en algunos configs AMD."},
+  {name:"Spider-Man: Miles Morales",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Proton 8+",linuxCmd:"",linuxNotes:"RT Reflections. RT puede aparecer greyed out en algunos configs AMD."},
+  {name:"Spider-Man 2",pt:false,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Star Wars Jedi: Survivor",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"AMD-sponsored. FSR 2 nativo. FSR4 via upgrade."},
+  {name:"Star Wars Outlaws",pt:false,rr:true,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton-GE",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"RTXDI + RT Reflections + GI. RT funciona pero calidad degradada sin NVIDIA Ray Reconstruction. FSR4 oficial."},
+  {name:"The Callisto Protocol",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"AMD-sponsored. RT Reflections + Shadows. FSR (sin DLSS). No esta en DB NVIDIA."},
+  {name:"The Elder Scrolls IV: Oblivion Remastered",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:true,
+   amdStatus:"amd_ok",linuxStatus:"works",proton:"Proton Experimental",
+   linuxCmd:"PROTON_FSR4_UPGRADE=1 SteamDeck=0 %command%",linuxNotes:"Software Lumen always-on + HW Lumen opcional. Software Lumen recomendado. FSR4 oficial."},
+  {name:"THE FINALS",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"The Witcher 3: Wild Hunt",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"broken",proton:"N/A",
+   linuxCmd:"",linuxNotes:"RT GI (Next-Gen update). RT en RADV historicamente roto. Mesa 26 PUEDE ayudar pero no confirmado. VKD3D-Proton 2.8+ requerido."},
+  {name:"War Thunder",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"cmd",proton:"Proton (DX12 mode)",
+   linuxCmd:"",linuxNotes:"RT solo via Proton + DX12 (no nativo Vulkan). RT Shadows + Reflections + GI + PT Lighting. Bugs reportados en RX 6800 XT."},
+  {name:"Warhammer 40,000: Darktide",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+  {name:"Watch Dogs: Legion",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,
+   amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:""},
+
+  // ─── MORE RT GAMES (shorter entries) ───
+  {name:"Aron's Adventure",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Batora: Lost Haven",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Bleak Faith: Forsaken",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Blind Fate: Edo no Yami",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Brickadia",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Call of Duty: Black Ops Cold War",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Call of Duty: Modern Warfare",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Chernobylite 2: Exclusion Zone",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Chorus",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Daydream: Forgotten Sorrow",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Delta Force",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Dolmen",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Dying Light: The Beast",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Echo Point Nova",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Escape From Naraka",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"EVE Online",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"EVOTINCTION",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"F.I.S.T.: Forged In Shadow Torch",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"F1 2021",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"F1 22",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"F1 23",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"F1 24",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Five Nights At Freddy's: Security Breach",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Forspoken",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"Check ProtonDB",linuxCmd:"",linuxNotes:"AMD-sponsored. RT Shadows + RTAO. FSR 2.1 (sin DLSS). Minimo impacto visual."},
+  {name:"FragPunk",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Ghostrunner",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Godfall",pt:false,rr:false,mfg:false,fg:false,sr:false,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Gori: Cuddly Carnage",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Gray Zone Warfare",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Gripper",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Gungrave G.O.R.E",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Helios",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Hell Pie",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Hello Neighbor 2",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Incurison Red River",pt:false,rr:true,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"INDUSTRIA",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Infinity Nikki",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"inZOI",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Jurassic World Evolution 2",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Jurassic World Evolution 3",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Kunitsu-Gami: Path of the Goddess",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Layers of Fear",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"LEGO Builder's Journey",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"LEGO Horizon Adventures",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Little Nightmares III",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Loopmancer",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Lost Soul Aside",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Marvel's Guardians of the Galaxy",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Marvel's Midnight Suns",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"MechWarrior 5: Mercenaries",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Moonlight Blade",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Mortal Shell",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Myst",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"NINJA GAIDEN 2 Black",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Observer: System Redux",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Paradise Killer",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"PERISH",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Pinball FX",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Pumpkin Jack",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Raji: An Ancient Epic",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Riven",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Sackboy: A Big Adventure",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Severed Steel",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"SILENT HILL f",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Steelrising",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"STORROR Parkour Pro",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Sword and Fairy 7",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The Ascent",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The Fabled Woods",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The First Descendant",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The Medium",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The Outer Worlds 2",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The Persistence",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The Sinking City Remastered",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"The Talos Principle: Reawakened",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Titan Station",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Torque Drift 2",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Tower of Fantasy",pt:false,rr:false,mfg:false,fg:true,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Until Dawn",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Vampire: The Masquerade - Bloodlines 2",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Wolfenstein: Youngblood",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Wrench",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:false,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Wuthering Waves",pt:false,rr:false,mfg:true,fg:true,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+  {name:"Xuan-Yuan Sword VII",pt:false,rr:false,mfg:false,fg:false,sr:true,dlaa:true,fsr4:false,amdStatus:"amd_ok",linuxStatus:"check",proton:"",linuxCmd:"",linuxNotes:""},
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let allGames = [];
+let filteredGames = [];
+let expandedRows = new Set();
+let currentSort = { key: 'name', asc: true };
+let activeFilters = { rtType: 'all', tech: new Set(), amd: 'all', linux: 'all' };
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+function init() {
+  allGames = GAMES_DB.slice().sort((a,b) => a.name.localeCompare(b.name));
+  applyFilters();
+  document.getElementById('lastUpdate').textContent = 'Data: 2026-03-01';
+}
+
+// ═══════════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════════
+function setFilter(el) {
+  const g = el.dataset.group, v = el.dataset.value;
+  activeFilters[g] = v;
+  document.querySelectorAll(`.chip[data-group="${g}"]`).forEach(c => c.className = 'chip');
+  const cm = {amd:'active-green',linux:'active',rtType:'active'};
+  el.classList.add(cm[g]||'active');
+  applyFilters();
+}
+
+function toggleFilter(el) {
+  const v = el.dataset.value;
+  if (activeFilters.tech.has(v)) { activeFilters.tech.delete(v); el.className='chip'; }
+  else { activeFilters.tech.add(v); el.classList.add('active-purple'); }
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = (document.getElementById('searchInput').value||'').toLowerCase();
+  filteredGames = allGames.filter(g => {
+    if (q && !g.name.toLowerCase().includes(q)) return false;
+    if (activeFilters.rtType==='pt' && !g.pt) return false;
+    if (activeFilters.rtType==='rt' && g.pt) return false;
+    for (const t of activeFilters.tech) { if (!g[t]) return false; }
+    const af = activeFilters.amd;
+    if (af==='ok' && g.amdStatus!=='amd_ok' && g.amdStatus!=='pt_too' && g.amdStatus!=='amd_rt_only') return false;
+    if (af==='pt_too' && g.amdStatus!=='pt_too') return false;
+    if (af==='nvidia_only' && g.amdStatus!=='nvidia_pt') return false;
+    const lf = activeFilters.linux;
+    if (lf==='works' && g.linuxStatus!=='works') return false;
+    if (lf==='cmd' && g.linuxStatus!=='cmd') return false;
+    if (lf==='broken' && g.linuxStatus!=='broken') return false;
+    return true;
+  });
+  sortGames(); renderTable(); updateStats();
+}
+
+// ═══════════════════════════════════════════
+// SORT
+// ═══════════════════════════════════════════
+function sortTable(key) {
+  if (currentSort.key===key) currentSort.asc=!currentSort.asc;
+  else { currentSort.key=key; currentSort.asc=true; }
+  document.querySelectorAll('th').forEach(t=>t.classList.remove('sorted'));
+  const th=document.querySelector(`th[data-sort="${key}"]`);
+  if(th){th.classList.add('sorted');th.querySelector('.sort-arrow').textContent=currentSort.asc?'\u25B2':'\u25BC';}
+  sortGames(); renderTable();
+}
+
+function sortGames() {
+  const {key,asc}=currentSort;
+  filteredGames.sort((a,b)=>{
+    let va,vb;
+    if(key==='name'){va=a.name.toLowerCase();vb=b.name.toLowerCase();}
+    else if(key==='type'){va=a.pt?0:1;vb=b.pt?0:1;}
+    else if(key==='amd'){va=amdSV(a.amdStatus);vb=amdSV(b.amdStatus);}
+    else if(key==='linux'){va=linSV(a.linuxStatus);vb=linSV(b.linuxStatus);}
+    else{va=a.name;vb=b.name;}
+    if(va<vb)return asc?-1:1;if(va>vb)return asc?1:-1;return 0;
+  });
+}
+function amdSV(s){return{pt_too:0,amd_ok:1,amd_rt_only:2,nvidia_pt:3}[s]??4;}
+function linSV(s){return{works:0,cmd:1,check:2,broken:3}[s]??4;}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function renderTable() {
+  const tb=document.getElementById('gamesBody');
+  let html='';
+  filteredGames.forEach((g,i)=>{
+    const ex=expandedRows.has(g.name);
+    const type=g.pt?'<span class="badge badge-pt">PATH TRACING</span>':'<span class="badge badge-rt">RAY TRACING</span>';
+    const amd=renderAmd(g.amdStatus);
+    const tech=renderTech(g);
+    const lin=renderLin(g.linuxStatus);
+    const cmd=g.linuxCmd?`<span class="badge badge-cmd" title="${esc(g.linuxCmd)}">${g.linuxCmd.length>30?'CMD...':'CMD'}</span>`:(g.linuxNotes&&g.linuxStatus==='cmd'?'<span class="badge badge-linux-warn">ver notas</span>':'\u2014');
+    html+=`<tr onclick="toggleRow('${esc(g.name)}')" style="cursor:pointer">
+      <td class="game-name"><span class="expand-icon">${ex?'\u25BC':'\u25B6'}</span>${esc(g.name)}</td>
+      <td>${type}</td><td>${amd}</td><td>${tech}</td><td>${lin}</td><td>${cmd}</td></tr>`;
+    if(ex){
+      html+=`<tr class="detail-row"><td colspan="6"><div class="detail-content">`;
+      html+=`<div class="detail-grid">`;
+      html+=`<div class="detail-section">`;
+      if(g.linuxCmd){
+        html+=`<h4>Steam Launch Options</h4>`;
+        html+=`<div class="detail-cmd" onclick="event.stopPropagation();copyText(this)" title="Click to copy">${esc(g.linuxCmd)}</div>`;
+      }
+      if(g.proton){html+=`<div class="detail-note"><strong>Proton:</strong> ${esc(g.proton)}</div>`;}
+      if(g.fsr4){html+=`<div class="detail-note"><strong>FSR4:</strong> <span class="badge badge-fsr">FSR4</span> Soportado. Agregar <code>PROTON_FSR4_UPGRADE=1 SteamDeck=0</code></div>`;}
+      html+=`</div><div class="detail-section">`;
+      if(g.linuxNotes){html+=`<h4>Notas</h4><div class="detail-note">${esc(g.linuxNotes)}</div>`;}
+      html+=`</div></div></div></td></tr>`;
+    }
+  });
+  tb.innerHTML=html;
+  document.getElementById('resultsCount').innerHTML=`Mostrando <strong>${filteredGames.length}</strong> de <strong>${allGames.length}</strong> juegos &middot; Click en un juego para ver comandos Linux`;
+}
+
+function renderAmd(s){
+  switch(s){
+    case 'pt_too':return '<span class="badge badge-amd">AMD \u2713 (PT)</span>';
+    case 'amd_ok':return '<span class="badge badge-amd">AMD \u2713</span>';
+    case 'amd_rt_only':return '<span class="badge badge-amd-warn">AMD RT only</span>';
+    case 'nvidia_pt':return '<span class="badge badge-nvidia">NVIDIA PT</span>';
+    default:return '\u2014';
+  }
+}
+
+function renderTech(g){
+  const b=[];
+  if(g.rr)b.push('<span class="badge badge-nvidia-sm">RR</span>');
+  if(g.mfg)b.push('<span class="badge badge-tech">MFG</span>');
+  if(g.fg&&!g.mfg)b.push('<span class="badge badge-tech">FG</span>');
+  if(g.sr)b.push('<span class="badge badge-tech">SR</span>');
+  if(g.fsr4)b.push('<span class="badge badge-fsr">FSR4</span>');
+  return b.length?b.join(' '):'\u2014';
+}
+
+function renderLin(s){
+  switch(s){
+    case 'works':return '<span class="badge badge-linux">Funciona</span>';
+    case 'cmd':return '<span class="badge badge-linux-warn">Necesita CMD</span>';
+    case 'broken':return '<span class="badge badge-broken">Broken</span>';
+    case 'check':return '<span class="badge badge-linux-maybe">Check ProtonDB</span>';
+    default:return '\u2014';
+  }
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+function updateStats(){
+  const v=filteredGames;
+  document.getElementById('statTotal').textContent=v.length;
+  document.getElementById('statPT').textContent=v.filter(g=>g.pt).length;
+  document.getElementById('statAMD').textContent=v.filter(g=>g.amdStatus==='amd_ok'||g.amdStatus==='pt_too'||g.amdStatus==='amd_rt_only').length;
+  document.getElementById('statBroken').textContent=v.filter(g=>g.linuxStatus==='broken').length;
+  document.getElementById('statCmd').textContent=v.filter(g=>g.linuxStatus==='cmd').length;
+  document.getElementById('statFSR4').textContent=v.filter(g=>g.fsr4).length;
+}
+
+// ═══════════════════════════════════════════
+// EXPAND/COLLAPSE
+// ═══════════════════════════════════════════
+function toggleRow(name){
+  if(expandedRows.has(name))expandedRows.delete(name);else expandedRows.add(name);
+  renderTable();
+}
+function expandAll(){filteredGames.forEach(g=>expandedRows.add(g.name));renderTable();}
+function collapseAll(){expandedRows.clear();renderTable();}
+
+// ═══════════════════════════════════════════
+// COPY
+// ═══════════════════════════════════════════
+function copyCmd(el){
+  const t=el.textContent.replace(/click to copy|copied!/g,'').trim();
+  navigator.clipboard.writeText(t).then(()=>{el.classList.add('copied');setTimeout(()=>el.classList.remove('copied'),1500);});
+}
+function copyText(el){
+  navigator.clipboard.writeText(el.textContent.trim()).then(()=>{
+    const o=el.style.borderColor;el.style.borderColor='var(--green)';setTimeout(()=>el.style.borderColor=o,1000);
+  });
+}
+
+// ═══════════════════════════════════════════
+// NVIDIA FETCH
+// ═══════════════════════════════════════════
+async function refreshFromNvidia(){
+  const msg=document.getElementById('statusMsg');
+  msg.className='status-msg status-loading';msg.textContent='Descargando desde NVIDIA...';
+  try{
+    const r=await fetch(NVIDIA_EP);if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const j=await r.json();
+    const nv=j.data.filter(d=>d.type==='Game'&&d['ray tracing']&&d['ray tracing']!=='').map(d=>d.name);
+    msg.className='status-msg status-ok';
+    msg.textContent=`NVIDIA DB: ${nv.length} juegos RT encontrados. Datos locales mantienen AMD/Linux info. (${new Date().toLocaleTimeString()})`;
+  }catch(e){
+    msg.className='status-msg status-err';
+    msg.textContent=e.message.includes('fetch')?'CORS bloqueado desde file://. Abri desde un server local o usa datos embebidos.':`Error: ${e.message}`;
+  }
+}
+
+// ═══════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════
+function exportCSV(){
+  const h='Name,Path Tracing,AMD Status,Linux Status,FSR4,Proton,Launch Command,Notes\n';
+  const r=filteredGames.map(g=>`"${g.name}",${g.pt},"${g.amdStatus}","${g.linuxStatus}",${g.fsr4},"${g.proton||''}","${(g.linuxCmd||'').replace(/"/g,'""')}","${(g.linuxNotes||'').replace(/"/g,'""')}"`).join('\n');
+  dl(h+r,'steam_rt_games_amd_linux.csv','text/csv');
+}
+function exportJSON(){
+  dl(JSON.stringify(filteredGames.map(g=>({name:g.name,pathTracing:g.pt,amdStatus:g.amdStatus,linuxStatus:g.linuxStatus,fsr4:g.fsr4,proton:g.proton,launchCmd:g.linuxCmd,notes:g.linuxNotes})),null,2),'steam_rt_games_amd_linux.json','application/json');
+}
+function dl(c,f,m){const b=new Blob([c],{type:m});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=f;a.click();URL.revokeObjectURL(u);}
+
+init();
+</script>
+</body>
+</html>

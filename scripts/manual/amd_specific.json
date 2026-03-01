@@ -1,0 +1,18 @@
+{
+  "description": "AMD-specific RT/PT compatibility data, curated manually",
+  "last_updated": "2026-03-01",
+  "schema": {
+    "app_id": "int — Steam App ID",
+    "name": "str — Game name for human reference",
+    "amd_status": "str — One of: amd_ok | amd_pt | amd_rt_only | nvidia_only",
+    "notes_en": "str — English notes on AMD compatibility",
+    "notes_es": "str — Spanish notes on AMD compatibility"
+  },
+  "amd_status_values": {
+    "amd_ok": "Full RT/PT works on AMD (RDNA2+)",
+    "amd_pt": "Only path tracing works on AMD, RT has issues",
+    "amd_rt_only": "Only ray tracing works on AMD, no path tracing support",
+    "nvidia_only": "RT/PT features only work on NVIDIA GPUs"
+  },
+  "games": []
+}

@@ -1,0 +1,36 @@
+name: Update LinuxPlayDB Data
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Monday at 6 AM UTC (weekly)
+  workflow_dispatch:       # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Build database
+        run: python scripts/build_db.py --fetch
+
+      - name: Copy to site
+        run: |
+          mkdir -p site/data
+          cp data/linuxplaydb.db site/data/
+
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update game database"
+          file_pattern: "site/data/linuxplaydb.db data/linuxplaydb.db"

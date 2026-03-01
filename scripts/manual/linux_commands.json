@@ -1,0 +1,14 @@
+{
+  "description": "Linux launch commands and environment variables per game",
+  "last_updated": "2026-03-01",
+  "schema": {
+    "app_id": "int — Steam App ID",
+    "name": "str — Game name for human reference",
+    "launch_options": "str — Steam launch options (e.g. 'gamemoderun %command%')",
+    "env_vars": "object — Environment variables as key-value pairs",
+    "proton_version": "str — Recommended Proton version (e.g. 'GE-Proton9-20', 'Proton Experimental')",
+    "notes_en": "str — English notes on Linux-specific configuration",
+    "notes_es": "str — Spanish notes on Linux-specific configuration"
+  },
+  "games": []
+}

@@ -1,0 +1,30 @@
+{
+  "description": "Per-game per-device compatibility data for handhelds",
+  "last_updated": "2026-03-01",
+  "schema": {
+    "app_id": "int — Steam App ID",
+    "device_id": "str — Device identifier (e.g. 'steam_deck', 'rog_ally', 'legion_go')",
+    "status": "str — One of: verified | playable | issues | broken",
+    "settings": "object — Recommended settings for this device",
+    "fps_estimate": "int — Expected average FPS with recommended settings",
+    "tdp_watts": "int — Recommended TDP in watts for this device",
+    "notes_en": "str — English notes on handheld compatibility",
+    "notes_es": "str — Spanish notes on handheld compatibility"
+  },
+  "status_values": {
+    "verified": "Works perfectly with no tweaks needed",
+    "playable": "Works well with minor adjustments",
+    "issues": "Playable but with notable problems",
+    "broken": "Does not work or is unplayable on this device"
+  },
+  "settings_example": {
+    "resolution": "1280x800",
+    "quality": "medium",
+    "fsr": true,
+    "fsr_mode": "quality",
+    "fps_limit": 40,
+    "half_rate_shading": false,
+    "rt_enabled": false
+  },
+  "compat": []
+}

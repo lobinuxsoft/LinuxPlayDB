@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinuxPlayDB — Steam RT/PT Database</title>
+  <meta name="description" content="Complete database of Steam games with Ray Tracing, Path Tracing, AMD/NVIDIA compatibility, Linux commands, and handheld device support.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="lpdb-container">
+  <!-- Header -->
+  <header class="lpdb-header">
+    <div class="lpdb-header-left">
+      <h1 class="lpdb-title">LinuxPlayDB</h1>
+      <p class="lpdb-subtitle" data-i18n="subtitle">
+        Steam RT/PT Database &middot; AMD + NVIDIA + Linux + Handhelds &middot;
+        <a href="https://github.com/" target="_blank">GitHub</a>
+      </p>
+    </div>
+    <div class="lpdb-header-actions">
+      <button class="lpdb-btn lpdb-btn--lang" id="langToggle" onclick="LPDB.i18n.toggle()" title="Change language">ES</button>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <div class="lpdb-loading" id="loadingOverlay">
+    <div class="lpdb-spinner"></div>
+    <div class="lpdb-loading-text" data-i18n="loading">Loading database...</div>
+  </div>
+
+  <!-- Main content (hidden until DB loads) -->
+  <div id="mainContent" style="display:none">
+
+    <!-- Stats -->
+    <div class="lpdb-stats" id="statsBar">
+      <div class="lpdb-stat lpdb-stat--cyan">
+        <div class="lpdb-stat-num" id="statTotal">0</div>
+        <div class="lpdb-stat-label" data-i18n="stat_total">Total RT</div>
+      </div>
+      <div class="lpdb-stat lpdb-stat--orange">
+        <div class="lpdb-stat-num" id="statPT">0</div>
+        <div class="lpdb-stat-label" data-i18n="stat_pt">Path Tracing</div>
+      </div>
+      <div class="lpdb-stat lpdb-stat--green">
+        <div class="lpdb-stat-num" id="statAMD">0</div>
+        <div class="lpdb-stat-label" data-i18n="stat_amd">AMD OK</div>
+      </div>
+      <div class="lpdb-stat lpdb-stat--red">
+        <div class="lpdb-stat-num" id="statBroken">0</div>
+        <div class="lpdb-stat-label" data-i18n="stat_broken">Broken Linux</div>
+      </div>
+      <div class="lpdb-stat lpdb-stat--yellow">
+        <div class="lpdb-stat-num" id="statCmd">0</div>
+        <div class="lpdb-stat-label" data-i18n="stat_cmd">Need CMD</div>
+      </div>
+      <div class="lpdb-stat lpdb-stat--purple">
+        <div class="lpdb-stat-num" id="statFSR4">0</div>
+        <div class="lpdb-stat-label" data-i18n="stat_fsr4">FSR4</div>
+      </div>
+    </div>
+
+    <!-- Bazzite Quick Reference -->
+    <details class="lpdb-glass lpdb-glass--accent lpdb-bazzite" open>
+      <summary data-i18n="bazzite_title">Bazzite Linux — RT Quick Reference (RADV + Mesa 26.0)</summary>
+      <div class="lpdb-bazzite-content">
+        <div class="lpdb-bazzite-grid">
+          <div>
+            <h4 data-i18n="bazzite_verify">Verify Setup</h4>
+            <div class="lpdb-cmd" data-copy-label="click to copy" onclick="LPDB.copyCmd(this)"><span class="c"># Verify RADV is active</span>
+vulkaninfo | grep driverName  <span class="c"># Must say: radv</span>
+
+<span class="c"># Check Mesa version</span>
+vulkaninfo | grep driverVersion
+
+<span class="c"># Force RADV if AMDVLK interferes</span>
+<span class="v">AMD_VULKAN_ICD</span>=<span class="s">RADV</span> %command%</div>
+
+            <h4>FSR4 Redstone (RDNA4)</h4>
+            <div class="lpdb-cmd" data-copy-label="click to copy" onclick="LPDB.copyCmd(this)"><span class="c"># Enable FSR4 on any DX12 game via Proton</span>
+<span class="v">PROTON_FSR4_UPGRADE</span>=<span class="s">1</span> <span class="v">SteamDeck</span>=<span class="s">0</span> %command%
+
+<span class="c"># With FSR4 visual indicator</span>
+<span class="v">PROTON_FSR4_UPGRADE</span>=<span class="s">1</span> <span class="v">PROTON_FSR4_INDICATOR</span>=<span class="s">1</span> <span class="v">SteamDeck</span>=<span class="s">0</span> %command%</div>
+
+            <h4>Gamescope + FSR</h4>
+            <div class="lpdb-cmd" data-copy-label="click to copy" onclick="LPDB.copyCmd(this)"><span class="c"># Render at 1800p, output 4K with FSR</span>
+gamescope -h 1800 -H 2160 -F fsr -f -- %command%
+
+<span class="c"># With MangoHud</span>
+gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span class="s">1</span> %command%</div>
+          </div>
+
+          <div>
+            <h4 data-i18n="bazzite_rt_vars">RT Variables</h4>
+            <div class="lpdb-cmd" data-copy-label="click to copy" onclick="LPDB.copyCmd(this)"><span class="c"># Template for problematic RT games</span>
+<span class="v">RADV_DEBUG</span>=<span class="s">nodcc</span> %command%
+
+<span class="c"># Fix VRAM crashes with reBAR/SAM</span>
+<span class="v">VKD3D_CONFIG</span>=<span class="s">no_upload_hvv</span> %command%
+
+<span class="c"># Full problematic combo</span>
+<span class="v">AMD_VULKAN_ICD</span>=<span class="s">RADV</span> <span class="v">RADV_DEBUG</span>=<span class="s">nodcc</span> <span class="v">VKD3D_CONFIG</span>=<span class="s">no_upload_hvv</span> %command%
+
+<span class="c"># Emulate RT in software (GPUs without HW RT)</span>
+<span class="v">RADV_PERFTEST</span>=<span class="s">emulate_rt</span> %command%</div>
+
+            <h4>Capcom RE Engine</h4>
+            <div class="lpdb-cmd" data-copy-label="click to copy" onclick="LPDB.copyCmd(this)"><span class="c"># Unlock RT in Capcom games that detect Wine</span>
+%command% <span class="s">/WineDetectionEnabled:False</span></div>
+
+            <h4>Mesa 26.0 RT</h4>
+            <div class="lpdb-cmd" data-copy-label="click to copy" onclick="LPDB.copyCmd(this)"><span class="c"># RT enabled by default — no flags needed</span>
+<span class="c"># RADV_PERFTEST=rt and VKD3D_CONFIG=dxr are</span>
+<span class="c"># NO LONGER necessary on Mesa 26+</span>
+<span class="c"># Wave32 RT shaders (RDNA3/4)</span>
+<span class="c"># BVH8 traversal (RDNA4)</span>
+<span class="c"># Triangle pair compression</span></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Filters -->
+    <div class="lpdb-filters">
+      <div class="lpdb-filter-row">
+        <span class="lpdb-filter-label" data-i18n="filter_search">Search</span>
+        <input type="text" class="lpdb-search" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Game name..." oninput="LPDB.filters.apply()">
+      </div>
+      <div class="lpdb-filter-row">
+        <span class="lpdb-filter-label">RT</span>
+        <span class="lpdb-chip active" data-group="rtType" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
+        <span class="lpdb-chip" data-group="rtType" data-value="pt" onclick="LPDB.filters.set(this)">Path Tracing</span>
+        <span class="lpdb-chip" data-group="rtType" data-value="rt" onclick="LPDB.filters.set(this)">RT Only</span>
+      </div>
+      <div class="lpdb-filter-row">
+        <span class="lpdb-filter-label">Tech</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_rr" onclick="LPDB.filters.toggle(this)">RR</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_mfg" onclick="LPDB.filters.toggle(this)">MFG</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_fg" onclick="LPDB.filters.toggle(this)">FG</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_sr" onclick="LPDB.filters.toggle(this)">SR</span>
+        <span class="lpdb-chip" data-group="tech" data-value="fsr4" onclick="LPDB.filters.toggle(this)">FSR4</span>
+      </div>
+      <div class="lpdb-filter-row">
+        <span class="lpdb-filter-label">AMD</span>
+        <span class="lpdb-chip active-green" data-group="amd" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
+        <span class="lpdb-chip" data-group="amd" data-value="ok" onclick="LPDB.filters.set(this)">AMD OK</span>
+        <span class="lpdb-chip" data-group="amd" data-value="pt" onclick="LPDB.filters.set(this)">AMD PT</span>
+        <span class="lpdb-chip" data-group="amd" data-value="nvidia_only" onclick="LPDB.filters.set(this)">NVIDIA Only</span>
+      </div>
+      <div class="lpdb-filter-row">
+        <span class="lpdb-filter-label">Linux</span>
+        <span class="lpdb-chip active" data-group="linux" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
+        <span class="lpdb-chip" data-group="linux" data-value="works" onclick="LPDB.filters.set(this)" data-i18n="filter_works">Works</span>
+        <span class="lpdb-chip" data-group="linux" data-value="cmd" onclick="LPDB.filters.set(this)" data-i18n="filter_cmd">Needs CMD</span>
+        <span class="lpdb-chip" data-group="linux" data-value="broken" onclick="LPDB.filters.set(this)">Broken</span>
+      </div>
+      <div class="lpdb-filter-row">
+        <span class="lpdb-filter-label">Deck</span>
+        <span class="lpdb-chip active" data-group="deck" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
+        <span class="lpdb-chip" data-group="deck" data-value="verified" onclick="LPDB.filters.set(this)" data-i18n="filter_verified">Verified</span>
+        <span class="lpdb-chip" data-group="deck" data-value="playable" onclick="LPDB.filters.set(this)" data-i18n="filter_playable">Playable</span>
+        <span class="lpdb-chip" data-group="deck" data-value="unsupported" onclick="LPDB.filters.set(this)" data-i18n="filter_unsupported">Unsupported</span>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="lpdb-legend">
+      <span class="lpdb-legend-title" data-i18n="legend">Legend:</span>
+      <span class="lpdb-legend-item"><span class="badge badge-pt">PT</span> Path Tracing</span>
+      <span class="lpdb-legend-item"><span class="badge badge-rt">RT</span> Ray Tracing</span>
+      <span class="lpdb-legend-item"><span class="badge badge-nvidia-sm">RR</span> Ray Reconstruction</span>
+      <span class="lpdb-legend-item"><span class="badge badge-tech">MFG</span> Multi Frame Gen</span>
+      <span class="lpdb-legend-item"><span class="badge badge-fsr">FSR4</span> AMD FSR4</span>
+      <span class="lpdb-legend-item"><span class="badge badge-amd">AMD</span> <span data-i18n="legend_compatible">Compatible</span></span>
+      <span class="lpdb-legend-item"><span class="badge badge-nvidia">NV</span> NVIDIA Excl.</span>
+      <span class="lpdb-legend-item"><span class="badge badge-cmd">CMD</span> <span data-i18n="legend_needs_cmd">Needs command</span></span>
+      <span class="lpdb-legend-item"><span class="badge badge-broken">BROKEN</span> <span data-i18n="legend_broken">Broken</span></span>
+    </div>
+
+    <!-- Actions -->
+    <div class="lpdb-actions">
+      <button class="lpdb-btn" onclick="LPDB.exportData('csv')" data-i18n="export_csv">Export CSV</button>
+      <button class="lpdb-btn" onclick="LPDB.exportData('json')" data-i18n="export_json">Export JSON</button>
+      <button class="lpdb-btn" onclick="LPDB.expandAll()" data-i18n="expand_all">Expand all</button>
+      <button class="lpdb-btn" onclick="LPDB.collapseAll()" data-i18n="collapse_all">Collapse all</button>
+      <span class="lpdb-status" id="statusMsg"></span>
+    </div>
+
+    <div class="lpdb-results" id="resultsCount"></div>
+
+    <!-- Table -->
+    <div class="lpdb-table-wrap">
+      <table class="lpdb-table">
+        <thead>
+          <tr>
+            <th data-sort="name" onclick="LPDB.sort('name')"><span data-i18n="col_game">Game</span> <span class="sort-arrow">&#9650;</span></th>
+            <th data-sort="rt_type" onclick="LPDB.sort('rt_type')">Type <span class="sort-arrow">&#9650;</span></th>
+            <th data-sort="amd_status" onclick="LPDB.sort('amd_status')">AMD <span class="sort-arrow">&#9650;</span></th>
+            <th>Tech</th>
+            <th data-sort="linux_status" onclick="LPDB.sort('linux_status')">Linux <span class="sort-arrow">&#9650;</span></th>
+            <th>CMD</th>
+          </tr>
+        </thead>
+        <tbody id="gamesBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="lpdb-footer">
+    <span data-i18n="footer_sources">Sources</span>: NVIDIA RTX DB, Steam, ProtonDB, PCGamingWiki, AreWeAntiCheatYet &middot;
+    <a href="https://github.com/" target="_blank">LinuxPlayDB</a> &middot;
+    <span id="lastUpdate"></span>
+  </footer>
+</div>
+
+<!-- sql.js: local first, CDN fallback -->
+<script src="lib/sql-wasm.js"></script>
+<script>
+  if (typeof initSqlJs === "undefined") {
+    document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/sql-wasm.js"><\/script>');
+  }
+</script>
+<!-- Inline DB (allows file:// usage without server) -->
+<script src="js/db_inline.js"></script>
+<!-- App modules -->
+<script src="js/i18n.js"></script>
+<script src="js/db.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/render.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
