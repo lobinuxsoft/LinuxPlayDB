@@ -131,8 +131,8 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">RT</span>
         <span class="lpdb-chip active" data-group="rtType" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
-        <span class="lpdb-chip" data-group="rtType" data-value="pt" onclick="LPDB.filters.set(this)">Path Tracing</span>
-        <span class="lpdb-chip" data-group="rtType" data-value="rt" onclick="LPDB.filters.set(this)">RT Only</span>
+        <span class="lpdb-chip" data-group="rtType" data-value="pt" onclick="LPDB.filters.set(this)" data-i18n="filter_pt">Path Tracing</span>
+        <span class="lpdb-chip" data-group="rtType" data-value="rt" onclick="LPDB.filters.set(this)" data-i18n="filter_rt_only">RT Only</span>
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">Tech</span>
@@ -145,16 +145,16 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">AMD</span>
         <span class="lpdb-chip active-green" data-group="amd" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
-        <span class="lpdb-chip" data-group="amd" data-value="ok" onclick="LPDB.filters.set(this)">AMD OK</span>
-        <span class="lpdb-chip" data-group="amd" data-value="pt" onclick="LPDB.filters.set(this)">AMD PT</span>
-        <span class="lpdb-chip" data-group="amd" data-value="nvidia_only" onclick="LPDB.filters.set(this)">NVIDIA Only</span>
+        <span class="lpdb-chip" data-group="amd" data-value="ok" onclick="LPDB.filters.set(this)" data-i18n="filter_amd_ok">AMD OK</span>
+        <span class="lpdb-chip" data-group="amd" data-value="pt" onclick="LPDB.filters.set(this)" data-i18n="filter_amd_pt">AMD PT</span>
+        <span class="lpdb-chip" data-group="amd" data-value="nvidia_only" onclick="LPDB.filters.set(this)" data-i18n="filter_nvidia_only">NVIDIA Only</span>
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">Linux</span>
         <span class="lpdb-chip active" data-group="linux" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
         <span class="lpdb-chip" data-group="linux" data-value="works" onclick="LPDB.filters.set(this)" data-i18n="filter_works">Works</span>
         <span class="lpdb-chip" data-group="linux" data-value="cmd" onclick="LPDB.filters.set(this)" data-i18n="filter_cmd">Needs CMD</span>
-        <span class="lpdb-chip" data-group="linux" data-value="broken" onclick="LPDB.filters.set(this)">Broken</span>
+        <span class="lpdb-chip" data-group="linux" data-value="broken" onclick="LPDB.filters.set(this)" data-i18n="filter_broken">Broken</span>
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">Deck</span>
@@ -168,13 +168,13 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
     <!-- Legend -->
     <div class="lpdb-legend">
       <span class="lpdb-legend-title" data-i18n="legend">Legend:</span>
-      <span class="lpdb-legend-item"><span class="badge badge-pt">PT</span> Path Tracing</span>
-      <span class="lpdb-legend-item"><span class="badge badge-rt">RT</span> Ray Tracing</span>
-      <span class="lpdb-legend-item"><span class="badge badge-nvidia-sm">RR</span> Ray Reconstruction</span>
-      <span class="lpdb-legend-item"><span class="badge badge-tech">MFG</span> Multi Frame Gen</span>
-      <span class="lpdb-legend-item"><span class="badge badge-fsr">FSR4</span> AMD FSR4</span>
+      <span class="lpdb-legend-item"><span class="badge badge-pt">PT</span> <span data-i18n="legend_pt">Path Tracing</span></span>
+      <span class="lpdb-legend-item"><span class="badge badge-rt">RT</span> <span data-i18n="legend_rt">Ray Tracing</span></span>
+      <span class="lpdb-legend-item"><span class="badge badge-nvidia-sm">RR</span> <span data-i18n="legend_rr">Ray Reconstruction</span></span>
+      <span class="lpdb-legend-item"><span class="badge badge-tech">MFG</span> <span data-i18n="legend_mfg">Multi Frame Gen</span></span>
+      <span class="lpdb-legend-item"><span class="badge badge-fsr">FSR4</span> <span data-i18n="legend_fsr4">AMD FSR4</span></span>
       <span class="lpdb-legend-item"><span class="badge badge-amd">AMD</span> <span data-i18n="legend_compatible">Compatible</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-nvidia">NV</span> NVIDIA Excl.</span>
+      <span class="lpdb-legend-item"><span class="badge badge-nvidia">NV</span> <span data-i18n="legend_nvidia_excl">NVIDIA Excl.</span></span>
       <span class="lpdb-legend-item"><span class="badge badge-cmd">CMD</span> <span data-i18n="legend_needs_cmd">Needs command</span></span>
       <span class="lpdb-legend-item"><span class="badge badge-broken">BROKEN</span> <span data-i18n="legend_broken">Broken</span></span>
     </div>
@@ -196,11 +196,11 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
         <thead>
           <tr>
             <th data-sort="name" onclick="LPDB.sort('name')"><span data-i18n="col_game">Game</span> <span class="sort-arrow">&#9650;</span></th>
-            <th data-sort="rt_type" onclick="LPDB.sort('rt_type')">Type <span class="sort-arrow">&#9650;</span></th>
+            <th data-sort="rt_type" onclick="LPDB.sort('rt_type')"><span data-i18n="col_type">Type</span> <span class="sort-arrow">&#9650;</span></th>
             <th data-sort="amd_status" onclick="LPDB.sort('amd_status')">AMD <span class="sort-arrow">&#9650;</span></th>
-            <th>Tech</th>
-            <th data-sort="linux_status" onclick="LPDB.sort('linux_status')">Linux <span class="sort-arrow">&#9650;</span></th>
-            <th>CMD</th>
+            <th><span data-i18n="col_tech">Tech</span></th>
+            <th data-sort="linux_status" onclick="LPDB.sort('linux_status')"><span data-i18n="col_linux">Linux</span> <span class="sort-arrow">&#9650;</span></th>
+            <th><span data-i18n="col_cmd">CMD</span></th>
           </tr>
         </thead>
         <tbody id="gamesBody"></tbody>
@@ -226,11 +226,11 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
 <!-- Inline DB (allows file:// usage without server) -->
 <script src="js/db_inline.js"></script>
 <!-- App modules (v= cache bust) -->
-<script src="js/i18n.js?v=4"></script>
-<script src="js/db.js?v=4"></script>
-<script src="js/filters.js?v=4"></script>
-<script src="js/render.js?v=4"></script>
-<script src="js/export.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/i18n.js?v=5"></script>
+<script src="js/db.js?v=5"></script>
+<script src="js/filters.js?v=5"></script>
+<script src="js/render.js?v=5"></script>
+<script src="js/export.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>

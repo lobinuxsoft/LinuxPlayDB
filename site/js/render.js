@@ -48,7 +48,7 @@ const LPDB_Render = (() => {
       case "cmd":
         return `<span class="badge badge-linux-warn">${LPDB_i18n.t("status_cmd")}</span>`;
       case "broken":
-        return '<span class="badge badge-broken">Broken</span>';
+        return `<span class="badge badge-broken">${LPDB_i18n.t("filter_broken")}</span>`;
       case "check": {
         const url = `https://www.protondb.com/search?q=${encodeURIComponent(gameName || "")}`;
         return `<a href="${url}" target="_blank" rel="noopener" class="badge badge-linux-maybe" onclick="event.stopPropagation()" title="Search on ProtonDB">\uD83D\uDD0D ProtonDB \u2197</a>`;
