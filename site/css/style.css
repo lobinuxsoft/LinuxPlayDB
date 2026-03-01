@@ -320,8 +320,9 @@ body {
 .badge-fsr { background: var(--amd-dim); color: var(--amd-red); border: 1px solid var(--amd-red); }
 .badge-linux { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
 .badge-linux-warn { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
-.badge-linux-maybe { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); text-decoration: none; }
-a.badge-linux-maybe:hover { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); }
+.badge-linux-maybe { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+a.badge-linux-maybe { text-decoration: underline; text-underline-offset: 2px; cursor: pointer; transition: all 0.2s ease; }
+a.badge-linux-maybe:hover { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); text-decoration: underline; }
 .badge-broken { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
 .badge-cmd { background: #0d1117; color: var(--green); border: 1px solid var(--green); font-family: var(--font-mono); font-size: 0.55rem; }
 

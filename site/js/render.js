@@ -51,7 +51,7 @@ const LPDB_Render = (() => {
         return '<span class="badge badge-broken">Broken</span>';
       case "check": {
         const url = `https://www.protondb.com/search?q=${encodeURIComponent(gameName || "")}`;
-        return `<a href="${url}" target="_blank" rel="noopener" class="badge badge-linux-maybe" onclick="event.stopPropagation()" title="Search on ProtonDB">Check ProtonDB \u2197</a>`;
+        return `<a href="${url}" target="_blank" rel="noopener" class="badge badge-linux-maybe" onclick="event.stopPropagation()" title="Search on ProtonDB">\uD83D\uDD0D ProtonDB \u2197</a>`;
       }
       default:
         return "\u2014";
