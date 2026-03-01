@@ -25,8 +25,8 @@ Thumbs.db
 .env
 .env.local
 
-# Data (generated)
-data/linuxplaydb.db
+# Research output (AI generated, not tracked)
+scripts/research_output/
 
 # Node (if ever needed)
 node_modules/
