@@ -439,7 +439,17 @@ def main():
     parser = argparse.ArgumentParser(description="Build LinuxPlayDB database")
     parser.add_argument("--fetch", action="store_true", help="Fetch from online sources")
     parser.add_argument("--seed-only", action="store_true", help="Only migrate seed data")
+    parser.add_argument("--inline-only", action="store_true", help="Only regenerate db_inline.js from existing DB")
     args = parser.parse_args()
+
+    # Quick path: just regenerate inline JS from existing DB
+    if args.inline_only:
+        if not DB_FILE.exists():
+            print(f"[ERROR] Database not found: {DB_FILE}")
+            sys.exit(1)
+        generate_inline_db(DB_FILE)
+        print("[OK] Regenerated db_inline.js")
+        return
 
     start = time.time()
     print("LinuxPlayDB — Database Builder")

@@ -29,8 +29,11 @@ jobs:
           mkdir -p site/data
           cp data/linuxplaydb.db site/data/
 
+      - name: Generate inline DB
+        run: python scripts/build_db.py --inline-only
+
       - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update game database"
-          file_pattern: "site/data/linuxplaydb.db data/linuxplaydb.db"
+          file_pattern: "site/data/linuxplaydb.db site/js/db_inline.js data/linuxplaydb.db"
