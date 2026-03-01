@@ -135,7 +135,12 @@ const LPDB_Render = (() => {
     }
 
     if (g.proton_version) {
-      html += `<div class="lpdb-detail-note"><strong>Proton:</strong> ${esc(g.proton_version)}</div>`;
+      if (g.proton_version.toLowerCase().includes("check")) {
+        const pdbSearchUrl = `https://www.protondb.com/search?q=${encodeURIComponent(g.name || "")}`;
+        html += `<div class="lpdb-detail-note"><strong>Proton:</strong> <a href="${pdbSearchUrl}" target="_blank" rel="noopener" class="badge badge-linux-maybe" onclick="event.stopPropagation()">\uD83D\uDD0D ProtonDB \u2197</a></div>`;
+      } else {
+        html += `<div class="lpdb-detail-note"><strong>Proton:</strong> ${esc(g.proton_version)}</div>`;
+      }
     }
     if (g.protondb_tier) {
       const pdbUrl = `https://www.protondb.com/search?q=${encodeURIComponent(g.name || "")}`;
