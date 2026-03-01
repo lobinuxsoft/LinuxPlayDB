@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Research game compatibility using Google Gemini API with Search Grounding.
+"""Research game compatibility using Groq (Llama 3.3) + DuckDuckGo search.
 
-Uses Gemini 2.0 Flash (free tier) to search the web for AMD RT compatibility,
-Linux workarounds, launch options, and useful links for each game in the database.
+Uses Groq's free API (14,400 req/day) with DuckDuckGo web search to find
+AMD RT compatibility, Linux workarounds, launch options, and useful links.
 
 Requirements:
-    pip install google-genai
+    pip install groq ddgs requests
 
 Usage:
-    export GEMINI_API_KEY="your-api-key-here"
+    export GROQ_API_KEY="your-api-key-here"
     python research_with_ai.py                    # Research all games missing data
-    python research_with_ai.py --app-id 1091500   # Research a specific game
+    python research_with_ai.py --app-id -646526   # Research a specific game
     python research_with_ai.py --limit 50         # Research first 50 games
     python research_with_ai.py --dry-run           # Show what would be researched
 """
@@ -26,10 +26,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    from google import genai
-    from google.genai import types
+    from groq import Groq
 except ImportError:
-    print("[ERROR] google-genai not installed. Run: pip install google-genai")
+    print("[ERROR] groq not installed. Run: pip install groq")
+    sys.exit(1)
+
+try:
+    from ddgs import DDGS
+except ImportError:
+    print("[ERROR] ddgs not installed. Run: pip install ddgs")
     sys.exit(1)
 
 ROOT = Path(__file__).parent.parent
@@ -37,64 +42,55 @@ DB_FILE = ROOT / "data" / "linuxplaydb.db"
 MANUAL_DIR = ROOT / "scripts" / "manual"
 OUTPUT_DIR = ROOT / "scripts" / "research_output"
 
-# Rate limit: 15 RPM for free tier
-REQUEST_DELAY = 4.5  # seconds between requests (safe margin)
+# Groq free tier: 14,400 req/day, 30 RPM for llama-3.3-70b
+REQUEST_DELAY = 2.5  # seconds between Groq calls (safe margin for 30 RPM)
+SEARCH_DELAY = 1.0   # seconds between DuckDuckGo searches
 
-RESEARCH_PROMPT = """You are a gaming compatibility researcher for LinuxPlayDB, a database of Steam games focused on Linux gaming and Ray Tracing.
+ANALYSIS_PROMPT = """You are a gaming compatibility researcher for LinuxPlayDB.
 
-Research the game **{name}** (Steam App ID: {app_id}).
+Analyze the following web search results about the game **{name}** and extract structured compatibility data.
 
-Search the web for information from these sources:
-- ProtonDB (https://www.protondb.com/app/{app_id})
-- PCGamingWiki
-- Reddit r/linux_gaming, r/SteamDeck, r/amd
-- GitHub issues for vkd3d-proton, DXVK, Proton, Mesa/RADV
-- Steam community forums
+## SEARCH RESULTS:
+{search_results}
 
-I need the following information:
+## EXTRACT THE FOLLOWING:
 
-## 1. AMD GPU Ray Tracing compatibility
-Classify as ONE of:
-- "amd_ok" = RT and/or PT works correctly on AMD RDNA2+ GPUs
-- "amd_pt" = Path tracing works on AMD but standard RT has issues
-- "amd_rt_only" = Ray tracing works but path tracing does NOT on AMD
-- "nvidia_only" = RT/PT only works on NVIDIA, crashes or broken on AMD
-- "unknown" = Not enough information found
+1. **AMD GPU Ray Tracing compatibility** — classify as ONE of:
+   - "amd_ok" = RT and/or PT works correctly on AMD RDNA2+ GPUs
+   - "amd_pt" = Path tracing works on AMD but standard RT has issues
+   - "amd_rt_only" = Ray tracing works but path tracing does NOT on AMD
+   - "nvidia_only" = RT/PT only works on NVIDIA, crashes or broken on AMD
+   - "unknown" = Not enough information in the search results
 
-## 2. Linux launch options and environment variables
-Find any Steam launch options or env vars needed for this game on Linux, such as:
-- gamemoderun, mangohud, PROTON_*, VKD3D_*, DXVK_*, RADV_*, MESA_* variables
-- Proton version recommendations (GE-Proton, Proton Experimental, etc.)
+2. **Linux launch options and environment variables** — any Steam launch options or env vars needed:
+   - gamemoderun, mangohud, PROTON_*, VKD3D_*, DXVK_*, RADV_*, MESA_* variables
+   - Proton version recommendations (GE-Proton, Proton Experimental, etc.)
 
-## 3. Linux status
-- Does it work on Linux via Proton? Native Linux build?
-- What is its ProtonDB rating? (platinum/gold/silver/bronze/borked)
-- Any anti-cheat blocking Linux?
+3. **Linux status** — does it work on Proton? Native? ProtonDB rating? Anti-cheat?
 
-## 4. Useful links
-Find 2-5 actual URLs that are helpful for running this game on Linux/AMD.
+4. **Useful links** — extract REAL URLs from the search results that help with Linux/AMD gaming.
 
-RESPOND ONLY with valid JSON in this exact format (no markdown, no explanation, ONLY the JSON object):
+RESPOND ONLY with valid JSON (no markdown fences, no explanation, ONLY the JSON object):
 
 {{
   "app_id": {app_id},
   "name": "{name}",
   "amd_status": "amd_ok|amd_pt|amd_rt_only|nvidia_only|unknown",
-  "amd_notes_en": "Brief explanation of AMD RT status",
+  "amd_notes_en": "Brief explanation of AMD RT status based on search results",
   "amd_notes_es": "Breve explicación del estado AMD RT",
   "linux_status": "works|cmd|broken|check|unknown",
-  "launch_options": "Steam launch options string or null",
-  "env_vars": {{"VAR_NAME": "value"}} ,
-  "proton_version": "Recommended Proton version or null",
+  "launch_options": null,
+  "env_vars": {{}},
+  "proton_version": null,
   "protondb_tier": "platinum|gold|silver|bronze|borked|unknown",
   "native_linux": false,
-  "anticheat": "none|EAC|BattlEye|other or null",
-  "anticheat_linux": "supported|denied|broken|null",
-  "linux_notes_en": "Brief Linux compatibility notes",
+  "anticheat": null,
+  "anticheat_linux": null,
+  "linux_notes_en": "Brief Linux compatibility notes from search results",
   "linux_notes_es": "Breves notas de compatibilidad Linux",
   "useful_links": [
     {{
-      "url": "https://actual-url-here",
+      "url": "https://actual-url-from-search-results",
       "title_en": "Link title in English",
       "title_es": "Título del link en español",
       "source": "protondb|pcgamingwiki|reddit|github|steam",
@@ -106,11 +102,11 @@ RESPOND ONLY with valid JSON in this exact format (no markdown, no explanation, 
 }}
 
 IMPORTANT:
-- Only include information you actually found. Do NOT fabricate data.
-- If you can't find info about AMD RT, set amd_status to "unknown".
-- If you can't find launch options, set launch_options to null and env_vars to {{}}.
-- useful_links must contain REAL URLs you found during search. Do not invent URLs.
-- Set confidence to "low" if information is scarce or uncertain.
+- Only include information actually present in the search results. Do NOT fabricate data.
+- If search results don't mention AMD RT, set amd_status to "unknown".
+- If no launch options found, set launch_options to null and env_vars to {{}}.
+- useful_links MUST be real URLs from the search results above. Do not invent URLs.
+- Set confidence based on how much relevant information was found.
 """
 
 
@@ -127,18 +123,13 @@ def get_games_to_research(db_path: Path, app_id: int | None = None,
             (app_id,),
         )
     else:
-        # Games with RT/PT that lack AMD status or Linux commands
+        # Games that lack launch_options (most useful missing data)
         cur.execute("""
             SELECT g.app_id, g.name
             FROM games g
-            LEFT JOIN graphics_features gf ON g.app_id = gf.app_id
             LEFT JOIN linux_compat lc ON g.app_id = lc.app_id
             WHERE g.type = 'game'
-              AND (
-                gf.amd_status IS NULL
-                OR lc.linux_status IS NULL
-                OR lc.launch_options IS NULL
-              )
+              AND lc.launch_options IS NULL
             ORDER BY g.name
         """)
 
@@ -151,27 +142,72 @@ def get_games_to_research(db_path: Path, app_id: int | None = None,
     return rows
 
 
-def research_game(client: genai.Client, game: dict, max_retries: int = 3) -> dict | None:
-    """Research a single game using Gemini with search grounding."""
+def search_game(game_name: str) -> str:
+    """Search DuckDuckGo for game compatibility info. Returns formatted results."""
+    queries = [
+        f"{game_name} ProtonDB Linux Proton compatibility",
+        f"{game_name} AMD ray tracing RDNA Linux vkd3d",
+        f"{game_name} Steam launch options Linux fix",
+    ]
+
+    all_results = []
+    seen_urls = set()
+
+    for query in queries:
+        try:
+            results = DDGS().text(query, max_results=5)
+            for r in results:
+                url = r.get("href", "")
+                if url not in seen_urls:
+                    seen_urls.add(url)
+                    all_results.append(r)
+        except Exception as e:
+            print(f"  [WARN] Search failed for '{query}': {e}")
+        time.sleep(SEARCH_DELAY)
+
+    if not all_results:
+        return ""
+
+    # Format results for the LLM
+    formatted = []
+    for i, r in enumerate(all_results, 1):
+        formatted.append(
+            f"[{i}] {r.get('title', 'No title')}\n"
+            f"    URL: {r.get('href', '')}\n"
+            f"    {r.get('body', '')}"
+        )
+
+    return "\n\n".join(formatted)
+
+
+def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None:
+    """Search web + analyze with Groq to research a single game."""
+    # Step 1: Search the web
+    search_results = search_game(game["name"])
+
+    if not search_results:
+        print(f"  [WARN] No search results for {game['name']}")
+        return None
+
+    # Step 2: Analyze with Groq
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    prompt = RESEARCH_PROMPT.format(
+    prompt = ANALYSIS_PROMPT.format(
         name=game["name"],
         app_id=game["app_id"],
+        search_results=search_results,
         date=today,
     )
 
     for attempt in range(1, max_retries + 1):
         try:
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    tools=[types.Tool(google_search=types.GoogleSearch())],
-                    temperature=0.1,
-                ),
+            response = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.1,
+                max_tokens=2000,
             )
 
-            text = response.text.strip()
+            text = response.choices[0].message.content.strip()
 
             # Clean markdown fences if present
             if text.startswith("```"):
@@ -192,19 +228,14 @@ def research_game(client: genai.Client, game: dict, max_retries: int = 3) -> dic
 
         except Exception as e:
             err_str = str(e)
-            # Rate limit: wait and retry
-            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                # Extract retry delay from error if available
+            if "429" in err_str or "rate" in err_str.lower():
                 wait = 30
-                match = re.search(r"retry in ([\d.]+)s", err_str, re.IGNORECASE)
-                if match:
-                    wait = int(float(match.group(1))) + 2
                 if attempt < max_retries:
                     print(f"  [WAIT] Rate limited. Waiting {wait}s... (attempt {attempt}/{max_retries})")
                     time.sleep(wait)
                     continue
                 else:
-                    print(f"  [SKIP] Rate limited after {max_retries} retries. Skipping.")
+                    print(f"  [SKIP] Rate limited after {max_retries} retries.")
                     return None
             else:
                 print(f"  [ERROR] API error for {game['name']}: {e}")
@@ -215,7 +246,6 @@ def research_game(client: genai.Client, game: dict, max_retries: int = 3) -> dic
 
 def save_results(results: list[dict]) -> None:
     """Save research results into the manual JSON files."""
-    # Load existing data
     amd_file = MANUAL_DIR / "amd_specific.json"
     cmd_file = MANUAL_DIR / "linux_commands.json"
     links_file = MANUAL_DIR / "useful_links.json"
@@ -307,19 +337,19 @@ def save_full_research(results: list[dict]) -> None:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Research game compatibility using Gemini AI with web search"
+        description="Research game compatibility using Groq AI + DuckDuckGo search"
     )
-    parser.add_argument("--app-id", type=int, help="Research a specific game by Steam App ID")
+    parser.add_argument("--app-id", type=int, help="Research a specific game by internal App ID")
     parser.add_argument("--limit", type=int, help="Maximum number of games to research")
-    parser.add_argument("--dry-run", action="store_true", help="Show games to research without calling the API")
-    parser.add_argument("--delay", type=float, default=REQUEST_DELAY, help=f"Seconds between API calls (default: {REQUEST_DELAY})")
+    parser.add_argument("--dry-run", action="store_true", help="Show games to research without calling APIs")
+    parser.add_argument("--delay", type=float, default=REQUEST_DELAY, help=f"Seconds between Groq calls (default: {REQUEST_DELAY})")
     args = parser.parse_args()
 
     # Check API key
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.environ.get("GROQ_API_KEY")
     if not api_key and not args.dry_run:
-        print("[ERROR] GEMINI_API_KEY environment variable not set.")
-        print("Get your free key at: https://aistudio.google.com/apikey")
+        print("[ERROR] GROQ_API_KEY environment variable not set.")
+        print("Get your free key at: https://console.groq.com")
         sys.exit(1)
 
     # Check database
@@ -332,13 +362,14 @@ def main():
     games = get_games_to_research(DB_FILE, app_id=args.app_id, limit=args.limit)
 
     if not games:
-        print("[INFO] No games need research. All games have AMD status and Linux commands.")
+        print("[INFO] No games need research.")
         return
 
+    est_time = len(games) * (args.delay + SEARCH_DELAY * 3 + 2)  # rough estimate
     print(f"LinuxPlayDB — AI Research ({len(games)} games)")
-    print(f"Model: gemini-2.0-flash (free tier)")
-    print(f"Delay: {args.delay}s between requests")
-    print(f"Estimated time: ~{len(games) * args.delay / 60:.0f} minutes\n")
+    print(f"Search: DuckDuckGo (free, no API key)")
+    print(f"Analysis: Groq Llama 3.3 70B (14,400 req/day free)")
+    print(f"Estimated time: ~{est_time / 60:.0f} minutes\n")
 
     if args.dry_run:
         print("Games to research:")
@@ -347,8 +378,8 @@ def main():
         print(f"\nTotal: {len(games)} games")
         return
 
-    # Initialize Gemini client
-    client = genai.Client(api_key=api_key)
+    # Initialize Groq client
+    client = Groq(api_key=api_key)
 
     results = []
     success = 0
@@ -376,7 +407,7 @@ def main():
             save_full_research(results)
             print(f"\n[CHECKPOINT] Saved {len(results)} results so far.\n")
 
-        # Rate limiting (skip delay on last item)
+        # Rate limiting (skip on last item)
         if i < len(games):
             time.sleep(args.delay)
 

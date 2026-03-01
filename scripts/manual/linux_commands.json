@@ -10,5 +10,20 @@
     "notes_en": "str — English notes on Linux-specific configuration",
     "notes_es": "str — Spanish notes on Linux-specific configuration"
   },
-  "games": []
+  "games": [
+    {
+      "app_id": -646526,
+      "name": "Alan Wake 2",
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton-GE",
+      "linux_status": "works",
+      "protondb_tier": "unknown",
+      "native_linux": false,
+      "anticheat": null,
+      "anticheat_linux": null,
+      "notes_en": "The game can be played on Linux using Proton-GE, but no native support",
+      "notes_es": "El juego se puede jugar en Linux utilizando Proton-GE, pero no hay soporte nativo"
+    }
+  ]
 }

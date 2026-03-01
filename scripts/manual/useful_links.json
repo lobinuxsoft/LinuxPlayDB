@@ -22,5 +22,22 @@
     "wiki": "Wiki article with technical details",
     "video": "Video tutorial or demonstration"
   },
-  "links": []
+  "links": [
+    {
+      "app_id": -646526,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1ldr6pd/alan_wake_2_working_on_linux_with_protonge/",
+      "title_en": "Alan Wake 2 working on Linux with Proton-GE",
+      "title_es": "Alan Wake 2 funcionando en Linux con Proton-GE",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -646526,
+      "url": "https://twistedvoxel.com/alan-wake-2-steam-deck/",
+      "title_en": "Alan Wake 2 Is Playable On Steam Deck: Best Settings and Setup Guide",
+      "title_es": "Alan Wake 2 es jugable en Steam Deck: Guía de configuración y ajustes",
+      "source": "twistedvoxel",
+      "link_type": "guide"
+    }
+  ]
 }
