@@ -153,12 +153,27 @@ def load_manual_json(db_path: Path) -> None:
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
 
+    # Build name->app_id index for matching research data by name
+    cur.execute("SELECT app_id, name FROM games")
+    name_to_id = {}
+    for row in cur.fetchall():
+        name_to_id[row[1].strip().lower()] = row[0]
+
+    def resolve_app_id(entry):
+        """Resolve app_id: try direct match first, then match by name."""
+        aid = entry.get("app_id")
+        if aid and cur.execute("SELECT 1 FROM games WHERE app_id = ?", (aid,)).fetchone():
+            return aid
+        name = entry.get("name", "").strip().lower()
+        return name_to_id.get(name)
+
     # AMD specific data
     amd_file = MANUAL_DIR / "amd_specific.json"
     if amd_file.exists():
         data = json.loads(amd_file.read_text())
+        updated = 0
         for entry in data.get("games", []):
-            app_id = entry.get("app_id")
+            app_id = resolve_app_id(entry)
             if not app_id:
                 continue
             cur.execute(
@@ -166,43 +181,77 @@ def load_manual_json(db_path: Path) -> None:
                    WHERE app_id = ?""",
                 (entry.get("amd_status"), entry.get("notes_en"), app_id)
             )
-        print(f"[OK] AMD data: {len(data.get('games', []))} entries")
+            if cur.rowcount > 0:
+                updated += 1
+        print(f"[OK] AMD data: {len(data.get('games', []))} entries ({updated} updated)")
 
     # Linux commands
     cmd_file = MANUAL_DIR / "linux_commands.json"
     if cmd_file.exists():
         data = json.loads(cmd_file.read_text())
+        updated = 0
         for entry in data.get("games", []):
-            app_id = entry.get("app_id")
+            app_id = resolve_app_id(entry)
             if not app_id:
                 continue
+            env_json = None
+            if entry.get("env_vars") and isinstance(entry["env_vars"], dict) and len(entry["env_vars"]) > 0:
+                env_json = json.dumps(entry["env_vars"])
+
+            # Update linux_status only if research found something better than "check"
+            new_status = entry.get("linux_status")
+            if new_status and new_status not in ("unknown", "check"):
+                status_clause = "linux_status = COALESCE(CASE WHEN linux_status IN ('check', '') OR linux_status IS NULL THEN ? ELSE linux_status END, linux_status)"
+            else:
+                status_clause = "linux_status = linux_status"
+                new_status = None
+
             cur.execute(
-                """UPDATE linux_compat
+                f"""UPDATE linux_compat
                    SET launch_options = COALESCE(?, launch_options),
                        env_vars = COALESCE(?, env_vars),
-                       proton_version = COALESCE(?, proton_version),
-                       notes_en = COALESCE(?, notes_en)
+                       proton_version = COALESCE(CASE WHEN proton_version LIKE '%Check%' OR proton_version IS NULL THEN ? ELSE proton_version END, proton_version),
+                       protondb_tier = COALESCE(CASE WHEN ? NOT IN ('unknown', '') THEN ? ELSE protondb_tier END, protondb_tier),
+                       native_linux = CASE WHEN ? = 1 THEN 1 ELSE native_linux END,
+                       anticheat = COALESCE(?, anticheat),
+                       anticheat_linux = COALESCE(?, anticheat_linux),
+                       notes_en = COALESCE(?, notes_en),
+                       notes_es = COALESCE(?, notes_es),
+                       {status_clause}
                    WHERE app_id = ?""",
                 (
                     entry.get("launch_options"),
-                    json.dumps(entry["env_vars"]) if entry.get("env_vars") else None,
+                    env_json,
                     entry.get("proton_version"),
+                    entry.get("protondb_tier", "unknown"),
+                    entry.get("protondb_tier"),
+                    1 if entry.get("native_linux") else 0,
+                    entry.get("anticheat"),
+                    entry.get("anticheat_linux"),
                     entry.get("notes_en"),
+                    entry.get("notes_es"),
+                    *([new_status] if new_status else []),
                     app_id,
                 )
             )
-        print(f"[OK] Linux commands: {len(data.get('games', []))} entries")
+            if cur.rowcount > 0:
+                updated += 1
+        print(f"[OK] Linux commands: {len(data.get('games', []))} entries ({updated} updated)")
 
     # Useful links
     links_file = MANUAL_DIR / "useful_links.json"
     if links_file.exists():
         data = json.loads(links_file.read_text())
+        inserted = 0
         for entry in data.get("links", []):
+            app_id = resolve_app_id(entry)
+            if not app_id:
+                continue
             cur.execute(
                 """INSERT OR IGNORE INTO useful_links (app_id, url, title_en, title_es, source, link_type)
                    VALUES (?, ?, ?, ?, ?, ?)""",
                 (
-                    entry.get("app_id"),
+                    app_id,
                     entry.get("url"),
                     entry.get("title_en"),
                     entry.get("title_es"),
@@ -210,7 +259,9 @@ def load_manual_json(db_path: Path) -> None:
                     entry.get("link_type"),
                 )
             )
-        print(f"[OK] Useful links: {len(data.get('links', []))} entries")
+            if cur.rowcount > 0:
+                inserted += 1
+        print(f"[OK] Useful links: {len(data.get('links', []))} entries ({inserted} inserted)")
 
     # Handheld compatibility
     handheld_file = MANUAL_DIR / "handheld_compat.json"

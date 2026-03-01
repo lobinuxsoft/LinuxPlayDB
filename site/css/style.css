@@ -538,6 +538,29 @@ a.badge-linux-maybe:hover { color: var(--cyan); border-color: var(--cyan); backg
 
 .lpdb-detail-links a:hover { text-decoration: underline; }
 
+.lpdb-detail-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 1rem 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.lpdb-detail-empty p { margin-bottom: 0.5rem; }
+
+.lpdb-detail-empty-links {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.lpdb-detail-empty-links a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
 /* ── Device Compat Table (nested) ── */
 .lpdb-device-table {
   width: 100%;

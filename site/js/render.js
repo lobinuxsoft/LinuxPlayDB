@@ -181,6 +181,22 @@ const LPDB_Render = (() => {
     }
 
     html += `</div>`;
+
+    // Fallback: if both columns are empty, show a helpful message
+    const hasLeftCol = g.launch_options || g.env_vars || g.proton_version || g.protondb_tier || g.deck_status || g.fsr4 || g.anticheat;
+    const hasRightCol = notes || links.length > 0 || deviceCompat.length > 0;
+    if (!hasLeftCol && !hasRightCol) {
+      const pdbUrl = `https://www.protondb.com/search?q=${encodeURIComponent(g.name || "")}`;
+      const pcgwUrl = `https://www.pcgamingwiki.com/w/index.php?search=${encodeURIComponent(g.name || "")}`;
+      html += `<div class="lpdb-detail-empty">
+        <p>${LPDB_i18n.t("detail_no_data")}</p>
+        <div class="lpdb-detail-empty-links">
+          <a href="${pdbUrl}" target="_blank" rel="noopener" class="badge badge-linux-maybe" onclick="event.stopPropagation()">\uD83D\uDD0D ProtonDB \u2197</a>
+          <a href="${pcgwUrl}" target="_blank" rel="noopener" class="badge badge-tech" onclick="event.stopPropagation()">\uD83D\uDD0D PCGamingWiki \u2197</a>
+        </div>
+      </div>`;
+    }
+
     html += `</div></div></td></tr>`;
     return html;
   }
