@@ -252,25 +252,35 @@ def save_protondb_data(results: list[dict]) -> None:
     """Save ProtonDB report analysis to manual JSON files."""
     cmd_file = MANUAL_DIR / "linux_commands.json"
     cmd_data = json.loads(cmd_file.read_text()) if cmd_file.exists() else {"games": []}
+    links_file = MANUAL_DIR / "useful_links.json"
+    links_data = json.loads(links_file.read_text()) if links_file.exists() else {"links": []}
 
     # Index existing entries by name (lowercase) for dedup
     existing = {}
     for g in cmd_data.get("games", []):
         existing[g.get("name", "").strip().lower()] = g
 
+    # Index existing links by (name, url) to avoid duplicates
+    existing_links = set()
+    for link in links_data.get("links", []):
+        key = (link.get("name", "").strip().lower(), link.get("url", ""))
+        existing_links.add(key)
+
     updated = 0
+    links_added = 0
     for r in results:
-        name = r.get("name", "").strip().lower()
-        if not name:
+        name_lower = r.get("name", "").strip().lower()
+        if not name_lower:
             continue
 
+        steam_id = r.get("steam_app_id")
         analysis = r.get("analysis", {})
         if not analysis:
             continue
 
-        if name in existing:
+        if name_lower in existing:
             # Merge new data into existing entry
-            entry = existing[name]
+            entry = existing[name_lower]
             if analysis.get("env_vars") and not entry.get("env_vars"):
                 entry["env_vars"] = analysis["env_vars"]
             if analysis.get("launch_options") and not entry.get("launch_options"):
@@ -285,7 +295,7 @@ def save_protondb_data(results: list[dict]) -> None:
         else:
             # New entry
             new_entry = {
-                "app_id": r.get("steam_app_id") or r.get("app_id"),
+                "app_id": steam_id or r.get("app_id"),
                 "name": r.get("name"),
                 "launch_options": analysis.get("launch_options"),
                 "env_vars": analysis.get("env_vars", {}),
@@ -298,9 +308,33 @@ def save_protondb_data(results: list[dict]) -> None:
             cmd_data["games"].append(new_entry)
             updated += 1
 
-    cmd_data["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        # Add direct ProtonDB link for games where we found the Steam app ID
+        if steam_id:
+            pdb_url = f"https://www.protondb.com/app/{steam_id}"
+            link_key = (name_lower, pdb_url)
+            if link_key not in existing_links:
+                report_count = analysis.get("report_count", 0)
+                tier = analysis.get("official_tier", analysis.get("dominant_rating", ""))
+                tier_str = f" ({tier})" if tier else ""
+                links_data["links"].append({
+                    "app_id": r.get("app_id"),
+                    "name": r.get("name"),
+                    "url": pdb_url,
+                    "title_en": f"ProtonDB reports{tier_str} — {report_count} reports",
+                    "title_es": f"Reportes ProtonDB{tier_str} — {report_count} reportes",
+                    "source": "protondb",
+                    "link_type": "guide",
+                })
+                existing_links.add(link_key)
+                links_added += 1
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    cmd_data["last_updated"] = today
+    links_data["last_updated"] = today
     cmd_file.write_text(json.dumps(cmd_data, indent=2, ensure_ascii=False) + "\n")
+    links_file.write_text(json.dumps(links_data, indent=2, ensure_ascii=False) + "\n")
     print(f"[OK] Updated {updated} entries in linux_commands.json")
+    print(f"[OK] Added {links_added} ProtonDB direct links to useful_links.json")
 
 
 def main():

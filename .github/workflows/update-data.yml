@@ -11,6 +11,8 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -21,19 +23,33 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
+      # Step 1: Fetch ProtonDB reports (free, no API key)
+      - name: Fetch ProtonDB reports
+        run: python scripts/fetch_protondb_reports.py --delay 1.5
+        continue-on-error: true
+
+      # Step 2: AI research for games missing data (needs GROQ_API_KEY secret)
+      - name: AI research (Groq + DuckDuckGo)
+        if: env.GROQ_API_KEY != ''
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python scripts/research_with_ai.py --delay 12
+        continue-on-error: true
+        timeout-minutes: 60
+
+      # Step 3: Build database (seed + manual JSON + online sources)
       - name: Build database
-        run: python scripts/build_db.py --fetch
+        run: python scripts/build_db.py
 
-      - name: Copy to site
-        run: |
-          mkdir -p site/data
-          cp data/linuxplaydb.db site/data/
-
-      - name: Generate inline DB
-        run: python scripts/build_db.py --inline-only
-
+      # Step 4: Commit everything
       - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: update game database"
-          file_pattern: "site/data/linuxplaydb.db site/js/db_inline.js data/linuxplaydb.db"
+          commit_message: "chore: weekly data update"
+          file_pattern: >-
+            data/linuxplaydb.db
+            site/data/linuxplaydb.db
+            site/js/db_inline.js
+            scripts/manual/amd_specific.json
+            scripts/manual/linux_commands.json
+            scripts/manual/useful_links.json
