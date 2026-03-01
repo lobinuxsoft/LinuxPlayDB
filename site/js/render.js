@@ -41,8 +41,7 @@ const LPDB_Render = (() => {
     return badges.length ? badges.join(" ") : "\u2014";
   }
 
-  function renderLinux(status) {
-    const t = LPDB_i18n.t.bind(LPDB_i18n);
+  function renderLinux(status, gameName) {
     switch (status) {
       case "works":
         return `<span class="badge badge-linux">${LPDB_i18n.t("status_works")}</span>`;
@@ -50,8 +49,10 @@ const LPDB_Render = (() => {
         return `<span class="badge badge-linux-warn">${LPDB_i18n.t("status_cmd")}</span>`;
       case "broken":
         return '<span class="badge badge-broken">Broken</span>';
-      case "check":
-        return '<span class="badge badge-linux-maybe">Check ProtonDB</span>';
+      case "check": {
+        const url = `https://www.protondb.com/search?q=${encodeURIComponent(gameName || "")}`;
+        return `<a href="${url}" target="_blank" rel="noopener" class="badge badge-linux-maybe" onclick="event.stopPropagation()" title="Search on ProtonDB">Check ProtonDB \u2197</a>`;
+      }
       default:
         return "\u2014";
     }
@@ -94,7 +95,7 @@ const LPDB_Render = (() => {
         <td>${typeBadge}</td>
         <td>${renderAmd(g.amd_status)}</td>
         <td>${renderTech(g)}</td>
-        <td>${renderLinux(g.linux_status)}</td>
+        <td>${renderLinux(g.linux_status, g.name)}</td>
         <td>${renderCmd(g)}</td>
       </tr>`;
 
@@ -137,7 +138,8 @@ const LPDB_Render = (() => {
       html += `<div class="lpdb-detail-note"><strong>Proton:</strong> ${esc(g.proton_version)}</div>`;
     }
     if (g.protondb_tier) {
-      html += `<div class="lpdb-detail-note"><strong>ProtonDB:</strong> <span class="badge badge-${protondbBadgeClass(g.protondb_tier)}">${g.protondb_tier}</span></div>`;
+      const pdbUrl = `https://www.protondb.com/search?q=${encodeURIComponent(g.name || "")}`;
+      html += `<div class="lpdb-detail-note"><strong>ProtonDB:</strong> <a href="${pdbUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="badge badge-${protondbBadgeClass(g.protondb_tier)}">${g.protondb_tier} \u2197</span></a></div>`;
     }
     if (g.deck_status) {
       html += `<div class="lpdb-detail-note"><strong>Steam Deck:</strong> <span class="badge badge-deck-${g.deck_status}">${g.deck_status}</span></div>`;
