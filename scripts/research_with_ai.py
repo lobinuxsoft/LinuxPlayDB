@@ -152,12 +152,15 @@ def get_games_to_research(db_path: Path, app_id: int | None = None,
             (app_id,),
         )
     else:
-        # Games that lack launch_options (most useful missing data)
+        # Games with graphics features (RT/PT/DLSS/FSR) that lack research data
         cur.execute("""
             SELECT g.app_id, g.name
             FROM games g
+            JOIN graphics_features gf ON g.app_id = gf.app_id
             LEFT JOIN linux_compat lc ON g.app_id = lc.app_id
             WHERE g.type = 'game'
+              AND (gf.rt_type IN ('rt', 'pt')
+                   OR gf.dlss_sr = 1 OR gf.fsr3 = 1 OR gf.fsr4 = 1)
               AND lc.launch_options IS NULL
             ORDER BY g.name
         """)
