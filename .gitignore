@@ -27,6 +27,7 @@ Thumbs.db
 
 # Research output (AI generated, not tracked)
 scripts/research_output/
+!scripts/research_output/progress.json
 
 # Node (if ever needed)
 node_modules/
