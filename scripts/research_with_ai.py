@@ -301,9 +301,9 @@ def save_results(results: list[dict]) -> None:
     cmd_file = MANUAL_DIR / "linux_commands.json"
     links_file = MANUAL_DIR / "useful_links.json"
 
-    amd_data = json.loads(amd_file.read_text()) if amd_file.exists() else {"games": []}
-    cmd_data = json.loads(cmd_file.read_text()) if cmd_file.exists() else {"games": []}
-    links_data = json.loads(links_file.read_text()) if links_file.exists() else {"links": []}
+    amd_data = json.loads(amd_file.read_text(encoding="utf-8")) if amd_file.exists() else {"games": []}
+    cmd_data = json.loads(cmd_file.read_text(encoding="utf-8")) if cmd_file.exists() else {"games": []}
+    links_data = json.loads(links_file.read_text(encoding="utf-8")) if links_file.exists() else {"links": []}
 
     # Index existing entries by app_id for dedup
     amd_index = {g["app_id"] for g in amd_data.get("games", [])}
@@ -366,9 +366,9 @@ def save_results(results: list[dict]) -> None:
     links_data["last_updated"] = today
 
     # Write back
-    amd_file.write_text(json.dumps(amd_data, indent=2, ensure_ascii=False) + "\n")
-    cmd_file.write_text(json.dumps(cmd_data, indent=2, ensure_ascii=False) + "\n")
-    links_file.write_text(json.dumps(links_data, indent=2, ensure_ascii=False) + "\n")
+    amd_file.write_text(json.dumps(amd_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    cmd_file.write_text(json.dumps(cmd_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    links_file.write_text(json.dumps(links_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print(f"\n[OK] Saved: {len(amd_data['games'])} AMD entries, "
           f"{len(cmd_data['games'])} Linux commands, "
