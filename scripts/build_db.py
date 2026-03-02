@@ -524,33 +524,40 @@ def main():
         print(f"\nDone in {time.time() - start:.1f}s")
         return
 
-    # Step 3: Fetch NVIDIA RTX database (always — free, no API key)
+    # Step 3: Fetch Steam catalog (needs STEAM_API_KEY for full list)
+    try:
+        from fetch_steam import fetch as fetch_steam
+        fetch_steam(DB_FILE, skip_details=True)
+    except Exception as e:
+        print(f"[WARN] Steam fetch failed: {e}")
+
+    # Step 4: Fetch NVIDIA RTX database (always — free, no API key)
     try:
         from fetch_nvidia import fetch as fetch_nvidia
         fetch_nvidia(DB_FILE)
     except Exception as e:
         print(f"[WARN] NVIDIA fetch failed: {e}")
 
-    # Step 4: Load devices
+    # Step 5: Load devices
     load_devices(DB_FILE)
 
-    # Step 5: Load manual JSON data (after NVIDIA so new games exist)
+    # Step 6: Load manual JSON data (after Steam+NVIDIA so new games exist)
     load_manual_json(DB_FILE)
 
-    # Step 6: Fetch other online data (optional)
+    # Step 7: Fetch other online data (optional)
     if args.fetch:
         run_fetch_scripts(DB_FILE)
 
-    # Step 7: Update data source metadata
+    # Step 8: Update data source metadata
     update_data_sources(DB_FILE)
 
-    # Step 8: Stats
+    # Step 9: Stats
     print_stats(DB_FILE)
 
-    # Step 9: Copy to site
+    # Step 10: Copy to site
     copy_to_site(DB_FILE)
 
-    # Step 10: Generate inline JS for file:// support
+    # Step 11: Generate inline JS for file:// support
     generate_inline_db(DB_FILE)
 
     print(f"\nDone in {time.time() - start:.1f}s")

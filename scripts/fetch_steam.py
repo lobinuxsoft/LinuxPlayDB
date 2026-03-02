@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
-"""Fetch game data from the Steam Store API.
+"""Fetch complete Steam game catalog.
 
-Two-phase approach:
-1. Get the full app list to map names -> app_ids.
-2. Fetch detailed info for games already in the DB that need enrichment.
-
-Rate limit: ~200 requests per 5 minutes (throttled to ~1.5s between requests).
+Three-phase approach:
+1. IStoreService/GetAppList/v1 — ALL app IDs (~120K), needs STEAM_API_KEY
+2. SteamSpy API — names + metadata for ~27K popular games (no key needed)
+3. Steam appdetails — incremental name/detail resolution (rate limited)
 
 Usage:
-    python fetch_steam.py                     # Standalone
-    from fetch_steam import fetch; fetch(db_path)  # As module
+    export STEAM_API_KEY="your-key"
+    python fetch_steam.py                         # Full pipeline
+    python fetch_steam.py --skip-details          # Skip slow appdetails phase
+    python fetch_steam.py --details-limit 1000    # Limit detail requests
+    from fetch_steam import fetch; fetch(db_path) # As module
 """
 
+import argparse
 import logging
+import os
 import sqlite3
 import sys
 import time
@@ -23,105 +27,143 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-STEAM_APP_LIST_URL = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
-STEAM_APP_DETAILS_URL = "https://store.steampowered.com/api/appdetails"
+# API endpoints
+STORE_SERVICE_URL = "https://api.steampowered.com/IStoreService/GetAppList/v1/"
+STEAMSPY_ALL_URL = "https://steamspy.com/api.php"
+STEAM_DETAILS_URL = "https://store.steampowered.com/api/appdetails"
 
-# ~200 requests per 5 min = 1 per 1.5s.
-RATE_LIMIT_SECONDS = 1.5
+# Rate limits
+STEAMSPY_DELAY = 1.2      # SteamSpy: 1 req/sec for individual, 1 req/min for "all"
+DETAILS_DELAY = 1.6        # Steam appdetails: ~200 req/5 min
+DETAILS_BACKOFF = 35       # Backoff on 429
 
-# Timeout per request (seconds).
-REQUEST_TIMEOUT = 15
-
-# How many detail requests to make per run (safety cap).
-MAX_DETAIL_REQUESTS = 500
-
-
-def _fetch_app_list(session: requests.Session) -> dict[str, int]:
-    """Fetch the full Steam app list. Returns {lowercase_name: appid}."""
-    logger.info("Fetching Steam app list...")
-    try:
-        resp = session.get(STEAM_APP_LIST_URL, timeout=30)
-        resp.raise_for_status()
-    except requests.RequestException as exc:
-        logger.error("Failed to fetch Steam app list: %s", exc)
-        return {}
-
-    data = resp.json()
-    apps = data.get("applist", {}).get("apps", [])
-    logger.info("Steam app list: %d entries", len(apps))
-
-    # Build lookup: lowercase name -> appid (prefer lower appids for duplicates).
-    lookup: dict[str, int] = {}
-    for app in apps:
-        name = app.get("name", "").strip()
-        appid = app.get("appid")
-        if not name or not appid:
-            continue
-        key = name.lower()
-        if key not in lookup or appid < lookup[key]:
-            lookup[key] = appid
-    return lookup
+# Defaults
+MAX_DETAIL_REQUESTS = 500  # Per run (safety cap)
+REQUEST_TIMEOUT = 20
 
 
-def _resolve_app_ids(cur: sqlite3.Cursor, steam_lookup: dict[str, int]) -> int:
-    """Resolve negative placeholder app_ids to real Steam app_ids.
+def _fetch_all_app_ids(session: requests.Session, api_key: str) -> list[int]:
+    """Fetch ALL Steam app IDs via IStoreService/GetAppList (paginated).
 
-    Returns the number of games resolved.
+    Returns list of app IDs (games only).
     """
-    cur.execute("SELECT app_id, name FROM games WHERE app_id < 0")
-    unresolved = cur.fetchall()
-    if not unresolved:
-        return 0
+    all_ids = []
+    last_appid = 0
+    page = 0
 
-    resolved = 0
-    for old_id, name in unresolved:
-        key = name.strip().lower()
-        real_id = steam_lookup.get(key)
-        if real_id is None:
-            continue
+    while True:
+        page += 1
+        params = {
+            "key": api_key,
+            "max_results": 50000,
+            "include_games": "true",
+            "include_dlc": "false",
+            "include_software": "false",
+            "include_videos": "false",
+            "include_hardware": "false",
+        }
+        if last_appid > 0:
+            params["last_appid"] = last_appid
 
-        # Check if the real_id already exists (avoid PK conflict).
-        cur.execute("SELECT 1 FROM games WHERE app_id = ?", (real_id,))
-        if cur.fetchone():
-            # Merge: keep the existing real entry, delete the placeholder.
-            cur.execute("DELETE FROM graphics_features WHERE app_id = ?", (old_id,))
-            cur.execute("DELETE FROM linux_compat WHERE app_id = ?", (old_id,))
-            cur.execute("DELETE FROM games WHERE app_id = ?", (old_id,))
-            continue
+        try:
+            resp = session.get(STORE_SERVICE_URL, params=params, timeout=30)
+            resp.raise_for_status()
+        except requests.RequestException as exc:
+            logger.error("IStoreService page %d failed: %s", page, exc)
+            break
 
-        # Swap the placeholder ID for the real one across all tables.
-        cur.execute("UPDATE games SET app_id = ? WHERE app_id = ?", (real_id, old_id))
-        cur.execute("UPDATE graphics_features SET app_id = ? WHERE app_id = ?", (real_id, old_id))
-        cur.execute("UPDATE linux_compat SET app_id = ? WHERE app_id = ?", (real_id, old_id))
-        cur.execute("UPDATE device_compat SET app_id = ? WHERE app_id = ?", (real_id, old_id))
-        cur.execute("UPDATE useful_links SET app_id = ? WHERE app_id = ?", (real_id, old_id))
-        resolved += 1
+        data = resp.json().get("response", {})
+        apps = data.get("apps", [])
+        if not apps:
+            break
 
-    logger.info("Resolved %d/%d placeholder app_ids", resolved, len(unresolved))
-    return resolved
+        for app in apps:
+            all_ids.append(app["appid"])
+
+        last_appid = apps[-1]["appid"]
+        have_more = data.get("have_more_results", False)
+
+        logger.info("  Page %d: %d apps (total: %d, last_appid: %d)",
+                     page, len(apps), len(all_ids), last_appid)
+
+        if not have_more:
+            break
+
+        time.sleep(0.5)
+
+    return all_ids
+
+
+def _fetch_steamspy_names(session: requests.Session) -> dict[int, dict]:
+    """Fetch game names and basic data from SteamSpy (all pages).
+
+    Returns {appid: {"name": str, "positive": int, "negative": int, ...}}.
+    """
+    all_games = {}
+    page = 0
+
+    while True:
+        try:
+            resp = session.get(
+                STEAMSPY_ALL_URL,
+                params={"request": "all", "page": page},
+                timeout=30,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as exc:
+            logger.warning("SteamSpy page %d failed: %s", page, exc)
+            break
+
+        if not data:
+            break
+
+        for appid_str, info in data.items():
+            try:
+                appid = int(appid_str)
+            except (ValueError, TypeError):
+                continue
+            name = info.get("name", "").strip()
+            if name:
+                all_games[appid] = {
+                    "name": name,
+                    "positive": info.get("positive", 0),
+                    "negative": info.get("negative", 0),
+                    "owners": info.get("owners", ""),
+                }
+
+        count = len(data)
+        logger.info("  SteamSpy page %d: %d games (total: %d)", page, count, len(all_games))
+
+        if count < 1000:
+            # Last page
+            break
+
+        page += 1
+        time.sleep(65)  # SteamSpy requires 1 min between "all" requests
+
+    return all_games
 
 
 def _fetch_app_details(session: requests.Session, app_id: int) -> dict | None:
-    """Fetch details for a single app. Returns parsed data dict or None."""
+    """Fetch details for a single app from Steam Store API."""
     try:
         resp = session.get(
-            STEAM_APP_DETAILS_URL,
-            params={"appids": str(app_id)},
+            STEAM_DETAILS_URL,
+            params={"appids": str(app_id), "filters": "basic"},
             timeout=REQUEST_TIMEOUT,
         )
         if resp.status_code == 429:
-            logger.warning("Rate limited on app %d, backing off 30s", app_id)
-            time.sleep(30)
+            logger.warning("Rate limited on %d, backing off %ds", app_id, DETAILS_BACKOFF)
+            time.sleep(DETAILS_BACKOFF)
             return None
         resp.raise_for_status()
-    except requests.RequestException as exc:
-        logger.warning("App %d: request failed: %s", app_id, exc)
+    except requests.RequestException:
         return None
 
     try:
         payload = resp.json()
     except ValueError:
-        logger.warning("App %d: invalid JSON response", app_id)
         return None
 
     app_data = payload.get(str(app_id), {})
@@ -131,119 +173,219 @@ def _fetch_app_details(session: requests.Session, app_id: int) -> dict | None:
     return app_data.get("data", {})
 
 
-def _enrich_game(cur: sqlite3.Cursor, app_id: int, data: dict) -> None:
-    """Update a game row with enriched Steam data."""
-    name = data.get("name", "").strip()
-    genres_list = data.get("genres", [])
-    genres = ", ".join(g.get("description", "") for g in genres_list) if genres_list else None
+def fetch(db_path: Path, api_key: str | None = None,
+          skip_details: bool = False, details_limit: int = MAX_DETAIL_REQUESTS) -> int:
+    """Fetch Steam catalog and populate the database.
 
-    release = data.get("release_date", {})
-    release_date = release.get("date") if not release.get("coming_soon") else None
-
-    header_image = data.get("header_image")
-    steam_url = f"https://store.steampowered.com/app/{app_id}/"
-
-    # Detect Linux native support.
-    platforms = data.get("platforms", {})
-    native_linux = platforms.get("linux", False)
-
-    cur.execute(
-        """UPDATE games SET
-               name = COALESCE(?, name),
-               release_date = COALESCE(?, release_date),
-               genres = COALESCE(?, genres),
-               steam_url = ?,
-               header_image = COALESCE(?, header_image)
-           WHERE app_id = ?""",
-        (name or None, release_date, genres, steam_url, header_image, app_id),
-    )
-
-    # Update native Linux flag if detected.
-    if native_linux:
-        cur.execute(
-            """INSERT INTO linux_compat (app_id, native_linux)
-               VALUES (?, 1)
-               ON CONFLICT(app_id) DO UPDATE SET native_linux = 1""",
-            (app_id,),
-        )
-
-
-def fetch(db_path: Path) -> int:
-    """Fetch Steam data: resolve app_ids, then enrich game details.
-
-    Args:
-        db_path: Path to the SQLite database file.
-
-    Returns:
-        Number of games enriched with details.
+    Returns total number of games in DB after fetch.
     """
+    if not api_key:
+        api_key = os.environ.get("STEAM_API_KEY")
+
     session = requests.Session()
     session.headers.update({"User-Agent": "LinuxPlayDB/1.0"})
 
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
 
-    # Phase 1: Resolve placeholder IDs.
-    steam_lookup = _fetch_app_list(session)
-    if steam_lookup:
-        resolved = _resolve_app_ids(cur, steam_lookup)
+    # Get existing games
+    cur.execute("SELECT app_id, name FROM games")
+    existing_by_id = {}
+    existing_by_name = {}
+    for row in cur.fetchall():
+        existing_by_id[row[0]] = row[1]
+        existing_by_name[row[1].strip().lower()] = row[0]
+
+    total_before = len(existing_by_id)
+    inserted = 0
+    resolved = 0
+
+    # ── Phase 1: Get ALL app IDs from Steam ──
+    if api_key:
+        print("[Phase 1] Fetching all Steam game IDs (IStoreService)...")
+        all_ids = _fetch_all_app_ids(session, api_key)
+        print(f"  Found {len(all_ids)} game IDs from Steam")
+
+        # Insert new IDs (without names yet)
+        new_ids = [aid for aid in all_ids if aid not in existing_by_id]
+        for aid in new_ids:
+            cur.execute(
+                "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
+                (aid, f"[Steam App {aid}]"),
+            )
+            cur.execute(
+                "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
+                (aid,),
+            )
+            cur.execute(
+                "INSERT OR IGNORE INTO graphics_features (app_id) VALUES (?)",
+                (aid,),
+            )
         conn.commit()
-        logger.info("Phase 1 complete: %d IDs resolved", resolved)
+        print(f"  Inserted {len(new_ids)} new game IDs (names pending)")
+        inserted += len(new_ids)
     else:
-        logger.warning("Steam app list unavailable — skipping ID resolution")
+        print("[Phase 1] SKIP — no STEAM_API_KEY set")
 
-    # Phase 2: Enrich games that lack details.
-    cur.execute(
-        """SELECT app_id FROM games
-           WHERE app_id > 0
-             AND (header_image IS NULL OR genres IS NULL OR release_date IS NULL)
-           ORDER BY app_id
-           LIMIT ?""",
-        (MAX_DETAIL_REQUESTS,),
-    )
-    to_enrich = [row[0] for row in cur.fetchall()]
+    # ── Phase 2: Get names from SteamSpy ──
+    print("[Phase 2] Fetching game names from SteamSpy...")
+    spy_data = _fetch_steamspy_names(session)
+    print(f"  SteamSpy returned {len(spy_data)} games with names")
 
-    if not to_enrich:
-        logger.info("No games need enrichment")
-        conn.close()
-        return 0
+    named = 0
+    for appid, info in spy_data.items():
+        name = info["name"]
 
-    logger.info("Enriching %d games from Steam Store API (rate: ~1.5s/req)", len(to_enrich))
+        if appid in existing_by_id:
+            # Update name if it's a placeholder
+            current_name = existing_by_id[appid]
+            if current_name.startswith("[Steam App "):
+                cur.execute("UPDATE games SET name = ? WHERE app_id = ?", (name, appid))
+                named += 1
+        else:
+            # New game from SteamSpy not in Steam list
+            cur.execute(
+                "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
+                (appid, name),
+            )
+            cur.execute(
+                "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
+                (appid,),
+            )
+            cur.execute(
+                "INSERT OR IGNORE INTO graphics_features (app_id) VALUES (?)",
+                (appid,),
+            )
+            inserted += 1
+            named += 1
 
-    enriched = 0
-    for i, app_id in enumerate(to_enrich):
-        data = _fetch_app_details(session, app_id)
-        if data:
-            _enrich_game(cur, app_id, data)
-            enriched += 1
+    # Resolve placeholder IDs: match negative-ID games by name to real IDs
+    cur.execute("SELECT app_id, name FROM games WHERE app_id < 0")
+    placeholders = cur.fetchall()
+    for old_id, name in placeholders:
+        name_lower = name.strip().lower()
+        # Find real ID from SteamSpy data
+        real_id = None
+        for sid, info in spy_data.items():
+            if info["name"].strip().lower() == name_lower:
+                real_id = sid
+                break
 
-        # Progress + intermediate commit every 25 games.
-        if (i + 1) % 25 == 0:
-            logger.info("Progress: %d/%d (enriched: %d)", i + 1, len(to_enrich), enriched)
+        if not real_id:
+            # Try from Steam IDs we just fetched
+            cur.execute(
+                "SELECT app_id FROM games WHERE app_id > 0 AND LOWER(name) = ?",
+                (name_lower,),
+            )
+            row = cur.fetchone()
+            if row:
+                real_id = row[0]
+
+        if real_id and real_id != old_id:
+            # Check if real_id already exists
+            cur.execute("SELECT 1 FROM games WHERE app_id = ?", (real_id,))
+            if cur.fetchone():
+                # Merge: move data from placeholder to real entry, then delete placeholder
+                for table in ("graphics_features", "linux_compat"):
+                    cur.execute(f"DELETE FROM {table} WHERE app_id = ?", (old_id,))
+                cur.execute("UPDATE useful_links SET app_id = ? WHERE app_id = ?", (real_id, old_id))
+                cur.execute("UPDATE device_compat SET app_id = ? WHERE app_id = ?", (real_id, old_id))
+                cur.execute("DELETE FROM games WHERE app_id = ?", (old_id,))
+            else:
+                # Swap ID across all tables
+                for table in ("games", "graphics_features", "linux_compat", "device_compat", "useful_links"):
+                    cur.execute(f"UPDATE {table} SET app_id = ? WHERE app_id = ?", (real_id, old_id))
+            resolved += 1
+
+    conn.commit()
+    print(f"  Named {named} games, resolved {resolved} placeholder IDs")
+
+    # ── Phase 3: Incremental detail fetch for unnamed games ──
+    if not skip_details:
+        cur.execute(
+            """SELECT app_id FROM games
+               WHERE app_id > 0 AND name LIKE '[Steam App %]'
+               ORDER BY app_id
+               LIMIT ?""",
+            (details_limit,),
+        )
+        unnamed = [row[0] for row in cur.fetchall()]
+
+        if unnamed:
+            print(f"[Phase 3] Fetching names for {len(unnamed)} games via Steam appdetails...")
+            details_ok = 0
+            for i, appid in enumerate(unnamed):
+                data = _fetch_app_details(session, appid)
+                if data:
+                    name = data.get("name", "").strip()
+                    app_type = data.get("type", "game")
+                    if name:
+                        cur.execute(
+                            "UPDATE games SET name = ?, type = ? WHERE app_id = ?",
+                            (name, app_type, appid),
+                        )
+                        # If it's not a game (DLC, demo, etc.), mark it
+                        if app_type not in ("game",):
+                            cur.execute(
+                                "UPDATE games SET type = ? WHERE app_id = ?",
+                                (app_type, appid),
+                            )
+                        details_ok += 1
+                    else:
+                        # Remove entries that aren't valid games
+                        cur.execute("DELETE FROM graphics_features WHERE app_id = ?", (appid,))
+                        cur.execute("DELETE FROM linux_compat WHERE app_id = ?", (appid,))
+                        cur.execute("DELETE FROM games WHERE app_id = ?", (appid,))
+
+                if (i + 1) % 50 == 0:
+                    conn.commit()
+                    print(f"  Progress: {i + 1}/{len(unnamed)} ({details_ok} named)")
+
+                time.sleep(DETAILS_DELAY)
+
             conn.commit()
+            print(f"  Named {details_ok}/{len(unnamed)} games via appdetails")
+        else:
+            print("[Phase 3] SKIP — no unnamed games remaining")
+    else:
+        print("[Phase 3] SKIP — --skip-details flag")
 
-        time.sleep(RATE_LIMIT_SECONDS)
-
-    # Record source metadata.
+    # Record metadata
+    cur.execute("SELECT COUNT(*) FROM games")
+    total_after = cur.fetchone()[0]
     now = datetime.now(timezone.utc).isoformat()
     cur.execute(
         """INSERT OR REPLACE INTO data_sources
                (source_id, last_updated, entries_count, url, notes)
-           VALUES ('steam', ?, ?, ?, 'Steam Store API — app details')""",
-        (now, enriched, STEAM_APP_DETAILS_URL),
+           VALUES ('steam', ?, ?, ?, 'Steam IStoreService + SteamSpy + appdetails')""",
+        (now, total_after, STORE_SERVICE_URL),
     )
-
     conn.commit()
     conn.close()
-    logger.info("Steam fetch complete: %d games enriched", enriched)
-    return enriched
+
+    print(f"\n[OK] Steam fetch complete: {total_before} → {total_after} games "
+          f"(+{inserted} new, {resolved} resolved)")
+    return total_after
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Fetch complete Steam game catalog")
+    parser.add_argument("--skip-details", action="store_true",
+                        help="Skip slow Steam appdetails phase")
+    parser.add_argument("--details-limit", type=int, default=MAX_DETAIL_REQUESTS,
+                        help=f"Max appdetails requests per run (default: {MAX_DETAIL_REQUESTS})")
+    parser.add_argument("--db", type=Path,
+                        default=Path(__file__).parent.parent / "data" / "linuxplaydb.db")
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+    if not args.db.exists():
+        print(f"[ERROR] Database not found: {args.db}")
+        sys.exit(1)
+
+    fetch(args.db, skip_details=args.skip_details, details_limit=args.details_limit)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-    db = Path(__file__).parent.parent / "data" / "linuxplaydb.db"
-    if not db.exists():
-        print(f"ERROR: Database not found at {db}", file=sys.stderr)
-        sys.exit(1)
-    count = fetch(db)
-    print(f"Enriched {count} games from Steam")
+    main()

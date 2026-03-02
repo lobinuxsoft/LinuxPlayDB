@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONUNBUFFERED: "1"
+      STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -37,11 +38,25 @@ jobs:
         continue-on-error: true
         timeout-minutes: 60
 
-      # Step 3: Build database (seed + manual JSON + online sources)
+      # Step 3: Build database (Steam + NVIDIA + seed + manual data)
+      # STEAM_API_KEY is already in env, build_db.py calls fetch_steam.py
+      # which reads it. SteamSpy phase takes ~30 min (1 req/min, ~27 pages)
       - name: Build database
         run: python scripts/build_db.py
+        timeout-minutes: 45
 
-      # Step 4: Commit everything
+      # Step 4: Incremental Steam detail fetch (names for new games)
+      # 500 games per run at ~1.6s each = ~13 min
+      - name: Fetch Steam game details (incremental)
+        run: python scripts/fetch_steam.py --details-limit 500
+        continue-on-error: true
+        timeout-minutes: 20
+
+      # Step 5: Rebuild inline DB after details enrichment
+      - name: Regenerate inline DB
+        run: python scripts/build_db.py --inline-only
+
+      # Step 6: Commit everything
       - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
