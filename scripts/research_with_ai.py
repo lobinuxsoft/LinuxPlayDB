@@ -18,6 +18,7 @@ Usage:
 import argparse
 import json
 import os
+import random
 import re
 import sqlite3
 import sys
@@ -42,9 +43,12 @@ DB_FILE = ROOT / "data" / "linuxplaydb.db"
 MANUAL_DIR = ROOT / "scripts" / "manual"
 OUTPUT_DIR = ROOT / "scripts" / "research_output"
 
-# Groq free tier: 14,400 req/day, 30 RPM for llama-3.3-70b
-REQUEST_DELAY = 2.5  # seconds between Groq calls (safe margin for 30 RPM)
-SEARCH_DELAY = 1.0   # seconds between DuckDuckGo searches
+# Groq free tier: llama-3.1-8b = 14,400 RPD, 6K TPM, 30 RPM
+# llama-3.3-70b = 1,000 RPD, 12K TPM (too low for bulk research)
+GROQ_MODEL = "llama-3.1-8b-instant"
+REQUEST_DELAY = 15  # seconds between Groq calls (safe for 6K TPM at ~1300 tok/game)
+SEARCH_DELAY = 3.0   # seconds between DuckDuckGo searches (avoid IP blocks in CI)
+PROGRESS_FILE = Path(__file__).parent / "research_output" / "progress.json"
 
 ANALYSIS_PROMPT = """You are a gaming compatibility researcher for LinuxPlayDB.
 
@@ -110,8 +114,33 @@ IMPORTANT:
 """
 
 
+def load_progress() -> set[int]:
+    """Load set of already-researched app_ids from progress file."""
+    if PROGRESS_FILE.exists():
+        try:
+            data = json.loads(PROGRESS_FILE.read_text(encoding="utf-8"))
+            return set(data.get("researched_ids", []))
+        except (json.JSONDecodeError, KeyError):
+            return set()
+    return set()
+
+
+def save_progress(researched_ids: set[int]) -> None:
+    """Persist the set of researched app_ids to disk."""
+    PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    data = {
+        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "count": len(researched_ids),
+        "researched_ids": sorted(researched_ids),
+    }
+    PROGRESS_FILE.write_text(
+        json.dumps(data, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def get_games_to_research(db_path: Path, app_id: int | None = None,
-                          limit: int | None = None) -> list[dict]:
+                          limit: int | None = None,
+                          exclude_ids: set[int] | None = None) -> list[dict]:
     """Get games from DB that need research."""
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
@@ -136,10 +165,32 @@ def get_games_to_research(db_path: Path, app_id: int | None = None,
     rows = [dict(r) for r in cur.fetchall()]
     conn.close()
 
+    # Filter out already-researched games
+    if exclude_ids and not app_id:
+        rows = [r for r in rows if r["app_id"] not in exclude_ids]
+
     if limit and not app_id:
         rows = rows[:limit]
 
     return rows
+
+
+def _search_with_retry(query: str, max_results: int = 5,
+                       max_retries: int = 3) -> list[dict]:
+    """Execute a single DDGS search with exponential backoff on failure."""
+    for attempt in range(max_retries):
+        try:
+            return DDGS().text(query, max_results=max_results, backend="auto")
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait = (2 ** attempt) + random.uniform(0.5, 2.0)
+                print(f"  [RETRY] Search attempt {attempt + 1} failed: {e}. "
+                      f"Waiting {wait:.1f}s...")
+                time.sleep(wait)
+            else:
+                print(f"  [WARN] Search failed after {max_retries} attempts for "
+                      f"'{query}': {e}")
+                return []
 
 
 def search_game(game_name: str) -> str:
@@ -154,15 +205,12 @@ def search_game(game_name: str) -> str:
     seen_urls = set()
 
     for query in queries:
-        try:
-            results = DDGS().text(query, max_results=5)
-            for r in results:
-                url = r.get("href", "")
-                if url not in seen_urls:
-                    seen_urls.add(url)
-                    all_results.append(r)
-        except Exception as e:
-            print(f"  [WARN] Search failed for '{query}': {e}")
+        results = _search_with_retry(query)
+        for r in results:
+            url = r.get("href", "")
+            if url not in seen_urls:
+                seen_urls.add(url)
+                all_results.append(r)
         time.sleep(SEARCH_DELAY)
 
     if not all_results:
@@ -201,7 +249,7 @@ def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None
     for attempt in range(1, max_retries + 1):
         try:
             response = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model=GROQ_MODEL,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.1,
                 max_tokens=2000,
@@ -229,9 +277,9 @@ def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None
         except Exception as e:
             err_str = str(e)
             if "429" in err_str or "rate" in err_str.lower():
-                wait = 30
+                wait = min(30 * (2 ** (attempt - 1)), 120) + random.uniform(1, 5)
                 if attempt < max_retries:
-                    print(f"  [WAIT] Rate limited. Waiting {wait}s... (attempt {attempt}/{max_retries})")
+                    print(f"  [WAIT] Rate limited. Waiting {wait:.0f}s... (attempt {attempt}/{max_retries})")
                     time.sleep(wait)
                     continue
                 else:
@@ -343,6 +391,7 @@ def main():
     parser.add_argument("--limit", type=int, help="Maximum number of games to research")
     parser.add_argument("--dry-run", action="store_true", help="Show games to research without calling APIs")
     parser.add_argument("--delay", type=float, default=REQUEST_DELAY, help=f"Seconds between Groq calls (default: {REQUEST_DELAY})")
+    parser.add_argument("--reset-progress", action="store_true", help="Reset progress tracking (re-research all games)")
     args = parser.parse_args()
 
     # Check API key
@@ -358,8 +407,18 @@ def main():
         print("Run 'python build_db.py' first.")
         sys.exit(1)
 
+    # Progress tracking
+    if args.reset_progress and PROGRESS_FILE.exists():
+        PROGRESS_FILE.unlink()
+        print("[OK] Progress reset.")
+
+    already_done = load_progress() if not args.app_id else set()
+    if already_done:
+        print(f"[INFO] Skipping {len(already_done)} previously researched games.")
+
     # Get games to research
-    games = get_games_to_research(DB_FILE, app_id=args.app_id, limit=args.limit)
+    games = get_games_to_research(DB_FILE, app_id=args.app_id, limit=args.limit,
+                                  exclude_ids=already_done)
 
     if not games:
         print("[INFO] No games need research.")
@@ -368,7 +427,7 @@ def main():
     est_time = len(games) * (args.delay + SEARCH_DELAY * 3 + 2)  # rough estimate
     print(f"LinuxPlayDB — AI Research ({len(games)} games)")
     print(f"Search: DuckDuckGo (free, no API key)")
-    print(f"Analysis: Groq Llama 3.3 70B (14,400 req/day free)")
+    print(f"Analysis: Groq {GROQ_MODEL} (14,400 req/day free)")
     print(f"Estimated time: ~{est_time / 60:.0f} minutes\n")
 
     if args.dry_run:
@@ -390,6 +449,10 @@ def main():
 
         data = research_game(client, game)
 
+        # Track this game as processed regardless of success
+        already_done.add(game["app_id"])
+        save_progress(already_done)
+
         if data:
             results.append(data)
             confidence = data.get("confidence", "?")
@@ -401,22 +464,26 @@ def main():
         else:
             failed += 1
 
-        # Save periodically (every 25 games)
-        if len(results) > 0 and len(results) % 25 == 0:
-            save_results(results)
-            save_full_research(results)
-            print(f"\n[CHECKPOINT] Saved {len(results)} results so far.\n")
+        # Checkpoint results every 10 games
+        if i % 10 == 0:
+            if results:
+                save_results(results)
+                save_full_research(results)
+            print(f"\n[CHECKPOINT] Saved {len(results)} results, "
+                  f"{len(already_done)} total tracked.\n")
 
         # Rate limiting (skip on last item)
         if i < len(games):
             time.sleep(args.delay)
 
     # Final save
+    save_progress(already_done)
     if results:
         save_results(results)
         save_full_research(results)
 
     print(f"\nDone! Success: {success}, Failed: {failed}, Total: {len(games)}")
+    print(f"Progress: {len(already_done)} games tracked across all sessions.")
 
 
 if __name__ == "__main__":

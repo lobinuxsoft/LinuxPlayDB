@@ -18,6 +18,7 @@ Usage:
 import argparse
 import json
 import os
+import shutil
 import sqlite3
 import sys
 import time
@@ -462,7 +463,6 @@ def copy_to_site(db_path: Path) -> None:
     """Copy the database to the site directory for serving."""
     site_data_dir = ROOT / "site" / "data"
     site_data_dir.mkdir(parents=True, exist_ok=True)
-    import shutil
     shutil.copy2(db_path, SITE_DB)
     print(f"[OK] Copied to {SITE_DB}")
 
@@ -506,19 +506,21 @@ def main():
     print("LinuxPlayDB — Database Builder")
     print(f"Output: {DB_FILE}\n")
 
-    # Remove old DB if exists
-    if DB_FILE.exists():
-        DB_FILE.unlink()
-        print("[OK] Removed old database")
+    # Build into a temp file — only replace the real DB on success (atomic swap)
+    tmp_db = DB_FILE.with_suffix(".db.tmp")
+    if tmp_db.exists():
+        tmp_db.unlink()
 
     # Step 1: Create schema
-    create_schema(DB_FILE)
+    create_schema(tmp_db)
 
     # Step 2: Migrate seed data
     from migrate_seed import migrate
-    migrate(DB_FILE)
+    migrate(tmp_db)
 
     if args.seed_only:
+        shutil.move(str(tmp_db), str(DB_FILE))
+        print("[OK] Atomic swap: temp DB → final DB")
         print_stats(DB_FILE)
         copy_to_site(DB_FILE)
         print(f"\nDone in {time.time() - start:.1f}s")
@@ -527,29 +529,34 @@ def main():
     # Step 3: Fetch Steam catalog (needs STEAM_API_KEY for full list)
     try:
         from fetch_steam import fetch as fetch_steam
-        fetch_steam(DB_FILE, skip_details=True)
+        skip_spy = os.environ.get("SKIP_STEAMSPY", "").strip() in ("1", "true", "yes")
+        fetch_steam(tmp_db, skip_details=True, skip_steamspy=skip_spy)
     except Exception as e:
         print(f"[WARN] Steam fetch failed: {e}")
 
     # Step 4: Fetch NVIDIA RTX database (always — free, no API key)
     try:
         from fetch_nvidia import fetch as fetch_nvidia
-        fetch_nvidia(DB_FILE)
+        fetch_nvidia(tmp_db)
     except Exception as e:
         print(f"[WARN] NVIDIA fetch failed: {e}")
 
     # Step 5: Load devices
-    load_devices(DB_FILE)
+    load_devices(tmp_db)
 
     # Step 6: Load manual JSON data (after Steam+NVIDIA so new games exist)
-    load_manual_json(DB_FILE)
+    load_manual_json(tmp_db)
 
     # Step 7: Fetch other online data (optional)
     if args.fetch:
-        run_fetch_scripts(DB_FILE)
+        run_fetch_scripts(tmp_db)
 
     # Step 8: Update data source metadata
-    update_data_sources(DB_FILE)
+    update_data_sources(tmp_db)
+
+    # Atomic swap: replace real DB only after successful build
+    shutil.move(str(tmp_db), str(DB_FILE))
+    print("[OK] Atomic swap: temp DB → final DB")
 
     # Step 9: Stats
     print_stats(DB_FILE)

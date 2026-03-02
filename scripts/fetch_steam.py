@@ -9,6 +9,7 @@ Three-phase approach:
 Usage:
     export STEAM_API_KEY="your-key"
     python fetch_steam.py                         # Full pipeline
+    python fetch_steam.py --skip-steamspy         # Skip SteamSpy (~30 min savings)
     python fetch_steam.py --skip-details          # Skip slow appdetails phase
     python fetch_steam.py --details-limit 1000    # Limit detail requests
     from fetch_steam import fetch; fetch(db_path) # As module
@@ -42,12 +43,12 @@ MAX_DETAIL_REQUESTS = 500  # Per run (safety cap)
 REQUEST_TIMEOUT = 20
 
 
-def _fetch_all_app_ids(session: requests.Session, api_key: str) -> list[int]:
-    """Fetch ALL Steam app IDs via IStoreService/GetAppList (paginated).
+def _fetch_all_apps(session: requests.Session, api_key: str) -> dict[int, str]:
+    """Fetch ALL Steam apps via IStoreService/GetAppList (paginated).
 
-    Returns list of app IDs (games only).
+    Returns {appid: name} for games only. Names come free from the API.
     """
-    all_ids = []
+    all_apps: dict[int, str] = {}
     last_appid = 0
     page = 0
 
@@ -78,20 +79,20 @@ def _fetch_all_app_ids(session: requests.Session, api_key: str) -> list[int]:
             break
 
         for app in apps:
-            all_ids.append(app["appid"])
+            all_apps[app["appid"]] = app.get("name", "")
 
         last_appid = apps[-1]["appid"]
         have_more = data.get("have_more_results", False)
 
         logger.info("  Page %d: %d apps (total: %d, last_appid: %d)",
-                     page, len(apps), len(all_ids), last_appid)
+                     page, len(apps), len(all_apps), last_appid)
 
         if not have_more:
             break
 
         time.sleep(0.5)
 
-    return all_ids
+    return all_apps
 
 
 def _fetch_steamspy_names(session: requests.Session) -> dict[int, dict]:
@@ -174,7 +175,8 @@ def _fetch_app_details(session: requests.Session, app_id: int) -> dict | None:
 
 
 def fetch(db_path: Path, api_key: str | None = None,
-          skip_details: bool = False, details_limit: int = MAX_DETAIL_REQUESTS) -> int:
+          skip_details: bool = False, details_limit: int = MAX_DETAIL_REQUESTS,
+          skip_steamspy: bool = False) -> int:
     """Fetch Steam catalog and populate the database.
 
     Returns total number of games in DB after fetch.
@@ -200,71 +202,97 @@ def fetch(db_path: Path, api_key: str | None = None,
     inserted = 0
     resolved = 0
 
-    # ── Phase 1: Get ALL app IDs from Steam ──
+    # ── Phase 1: Get ALL app IDs + names from Steam ──
     if api_key:
-        print("[Phase 1] Fetching all Steam game IDs (IStoreService)...")
-        all_ids = _fetch_all_app_ids(session, api_key)
-        print(f"  Found {len(all_ids)} game IDs from Steam")
+        print("[Phase 1] Fetching all Steam games (IStoreService)...")
+        all_apps = _fetch_all_apps(session, api_key)
+        print(f"  Found {len(all_apps)} games from Steam")
 
-        # Insert new IDs (without names yet)
-        new_ids = [aid for aid in all_ids if aid not in existing_by_id]
-        for aid in new_ids:
-            cur.execute(
-                "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
-                (aid, f"[Steam App {aid}]"),
-            )
-            cur.execute(
-                "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
-                (aid,),
-            )
-            cur.execute(
-                "INSERT OR IGNORE INTO graphics_features (app_id) VALUES (?)",
-                (aid,),
-            )
+        # Insert new games with names from IStoreService
+        new_count = 0
+        named_from_api = 0
+        batch = 0
+        for aid, api_name in all_apps.items():
+            if aid not in existing_by_id:
+                # New game — use API name if available, placeholder otherwise
+                name = api_name.strip() if api_name else f"[Steam App {aid}]"
+                cur.execute(
+                    "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
+                    (aid, name),
+                )
+                cur.execute(
+                    "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
+                    (aid,),
+                )
+                cur.execute(
+                    "INSERT OR IGNORE INTO graphics_features (app_id) VALUES (?)",
+                    (aid,),
+                )
+                new_count += 1
+                if api_name.strip():
+                    named_from_api += 1
+            else:
+                # Existing game — update placeholder names with real names from API
+                current_name = existing_by_id[aid]
+                if current_name.startswith("[Steam App ") and api_name.strip():
+                    cur.execute("UPDATE games SET name = ? WHERE app_id = ?",
+                                (api_name.strip(), aid))
+                    named_from_api += 1
+            batch += 1
+            if batch % 5000 == 0:
+                conn.commit()
+                print(f"  Progress: {batch}/{len(all_apps)} ({new_count} new)")
         conn.commit()
-        print(f"  Inserted {len(new_ids)} new game IDs (names pending)")
-        inserted += len(new_ids)
+        print(f"  Inserted {new_count} new games ({named_from_api} with names from API)")
+        inserted += new_count
     else:
         print("[Phase 1] SKIP — no STEAM_API_KEY set")
 
-    # ── Phase 2: Get names from SteamSpy ──
-    print("[Phase 2] Fetching game names from SteamSpy...")
-    spy_data = _fetch_steamspy_names(session)
-    print(f"  SteamSpy returned {len(spy_data)} games with names")
+    # ── Phase 2: Get names from SteamSpy (slow — optional in CI) ──
+    if not skip_steamspy:
+        print("[Phase 2] Fetching game names from SteamSpy...")
+        spy_data = _fetch_steamspy_names(session)
+        print(f"  SteamSpy returned {len(spy_data)} games with names")
 
-    named = 0
-    for appid, info in spy_data.items():
-        name = info["name"]
+        named = 0
+        for appid, info in spy_data.items():
+            name = info["name"]
 
-        if appid in existing_by_id:
-            # Update name if it's a placeholder
-            current_name = existing_by_id[appid]
-            if current_name.startswith("[Steam App "):
-                cur.execute("UPDATE games SET name = ? WHERE app_id = ?", (name, appid))
+            if appid in existing_by_id:
+                # Update name if it's a placeholder
+                current_name = existing_by_id[appid]
+                if current_name.startswith("[Steam App "):
+                    cur.execute("UPDATE games SET name = ? WHERE app_id = ?", (name, appid))
+                    named += 1
+            else:
+                # New game from SteamSpy not in Steam list
+                cur.execute(
+                    "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
+                    (appid, name),
+                )
+                cur.execute(
+                    "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
+                    (appid,),
+                )
+                cur.execute(
+                    "INSERT OR IGNORE INTO graphics_features (app_id) VALUES (?)",
+                    (appid,),
+                )
+                inserted += 1
                 named += 1
-        else:
-            # New game from SteamSpy not in Steam list
-            cur.execute(
-                "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
-                (appid, name),
-            )
-            cur.execute(
-                "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
-                (appid,),
-            )
-            cur.execute(
-                "INSERT OR IGNORE INTO graphics_features (app_id) VALUES (?)",
-                (appid,),
-            )
-            inserted += 1
-            named += 1
+
+        conn.commit()
+        print(f"  Named {named} games from SteamSpy")
+    else:
+        spy_data = {}
+        print("[Phase 2] SKIP — --skip-steamspy flag")
 
     # Resolve placeholder IDs: match negative-ID games by name to real IDs
     cur.execute("SELECT app_id, name FROM games WHERE app_id < 0")
     placeholders = cur.fetchall()
     for old_id, name in placeholders:
         name_lower = name.strip().lower()
-        # Find real ID from SteamSpy data
+        # Find real ID from SteamSpy data (if available)
         real_id = None
         for sid, info in spy_data.items():
             if info["name"].strip().lower() == name_lower:
@@ -298,7 +326,7 @@ def fetch(db_path: Path, api_key: str | None = None,
             resolved += 1
 
     conn.commit()
-    print(f"  Named {named} games, resolved {resolved} placeholder IDs")
+    print(f"  Resolved {resolved} placeholder IDs")
 
     # ── Phase 3: Incremental detail fetch for unnamed games ──
     if not skip_details:
@@ -372,6 +400,8 @@ def main():
     parser = argparse.ArgumentParser(description="Fetch complete Steam game catalog")
     parser.add_argument("--skip-details", action="store_true",
                         help="Skip slow Steam appdetails phase")
+    parser.add_argument("--skip-steamspy", action="store_true",
+                        help="Skip SteamSpy name resolution (~30 min savings)")
     parser.add_argument("--details-limit", type=int, default=MAX_DETAIL_REQUESTS,
                         help=f"Max appdetails requests per run (default: {MAX_DETAIL_REQUESTS})")
     parser.add_argument("--db", type=Path,
@@ -384,7 +414,8 @@ def main():
         print(f"[ERROR] Database not found: {args.db}")
         sys.exit(1)
 
-    fetch(args.db, skip_details=args.skip_details, details_limit=args.details_limit)
+    fetch(args.db, skip_details=args.skip_details, details_limit=args.details_limit,
+          skip_steamspy=args.skip_steamspy)
 
 
 if __name__ == "__main__":

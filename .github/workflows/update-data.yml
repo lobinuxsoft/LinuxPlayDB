@@ -30,25 +30,28 @@ jobs:
         continue-on-error: true
 
       # Step 2: AI research for games missing data (needs GROQ_API_KEY secret)
+      # 50 games/week × ~19s each = ~16 min. Progress persists across runs.
       - name: AI research (Groq + DuckDuckGo)
         if: env.GROQ_API_KEY != ''
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: python scripts/research_with_ai.py --delay 12
+        run: python scripts/research_with_ai.py --limit 50 --delay 15
         continue-on-error: true
-        timeout-minutes: 60
+        timeout-minutes: 25
 
       # Step 3: Build database (Steam + NVIDIA + seed + manual data)
       # STEAM_API_KEY is already in env, build_db.py calls fetch_steam.py
-      # which reads it. SteamSpy phase takes ~30 min (1 req/min, ~27 pages)
+      # which reads it. SteamSpy skipped in CI — IStoreService provides names.
       - name: Build database
+        env:
+          SKIP_STEAMSPY: "1"
         run: python scripts/build_db.py
-        timeout-minutes: 45
+        timeout-minutes: 10
 
       # Step 4: Incremental Steam detail fetch (names for new games)
-      # 500 games per run at ~1.6s each = ~13 min
+      # 500 games per run at ~1.6s each = ~13 min. SteamSpy skipped.
       - name: Fetch Steam game details (incremental)
-        run: python scripts/fetch_steam.py --details-limit 500
+        run: python scripts/fetch_steam.py --skip-steamspy --details-limit 500
         continue-on-error: true
         timeout-minutes: 20
 
@@ -68,3 +71,4 @@ jobs:
             scripts/manual/amd_specific.json
             scripts/manual/linux_commands.json
             scripts/manual/useful_links.json
+            scripts/research_output/progress.json
