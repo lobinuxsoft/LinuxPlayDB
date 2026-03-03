@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS games (
     release_date TEXT,
     genres TEXT,
     steam_url TEXT,
-    header_image TEXT
+    header_image TEXT,
+    short_description TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_games_name ON games(name);
 CREATE INDEX IF NOT EXISTS idx_games_type ON games(type);
@@ -141,9 +142,17 @@ CREATE TABLE IF NOT EXISTS data_sources (
 
 
 def create_schema(db_path: Path) -> None:
-    """Create all tables and indexes."""
+    """Create all tables and indexes. Adds missing columns for upgrades."""
     conn = sqlite3.connect(db_path)
     conn.executescript(SCHEMA)
+
+    # Schema migrations: add columns that may not exist in older DBs
+    cur = conn.cursor()
+    cur.execute("PRAGMA table_info(games)")
+    existing_cols = {row[1] for row in cur.fetchall()}
+    if "short_description" not in existing_cols:
+        cur.execute("ALTER TABLE games ADD COLUMN short_description TEXT")
+
     conn.commit()
     conn.close()
     print(f"[OK] Schema created: {db_path}")
@@ -171,17 +180,25 @@ def load_manual_json(db_path: Path) -> None:
     # AMD specific data
     amd_file = MANUAL_DIR / "amd_specific.json"
     if amd_file.exists():
-        data = json.loads(amd_file.read_text())
+        data = json.loads(amd_file.read_text(encoding="utf-8"))
         updated = 0
         for entry in data.get("games", []):
             app_id = resolve_app_id(entry)
             if not app_id:
                 continue
-            cur.execute(
-                """UPDATE graphics_features SET amd_status = ?, notes_en = COALESCE(?, notes_en)
-                   WHERE app_id = ?""",
-                (entry.get("amd_status"), entry.get("notes_en"), app_id)
-            )
+            rt_override = entry.get("rt_type")
+            if rt_override:
+                cur.execute(
+                    """UPDATE graphics_features SET amd_status = ?, rt_type = ?, notes_en = COALESCE(?, notes_en)
+                       WHERE app_id = ?""",
+                    (entry.get("amd_status"), rt_override, entry.get("notes_en"), app_id)
+                )
+            else:
+                cur.execute(
+                    """UPDATE graphics_features SET amd_status = ?, notes_en = COALESCE(?, notes_en)
+                       WHERE app_id = ?""",
+                    (entry.get("amd_status"), entry.get("notes_en"), app_id)
+                )
             if cur.rowcount > 0:
                 updated += 1
         print(f"[OK] AMD data: {len(data.get('games', []))} entries ({updated} updated)")
@@ -189,7 +206,7 @@ def load_manual_json(db_path: Path) -> None:
     # Linux commands
     cmd_file = MANUAL_DIR / "linux_commands.json"
     if cmd_file.exists():
-        data = json.loads(cmd_file.read_text())
+        data = json.loads(cmd_file.read_text(encoding="utf-8"))
         updated = 0
         for entry in data.get("games", []):
             app_id = resolve_app_id(entry)
@@ -242,7 +259,7 @@ def load_manual_json(db_path: Path) -> None:
     # Useful links
     links_file = MANUAL_DIR / "useful_links.json"
     if links_file.exists():
-        data = json.loads(links_file.read_text())
+        data = json.loads(links_file.read_text(encoding="utf-8"))
         inserted = 0
         for entry in data.get("links", []):
             app_id = resolve_app_id(entry)
@@ -267,7 +284,7 @@ def load_manual_json(db_path: Path) -> None:
     # Handheld compatibility
     handheld_file = MANUAL_DIR / "handheld_compat.json"
     if handheld_file.exists():
-        data = json.loads(handheld_file.read_text())
+        data = json.loads(handheld_file.read_text(encoding="utf-8"))
         for entry in data.get("compat", []):
             cur.execute(
                 """INSERT OR REPLACE INTO device_compat
@@ -491,6 +508,7 @@ def main():
     parser.add_argument("--fetch", action="store_true", help="Fetch from online sources")
     parser.add_argument("--seed-only", action="store_true", help="Only migrate seed data")
     parser.add_argument("--inline-only", action="store_true", help="Only regenerate db_inline.js from existing DB")
+    parser.add_argument("--local-only", action="store_true", help="Skip Steam fetch, rebuild from existing data + manual JSONs")
     args = parser.parse_args()
 
     # Quick path: just regenerate inline JS from existing DB
@@ -511,8 +529,15 @@ def main():
     if tmp_db.exists():
         tmp_db.unlink()
 
-    # Step 1: Create schema
-    create_schema(tmp_db)
+    # --local-only: start from existing DB (preserves Steam/NVIDIA data)
+    if args.local_only and DB_FILE.exists():
+        shutil.copy2(DB_FILE, tmp_db)
+        print(f"[OK] Copied existing DB as base ({DB_FILE.stat().st_size / 1024:.0f} KB)")
+        # Ensure schema is up to date (adds new columns like short_description)
+        create_schema(tmp_db)
+    else:
+        # Step 1: Create schema
+        create_schema(tmp_db)
 
     # Step 2: Migrate seed data
     from migrate_seed import migrate
@@ -520,26 +545,29 @@ def main():
 
     if args.seed_only:
         shutil.move(str(tmp_db), str(DB_FILE))
-        print("[OK] Atomic swap: temp DB → final DB")
+        print("[OK] Atomic swap: temp DB -> final DB")
         print_stats(DB_FILE)
         copy_to_site(DB_FILE)
         print(f"\nDone in {time.time() - start:.1f}s")
         return
 
-    # Step 3: Fetch Steam catalog (needs STEAM_API_KEY for full list)
-    try:
-        from fetch_steam import fetch as fetch_steam
-        skip_spy = os.environ.get("SKIP_STEAMSPY", "").strip() in ("1", "true", "yes")
-        fetch_steam(tmp_db, skip_details=True, skip_steamspy=skip_spy)
-    except Exception as e:
-        print(f"[WARN] Steam fetch failed: {e}")
+    if not args.local_only:
+        # Step 3: Fetch Steam catalog (needs STEAM_API_KEY for full list)
+        try:
+            from fetch_steam import fetch as fetch_steam
+            skip_spy = os.environ.get("SKIP_STEAMSPY", "").strip() in ("1", "true", "yes")
+            fetch_steam(tmp_db, skip_details=True, skip_steamspy=skip_spy)
+        except Exception as e:
+            print(f"[WARN] Steam fetch failed: {e}")
 
-    # Step 4: Fetch NVIDIA RTX database (always — free, no API key)
-    try:
-        from fetch_nvidia import fetch as fetch_nvidia
-        fetch_nvidia(tmp_db)
-    except Exception as e:
-        print(f"[WARN] NVIDIA fetch failed: {e}")
+        # Step 4: Fetch NVIDIA RTX database (always — free, no API key)
+        try:
+            from fetch_nvidia import fetch as fetch_nvidia
+            fetch_nvidia(tmp_db)
+        except Exception as e:
+            print(f"[WARN] NVIDIA fetch failed: {e}")
+    else:
+        print("[SKIP] Steam + NVIDIA fetch (--local-only)")
 
     # Step 5: Load devices
     load_devices(tmp_db)
@@ -556,7 +584,7 @@ def main():
 
     # Atomic swap: replace real DB only after successful build
     shutil.move(str(tmp_db), str(DB_FILE))
-    print("[OK] Atomic swap: temp DB → final DB")
+    print("[OK] Atomic swap: temp DB -> final DB")
 
     # Step 9: Stats
     print_stats(DB_FILE)

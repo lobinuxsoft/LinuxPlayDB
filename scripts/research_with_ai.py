@@ -63,8 +63,13 @@ Analyze the following web search results about the game **{name}** and extract s
    - "amd_ok" = RT and/or PT works correctly on AMD RDNA2+ GPUs
    - "amd_pt" = Path tracing works on AMD but standard RT has issues
    - "amd_rt_only" = Ray tracing works but path tracing does NOT on AMD
-   - "nvidia_only" = RT/PT only works on NVIDIA, crashes or broken on AMD
+   - "nvidia_only" = RT/PT only works on NVIDIA (OptiX, RTX Remix, NVIDIA-exclusive extensions), crashes or broken on AMD
    - "unknown" = Not enough information in the search results
+
+   IMPORTANT classification notes:
+   - Games with custom/proprietary path tracing engines (voxel-based, software GI, etc.) that work on ALL GPUs should be "amd_ok"
+   - Games using RTX Remix, OptiX, or NVIDIA-specific Vulkan RT extensions are "nvidia_only"
+   - If a game has path tracing that works independently of DXR/Vulkan RT hardware (e.g. Teardown, voxel engines), it's "amd_ok"
 
 2. **Linux launch options and environment variables** — any Steam launch options or env vars needed:
    - gamemoderun, mangohud, PROTON_*, VKD3D_*, DXVK_*, RADV_*, MESA_* variables
@@ -78,6 +83,7 @@ RESPOND ONLY with valid JSON (no markdown fences, no explanation, ONLY the JSON 
   "app_id": {app_id},
   "name": "{name}",
   "amd_status": "amd_ok|amd_pt|amd_rt_only|nvidia_only|unknown",
+  "rt_type_override": null,
   "amd_notes_en": "Brief explanation of AMD RT status based on search results",
   "amd_notes_es": "Breve explicación del estado AMD RT",
   "launch_options": null,
@@ -105,6 +111,8 @@ IMPORTANT:
 - useful_links MUST be real URLs from the search results above. Do not invent URLs.
 - Set confidence based on how much relevant information was found.
 - Do NOT extract ProtonDB tier, anti-cheat, or native Linux status — we get those from dedicated APIs.
+- rt_type_override: Set to "pt" if search results confirm the game uses path tracing, global illumination via ray tracing, or voxel-based lighting (even if not DXR/RTX). Set to "rt" if it only has standard ray tracing (reflections, shadows). Leave null ONLY if no RT/PT info found.
+- Many games have path tracing via custom engines (Teardown voxel PT, Minecraft Java shaders, Lumen GI). These MUST get rt_type_override = "pt" because the NVIDIA database does not list them.
 """
 
 
@@ -202,8 +210,9 @@ def _search_with_retry(query: str, max_results: int = 5,
 def search_game(game_name: str) -> str:
     """Search DuckDuckGo for game compatibility info. Returns formatted results."""
     queries = [
-        f"{game_name} AMD ray tracing RDNA Linux vkd3d",
+        f"{game_name} AMD ray tracing path tracing RDNA compatibility",
         f"{game_name} Steam Linux Proton launch options env vars fix",
+        f"{game_name} ray tracing path tracing voxel global illumination engine GPU",
     ]
 
     all_results = []
@@ -319,13 +328,16 @@ def save_results(results: list[dict]) -> None:
 
         # AMD data
         if r.get("amd_status") and r["amd_status"] != "unknown" and app_id not in amd_index:
-            amd_data["games"].append({
+            entry = {
                 "app_id": app_id,
                 "name": r.get("name", ""),
                 "amd_status": r["amd_status"],
                 "notes_en": r.get("amd_notes_en", ""),
                 "notes_es": r.get("amd_notes_es", ""),
-            })
+            }
+            if r.get("rt_type_override"):
+                entry["rt_type"] = r["rt_type_override"]
+            amd_data["games"].append(entry)
             amd_index.add(app_id)
 
         # Linux commands
@@ -438,7 +450,7 @@ def main():
         print("[INFO] No games need research.")
         return
 
-    est_time = len(games) * (args.delay + SEARCH_DELAY * 2 + 2)  # rough estimate
+    est_time = len(games) * (args.delay + SEARCH_DELAY * 3 + 2)  # rough estimate
     print(f"LinuxPlayDB — AI Research ({len(games)} games)")
     print(f"Search: DuckDuckGo (free, no API key)")
     print(f"Analysis: Groq {GROQ_MODEL} (14,400 req/day free)")
