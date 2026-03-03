@@ -281,9 +281,20 @@ body {
   margin-bottom: 0.75rem;
   font-size: 0.7rem;
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lpdb-legend-row {
+  display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
   align-items: center;
+}
+
+.lpdb-legend-row + .lpdb-legend-row {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
 }
 
 .lpdb-legend-title {
@@ -592,6 +603,80 @@ a.badge-linux-maybe:hover { color: var(--cyan); border-color: var(--cyan); backg
   border-bottom: 1px solid var(--border);
 }
 
+/* ── Pagination ── */
+.lpdb-pagination-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.lpdb-pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.lpdb-page-btn {
+  padding: 0.3rem 0.5rem;
+  min-width: 2rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  transition: all 0.15s;
+  font-family: var(--font-sans);
+  text-align: center;
+}
+
+.lpdb-page-btn:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
+
+.lpdb-page-btn--active {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.lpdb-page-btn:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.lpdb-page-ellipsis {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  padding: 0 0.25rem;
+  user-select: none;
+}
+
+.lpdb-page-size {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.lpdb-page-size-select {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  outline: none;
+}
+
+.lpdb-page-size-select:focus { border-color: var(--cyan); }
+
 /* ── Loading Overlay ── */
 .lpdb-loading {
   display: flex;
@@ -673,6 +758,64 @@ a.badge-linux-maybe:hover { color: var(--cyan); border-color: var(--cyan); backg
   to { opacity: 0; transform: translateY(1rem); }
 }
 
+/* ── Help Panel ── */
+.lpdb-help summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--orange);
+  font-size: 0.85rem;
+}
+
+.lpdb-help-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.lpdb-help-item {
+  padding: 0.5rem 0.6rem;
+  background: var(--surface2);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.lpdb-help-item strong {
+  display: block;
+  color: var(--cyan);
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.lpdb-help-item p {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+/* ── Focus Visible ── */
+.lpdb-chip:focus-visible,
+.lpdb-btn:focus-visible,
+.lpdb-search:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* ── Scroll Hint ── */
+.lpdb-scroll-hint {
+  display: none;
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  padding: 0.3rem 0;
+  animation: lpdb-pulse 1.5s ease-in-out 3;
+}
+
+@keyframes lpdb-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .lpdb-container { padding: 0.5rem; }
@@ -681,12 +824,31 @@ a.badge-linux-maybe:hover { color: var(--cyan); border-color: var(--cyan); backg
   .lpdb-bazzite-grid { grid-template-columns: 1fr; }
   .lpdb-header { flex-direction: column; }
   .lpdb-game-name { max-width: 200px; }
+  .lpdb-cmd { font-size: 0.85rem; }
+  .lpdb-stats { flex-wrap: nowrap; overflow-x: auto; }
+  .lpdb-help-grid { grid-template-columns: 1fr; }
+  .lpdb-scroll-hint { display: block; }
+  .lpdb-pagination-wrap { flex-direction: column; align-items: center; }
+  .lpdb-pagination { justify-content: center; flex-wrap: wrap; }
+  .lpdb-page-size { justify-content: center; }
+  .lpdb-table-wrap { position: relative; }
+  .lpdb-table-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 24px;
+    background: linear-gradient(to right, transparent, var(--bg));
+    pointer-events: none;
+    z-index: 5;
+  }
 }
 
 @media print {
   body { background: white; color: black; }
   .lpdb-filters, .lpdb-actions, .lpdb-search, .lpdb-bazzite,
-  .lpdb-header-actions, .lpdb-legend { display: none; }
+  .lpdb-header-actions, .lpdb-legend, .lpdb-pagination-wrap { display: none; }
   .lpdb-title { -webkit-text-fill-color: #333; background: none; }
   .lpdb-table th { position: static; }
 }

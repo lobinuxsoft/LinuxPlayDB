@@ -13,6 +13,8 @@ const LPDB_Filters = (() => {
     deck: "all",
     sortKey: "name",
     sortAsc: true,
+    page: 1,
+    pageSize: 25,
   };
 
   const chipStyles = {
@@ -31,11 +33,13 @@ const LPDB_Filters = (() => {
     const value = el.dataset.value;
     state[group] = value;
 
-    // Update chip visual state
+    // Update chip visual state and aria-pressed
     document.querySelectorAll(`.lpdb-chip[data-group="${group}"]`).forEach((c) => {
       c.className = "lpdb-chip";
+      c.setAttribute("aria-pressed", "false");
     });
     el.classList.add(chipStyles[group] || "active");
+    el.setAttribute("aria-pressed", "true");
 
     apply();
   }
@@ -50,17 +54,20 @@ const LPDB_Filters = (() => {
     if (idx >= 0) {
       state.tech.splice(idx, 1);
       el.className = "lpdb-chip";
+      el.setAttribute("aria-pressed", "false");
     } else {
       state.tech.push(value);
       el.classList.add("active-purple");
+      el.setAttribute("aria-pressed", "true");
     }
     apply();
   }
 
   /**
    * Apply all current filters and re-render.
+   * @param {boolean} resetPage - Reset to page 1 (default true, false for page navigation)
    */
-  function apply() {
+  function apply(resetPage = true) {
     state.search = (document.getElementById("searchInput").value || "").trim();
 
     const filters = {
@@ -74,22 +81,54 @@ const LPDB_Filters = (() => {
       sortAsc: state.sortAsc,
     };
 
-    const games = LPDB_DB.getGames(filters);
+    const allGames = LPDB_DB.getGames(filters);
     const stats = {
-      total: games.length,
-      pt: games.filter((g) => g.rt_type === "pt").length,
-      amd: games.filter((g) => ["amd_ok", "amd_pt", "amd_rt_only"].includes(g.amd_status)).length,
-      broken: games.filter((g) => g.linux_status === "broken").length,
-      cmd: games.filter((g) => g.linux_status === "cmd").length,
-      fsr4: games.filter((g) => g.fsr4 === 1).length,
+      total: allGames.length,
+      pt: allGames.filter((g) => g.rt_type === "pt").length,
+      amd: allGames.filter((g) => ["amd_ok", "amd_pt", "amd_rt_only"].includes(g.amd_status)).length,
+      broken: allGames.filter((g) => g.linux_status === "broken").length,
+      cmd: allGames.filter((g) => g.linux_status === "cmd").length,
+      fsr4: allGames.filter((g) => g.fsr4 === 1).length,
     };
 
-    LPDB_Render.renderTable(games);
-    LPDB_Render.updateStats(stats);
-    LPDB_Render.updateResultsCount(games.length, LPDB_DB.scalar("SELECT COUNT(*) FROM games"));
+    // Pagination
+    if (resetPage) state.page = 1;
+    const totalPages = Math.max(1, Math.ceil(allGames.length / state.pageSize));
+    if (state.page > totalPages) state.page = totalPages;
 
-    // Store for export
-    LPDB._currentGames = games;
+    const start = (state.page - 1) * state.pageSize;
+    const end = Math.min(start + state.pageSize, allGames.length);
+    const pageGames = allGames.slice(start, end);
+
+    LPDB_Render.renderTable(pageGames);
+    LPDB_Render.updateStats(stats);
+
+    const dbTotal = LPDB_DB.scalar("SELECT COUNT(*) FROM games");
+    LPDB_Render.updateResultsCount(allGames.length, dbTotal, state.page, totalPages, allGames.length > 0 ? start + 1 : 0, end);
+    LPDB_Render.renderPagination(state.page, totalPages, state.pageSize);
+
+    // Store full filtered set for export, page slice for expandAll
+    LPDB._currentGames = allGames;
+    LPDB._currentPageGames = pageGames;
+  }
+
+  /**
+   * Navigate to a specific page.
+   * @param {number} page
+   */
+  function setPage(page) {
+    state.page = page;
+    apply(false);
+  }
+
+  /**
+   * Change page size and reset to page 1.
+   * @param {number} size
+   */
+  function setPageSize(size) {
+    state.pageSize = size;
+    state.page = 1;
+    apply(false);
   }
 
   /**
@@ -100,5 +139,5 @@ const LPDB_Filters = (() => {
     return { ...state };
   }
 
-  return { state, set, toggle, apply, getState };
+  return { state, set, toggle, apply, setPage, setPageSize, getState };
 })();

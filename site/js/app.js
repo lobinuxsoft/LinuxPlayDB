@@ -5,6 +5,7 @@
 
 const LPDB = (() => {
   let _currentGames = [];
+  let _currentPageGames = [];
 
   /**
    * Initialize the application.
@@ -84,7 +85,7 @@ const LPDB = (() => {
    * Expand all visible rows.
    */
   function expandAll() {
-    LPDB_Render.expandAll(_currentGames);
+    LPDB_Render.expandAll(_currentPageGames);
   }
 
   /**
@@ -179,8 +180,18 @@ const LPDB = (() => {
     i18n: LPDB_i18n,
     get _currentGames() { return _currentGames; },
     set _currentGames(v) { _currentGames = v; },
+    get _currentPageGames() { return _currentPageGames; },
+    set _currentPageGames(v) { _currentPageGames = v; },
   };
 })();
+
+// Keyboard support: Enter/Space activates chips
+document.addEventListener("keydown", (e) => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("lpdb-chip")) {
+    e.preventDefault();
+    e.target.click();
+  }
+});
 
 // Boot
 document.addEventListener("DOMContentLoaded", LPDB.init);
