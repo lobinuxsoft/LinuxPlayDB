@@ -158,8 +158,11 @@ const LPDB_Render = (() => {
     }
     html += `</div>`;
 
-    // Right column: notes, links, devices
+    // Right column: description, notes, links, devices
     html += `<div>`;
+    if (g.short_description) {
+      html += `<div class="lpdb-detail-desc">${esc(g.short_description)}</div>`;
+    }
     if (notes) {
       html += `<h4>${LPDB_i18n.t("detail_notes")}</h4>`;
       html += `<div class="lpdb-detail-note">${esc(notes)}</div>`;
@@ -184,7 +187,7 @@ const LPDB_Render = (() => {
 
     // Fallback: if both columns are empty, show a helpful message
     const hasLeftCol = g.launch_options || g.env_vars || g.proton_version || g.protondb_tier || g.deck_status || g.fsr4 || g.anticheat;
-    const hasRightCol = notes || links.length > 0 || deviceCompat.length > 0;
+    const hasRightCol = g.short_description || notes || links.length > 0 || deviceCompat.length > 0;
     if (!hasLeftCol && !hasRightCol) {
       const pdbUrl = `https://www.protondb.com/search?q=${encodeURIComponent(g.name || "")}`;
       const pcgwUrl = `https://www.pcgamingwiki.com/w/index.php?search=${encodeURIComponent(g.name || "")}`;

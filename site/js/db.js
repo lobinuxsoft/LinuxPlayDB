@@ -115,7 +115,7 @@ const LPDB_DB = (() => {
     if (filters.amd === "ok") {
       where.push("gf.amd_status IN ('amd_ok', 'amd_pt', 'amd_rt_only')");
     } else if (filters.amd === "pt") {
-      where.push("gf.amd_status = 'amd_pt'");
+      where.push("gf.amd_status IN ('amd_ok', 'amd_pt') AND gf.rt_type = 'pt'");
     } else if (filters.amd === "nvidia_only") {
       where.push("gf.amd_status = 'nvidia_only'");
     }
@@ -142,7 +142,7 @@ const LPDB_DB = (() => {
 
     return query(`
       SELECT
-        g.app_id, g.name, g.steam_url, g.header_image,
+        g.app_id, g.name, g.steam_url, g.header_image, g.short_description,
         gf.rt_type, gf.dlss_sr, gf.dlss_fg, gf.dlss_rr, gf.dlss_mfg,
         gf.dlaa, gf.fsr4, gf.fsr3, gf.fsr2, gf.xess,
         gf.amd_status, gf.notes_en AS gf_notes_en, gf.notes_es AS gf_notes_es,

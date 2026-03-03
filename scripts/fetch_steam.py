@@ -347,10 +347,11 @@ def fetch(db_path: Path, api_key: str | None = None,
                 if data:
                     name = data.get("name", "").strip()
                     app_type = data.get("type", "game")
+                    short_desc = data.get("short_description", "").strip() or None
                     if name:
                         cur.execute(
-                            "UPDATE games SET name = ?, type = ? WHERE app_id = ?",
-                            (name, app_type, appid),
+                            "UPDATE games SET name = ?, type = ?, short_description = COALESCE(?, short_description) WHERE app_id = ?",
+                            (name, app_type, short_desc, appid),
                         )
                         # If it's not a game (DLC, demo, etc.), mark it
                         if app_type not in ("game",):

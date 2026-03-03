@@ -21111,6 +21111,46 @@
       "title_es": "Guía de juego en Linux - RoadCraft",
       "source": "focus-entmt",
       "link_type": "guide"
+    },
+    {
+      "app_id": 1167630,
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2394219703",
+      "title_en": "How to play Teardown on Linux (Full Setup, Crashes & Bugs Solutions)",
+      "title_es": "Cómo jugar Teardown en Linux (Configuración completa, problemas de estabilidad y soluciones)",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1167630,
+      "url": "https://steamsolo.com/guide/how-to-play-teardown-on-linux-full-setup-crashes-bugs-solutions-teardown/",
+      "title_en": "How to play Teardown on Linux (Full Setup, Crashes & Bugs Solutions)",
+      "title_es": "Cómo jugar Teardown en Linux (Configuración completa, problemas de estabilidad y soluciones)",
+      "source": "steam",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 1167630,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/110rzd9/setting_env_variables_for_proton_on_steam/",
+      "title_en": "Setting Env Variables for Proton on Steam",
+      "title_es": "Configuración de variables de entorno para Proton en Steam",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 1167630,
+      "url": "https://drraccoony.github.io/protonLaunParam/",
+      "title_en": "Proton Launch Parameter Wizard",
+      "title_es": "Asistente de parámetros de lanzamiento de Proton",
+      "source": "github",
+      "link_type": "fix"
+    },
+    {
+      "app_id": 1167630,
+      "url": "https://www.protondb.com/help/improving-performance",
+      "title_en": "Improving Performance - ProtonDB",
+      "title_es": "Mejorar el rendimiento - ProtonDB",
+      "source": "protondb",
+      "link_type": "fix"
     }
   ]
 }
