@@ -23,15 +23,11 @@
     {
       "app_id": -646526,
       "name": "Alan Wake 2",
-      "launch_options": "Works flawlessly using Gallium Nine standalone (no glitches or corrupted textures/ilumination). As previously mentioned, \"DXVK_HUD=1 %command%",
-      "env_vars": {
-        "PROTON_USE_D9VK": "1",
-        "DXVK_HUD": "1",
-        "WINEPREFIX": "'~/.steam/steam/steamapps/compatdata/108710/'"
-      },
-      "proton_version": "Proton-GE",
-      "notes_en": "The game can be played on Linux using Proton-GE, but no native support",
-      "notes_es": "El juego se puede jugar en Linux utilizando Proton-GE, pero no hay soporte nativo"
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "GE-Proton",
+      "notes_en": "Playable on Linux with GE-Proton. No native support.",
+      "notes_es": "Jugable en Linux con GE-Proton. Sin soporte nativo."
     },
     {
       "app_id": 1926520,
@@ -73,7 +69,7 @@
     {
       "app_id": 1808500,
       "name": "ARC Raiders",
-      "launch_options": "~/lsfg %command%",
+      "launch_options": "PROTON_ENABLE_WAYLAND=1 %command%",
       "env_vars": {
         "PROTON_ENABLE_WAYLAND": "1"
       },
@@ -160,12 +156,10 @@
       "name": "Assetto Corsa Rally",
       "launch_options": "-dx11",
       "env_vars": {
-        "PROTON_FSR4_UPGRADE": "1",
-        "DXIL_SPIRV_CONFIG": "wmma_rdna3_workaround",
         "RADV_PERFTEST": "rt",
         "VKD3D_CONFIG": "dxr"
       },
-      "proton_version": "Proton 6.3-8",
+      "proton_version": "Proton Experimental",
       "notes_en": "Game works on Proton with specific launch options and environment variables.",
       "notes_es": "El juego funciona en Proton con opciones de lanzamiento y variables de entorno específicas."
     },
@@ -280,8 +274,7 @@
       "launch_options": "gamemoderun %command%",
       "env_vars": {
         "PROTON_NO_FSYNC": "1",
-        "PROTON_NO_ESYNC": "1",
-        "PROTON_NO_GLSYNC": "1"
+        "PROTON_NO_ESYNC": "1"
       },
       "proton_version": "Proton 9.0-2",
       "notes_en": "Blood Bowl 3 has compatibility issues on Linux, but can be fixed with launch options.",
@@ -290,7 +283,7 @@
     {
       "app_id": 2406770,
       "name": "Bodycam",
-      "launch_options": "-dx11 -NoLevelStreaming -high -USEALLAVAILABLECORES -maxqualitymode -ViewDistanceScale=3 -NoCull -fullscreen",
+      "launch_options": "-dx11",
       "env_vars": {
         "RADV_PERFTEST": "emulate_rt",
         "VKD3D_CONFIG": "dxr"
@@ -361,15 +354,14 @@
     {
       "app_id": -624898,
       "name": "Call of Duty: Warzone (2022)",
-      "launch_options": "-force-proton -force-d9vkht",
+      "launch_options": null,
       "env_vars": {
         "PROTON_NO_FSYNC": "1",
-        "PROTON_NO_ESYNC": "1",
-        "PROTON_NO_SECCOMP": "1"
+        "PROTON_NO_ESYNC": "1"
       },
       "proton_version": "GE-Proton",
-      "notes_en": "For a year or two, I kept reading reddit posts about how easy it was to get games running on Linux with Wine/Proton and about a month ago I bit the bullet and switched my hackintosh install to EndeavourOS (F You Microsoft!!!).",
-      "notes_es": "Durante un año o dos, leí posts de reddit sobre cómo fácil era obtener juegos funcionando en Linux con Wine/Proton y hace un mes que me decidí a cambiar mi instalación hackintosh a EndeavourOS (F You Microsoft!!!)."
+      "notes_en": "May require GE-Proton and disabling fsync/esync. Anti-cheat may block Linux entirely.",
+      "notes_es": "Puede requerir GE-Proton y deshabilitar fsync/esync. El anti-cheat puede bloquear Linux completamente."
     },
     {
       "app_id": 3115010,
@@ -553,10 +545,8 @@
     {
       "app_id": -903152,
       "name": "Dead Space",
-      "launch_options": "WINEDLLOVERRIDES=dxgi=n,b %COMMAND%",
-      "env_vars": {
-        "DXVK_FRAME_RATE": "1 digit less than your screens refresh rate"
-      },
+      "launch_options": "WINEDLLOVERRIDES=dxgi=n,b %command%",
+      "env_vars": {},
       "proton_version": "Proton Experimental",
       "notes_en": "To launch the game on Steam Deck or Linux, set the game's compatibility tool to Proton Experimental in the Steam properties.",
       "notes_es": "Para lanzar el juego en Steam Deck o Linux, establezca la herramienta de compatibilidad del juego en Proton Experimental en las propiedades de Steam."
@@ -616,11 +606,11 @@
     {
       "app_id": 428660,
       "name": "Deliver Us The Moon",
-      "launch_options": "DXVK_CONFIG_FILE=\"/path/to/dxvk.conf\" %command%",
-      "env_vars": {
-        "DXVK_CONFIG_FILE": "\"/path/to/dxvk.conf\""
-      },
-      "proton_version": "Beta (3.16-3)"
+      "launch_options": null,
+      "env_vars": {},
+      "proton_version": "Proton Experimental",
+      "notes_en": "May require a custom dxvk.conf for RT stability. Check PCGamingWiki for details.",
+      "notes_es": "Puede requerir un dxvk.conf personalizado para estabilidad de RT. Consulta PCGamingWiki para detalles."
     },
     {
       "app_id": -229151,
@@ -798,7 +788,7 @@
     {
       "app_id": -871933,
       "name": "Everspace 2",
-      "launch_options": "dx11",
+      "launch_options": "-dx11",
       "env_vars": {},
       "proton_version": null,
       "notes_en": "Everspace 2 works on Linux with Proton, but may require setting dx11 in Steam launch options.",
@@ -832,12 +822,11 @@
       "name": "F1 2021",
       "launch_options": "-force-d3d11",
       "env_vars": {
-        "PROTON_NO_ESYNC": "1",
-        "PROTON_NO_GLSL_SHADERS": "1"
+        "PROTON_NO_ESYNC": "1"
       },
       "proton_version": "GE-Proton",
-      "notes_en": "F1 2021 works with Proton Experimental and -force-d3d11 launch option.",
-      "notes_es": "F1 2021 funciona con Proton Experimental y el lanzamiento de opción -force-d3d11."
+      "notes_en": "F1 2021 works with GE-Proton and -force-d3d11 launch option.",
+      "notes_es": "F1 2021 funciona con GE-Proton y la opcion de lanzamiento -force-d3d11."
     },
     {
       "app_id": -175067,
@@ -884,9 +873,8 @@
     {
       "app_id": 747660,
       "name": "Five Nights At Freddy's: Security Breach",
-      "launch_options": "-dx11 gamemoderun -dx11 DXVK_HUD=1 WINE_FULLSCREEN_FSR=1 WINE_FULLSCREEN_FSR_STRENGTH=1 %command%",
+      "launch_options": "gamemoderun %command% -dx11",
       "env_vars": {
-        "DXVK_HUD": "1",
         "WINE_FULLSCREEN_FSR": "1",
         "WINE_FULLSCREEN_FSR_STRENGTH": "1"
       },
@@ -1005,20 +993,19 @@
     {
       "app_id": -668307,
       "name": "Grand Theft Auto III - The Definitive Edition",
-      "launch_options": "-force-rendering -force-d3d11 -force-vulkan",
+      "launch_options": null,
       "env_vars": {
         "PROTON_NO_FSYNC": "1",
-        "PROTON_NO_ESYNC": "1",
-        "PROTON_NO_GLSL_SHADERS": "1"
+        "PROTON_NO_ESYNC": "1"
       },
       "proton_version": "GE-Proton",
-      "notes_en": "Forced compatibility for Proton 4.11-13 with Definitive Edition, Natural HD Textures, Xbox Version HD, and skip intro mods. The game loads to a black screen.",
-      "notes_es": "Compatibilidad forzada para Proton 4.11-13 con Definitive Edition, Natural HD Textures, Xbox Version HD, y skip intro mods. El juego carga a una pantalla negra."
+      "notes_en": "May load to a black screen. Try GE-Proton with fsync/esync disabled.",
+      "notes_es": "Puede cargar a pantalla negra. Probar GE-Proton con fsync/esync deshabilitados."
     },
     {
       "app_id": -448320,
       "name": "Grand Theft Auto V Enhanced",
-      "launch_options": "SteamDeck=1",
+      "launch_options": "SteamDeck=1 %command%",
       "env_vars": {},
       "proton_version": "GE-Proton",
       "notes_en": "Proton Experimental adds fixes for GTA V Enhanced. Proton 10.0 beta brings enhanced game compatibility and fixes to Steam Deck and Linux.",
@@ -1191,8 +1178,8 @@
       "launch_options": null,
       "env_vars": {},
       "proton_version": "GE-Proton",
-      "notes_en": "The Demo of NFSU2 on UE5 is fully compatible with Linux on Wine/Proton, I'm running it under Bottles with no issues on ProtonGE 9-25.",
-      "notes_es": "El Demo de NFSU2 en UE5 es compatible completamente con Linux en Wine/Proton, estoy ejecutándolo bajo Bottles sin problemas en ProtonGE 9-25."
+      "notes_en": "May work with GE-Proton. Check ProtonDB for latest reports.",
+      "notes_es": "Puede funcionar con GE-Proton. Consulta ProtonDB para reportes recientes."
     },
     {
       "app_id": 2239710,
@@ -1349,11 +1336,10 @@
     {
       "app_id": 2058190,
       "name": "Lost Judgment",
-      "launch_options": "-force-d3d11 -force-vulkan",
+      "launch_options": "-force-d3d11",
       "env_vars": {
         "PROTON_NO_FSYNC": "1",
-        "PROTON_NO_ESYNC": "1",
-        "PROTON_NO_GLSL_SHADERS": "1"
+        "PROTON_NO_ESYNC": "1"
       },
       "proton_version": "GE-Proton 10-17",
       "notes_en": "Launch issues on Linux with Proton, fixed with GE-Proton 10-17 and launch options.",
@@ -1369,13 +1355,13 @@
     {
       "app_id": -802230,
       "name": "Marvel's Avengers",
-      "launch_options": "STEAMDECK=1 %command%",
+      "launch_options": "SteamDeck=1 %command%",
       "env_vars": {
-        "STEAMDECK": "1"
+        "SteamDeck": "1"
       },
       "proton_version": "GE-Proton",
-      "notes_en": "Marvel Rivals requires STEAMDECK=1 launch option to work on Linux, according to Steam Community and Reddit posts.",
-      "notes_es": "Marvel Rivals requiere la opción de lanzamiento STEAMDECK=1 para funcionar en Linux, según posts de Steam Community y Reddit."
+      "notes_en": "May require SteamDeck=1 launch option to work on Linux.",
+      "notes_es": "Puede requerir la opcion de lanzamiento SteamDeck=1 para funcionar en Linux."
     },
     {
       "app_id": 1088850,
@@ -1424,9 +1410,7 @@
       "app_id": -659388,
       "name": "Metro Exodus",
       "launch_options": null,
-      "env_vars": {
-        "WINEPREFIX": "/home/xnick26/.local/share/Steam/steamapps/compatdata/412020/pfx"
-      },
+      "env_vars": {},
       "proton_version": "GE-Proton",
       "notes_en": "Metro Exodus Enhanced Edition brings a number of updates to the Ray Tracing implementation seen in the initial PC release of Metro Exodus and its subsequent DLCs.",
       "notes_es": "Metro Exodus Enhanced Edition trae una serie de actualizaciones en la implementación del ray tracing vista en la primera versión de PC de Metro Exodus y sus DLC posteriores."
@@ -1437,8 +1421,7 @@
       "launch_options": "VKD3D_CONFIG=dxr11 PROTON_ENABLE_NVAPI=1 gamescope -H 1440 -f -- %command%",
       "env_vars": {
         "VKD3D_CONFIG": "dxr11",
-        "PROTON_ENABLE_NVAPI": "1",
-        "gamescope": "-H 1440 -f"
+        "PROTON_ENABLE_NVAPI": "1"
       },
       "proton_version": "GE-Proton",
       "notes_en": "The game allows to skip intro video by pressing E. To always skip them, follow these instructions. Enable manual saving in Ranger mode. The game only saves at certain checkpoints or after sleeping (note the save icon in the bottom right corner).",
@@ -1447,7 +1430,7 @@
     {
       "app_id": -103948,
       "name": "Microsoft Flight Simulator 2024",
-      "launch_options": "WINEDLLOVERRIDES=urlmon,wininet,mshtml=n,b - Improves compatibility with Wine-based software. PROTON_NO_ESYNC=1 PROTON_NO_FSYNC=1 - Enhances performance by disabling certain sync features",
+      "launch_options": "WINEDLLOVERRIDES=urlmon,wininet,mshtml=n,b PROTON_NO_ESYNC=1 PROTON_NO_FSYNC=1 %command%",
       "env_vars": {
         "PROTON_NO_ESYNC": "1",
         "PROTON_NO_FSYNC": "1"
@@ -1474,9 +1457,7 @@
       "app_id": 1971870,
       "name": "Mortal Kombat 1",
       "launch_options": "-dx11",
-      "env_vars": {
-        "VKD3D_RENDERER": "VKD3D_RAY_TRACING"
-      },
+      "env_vars": {},
       "proton_version": "GE-Proton 10-10",
       "notes_en": "Limiting the game to physical cores fixes the performance issue on Linux without BIOS changes.",
       "notes_es": "Limitar el juego a núcleos físicos resuelve el problema de rendimiento en Linux sin cambios de BIOS."
@@ -1509,7 +1490,7 @@
     {
       "app_id": 1203220,
       "name": "NARAKA: BLADEPOINT",
-      "launch_options": "gamemoderun, PROTON_ENABLE_NVAPI=1, DXVK_ASYNC=1",
+      "launch_options": "PROTON_ENABLE_NVAPI=1 gamemoderun %command%",
       "env_vars": {
         "WINEFSYNC": "1"
       },
@@ -1568,13 +1549,10 @@
       "app_id": 1939970,
       "name": "Nobody Wants to Die",
       "launch_options": null,
-      "env_vars": {
-        "PROTON_FSR4_UPGRADE": "1",
-        "DXIL_SPIRV_CONFIG": "wmma_rdna3_workaround"
-      },
-      "proton_version": "Proton 4.2-2",
-      "notes_en": "Uses Proton 4.2-2, FSR4 upgrade works.",
-      "notes_es": "Utiliza Proton 4.2-2, la actualización FSR4 funciona."
+      "env_vars": {},
+      "proton_version": "Proton Experimental",
+      "notes_en": "Works with Proton Experimental. FSR4 available via PROTON_FSR4_UPGRADE=1 on RDNA4.",
+      "notes_es": "Funciona con Proton Experimental. FSR4 disponible via PROTON_FSR4_UPGRADE=1 en RDNA4."
     },
     {
       "app_id": -820627,
@@ -1613,7 +1591,7 @@
       "launch_options": "-USEALLAVAILABLECORES -nomansky",
       "env_vars": {
         "PROTON_NO_FSYNC": "1",
-        "PROTON_USE_WINED3D11": "1"
+        "PROTON_USE_WINED3D": "1"
       },
       "proton_version": "GE-Proton",
       "notes_en": "Palworld works on Linux with Proton, some users report issues with integrated graphics.",
@@ -1736,10 +1714,8 @@
       "app_id": 883710,
       "name": "Resident Evil 2",
       "launch_options": null,
-      "env_vars": {
-        "WINEPREFIX": "\"/home/your"
-      },
-      "proton_version": "4.2-9"
+      "env_vars": {},
+      "proton_version": "Proton Experimental"
     },
     {
       "app_id": 952060,
@@ -2039,7 +2015,7 @@
     {
       "app_id": 236390,
       "name": "War Thunder",
-      "launch_options": "gamemoderun \"/mx500/SteamLibrary/steamapps/common/War Thunder/win64/aces.exe\" %command%",
+      "launch_options": "gamemoderun %command%",
       "env_vars": {},
       "proton_version": "4.11-7"
     },
@@ -2060,9 +2036,11 @@
     {
       "app_id": 1056960,
       "name": "Wolfenstein: Youngblood",
-      "launch_options": "Radeon VII user listen!  RADV with LLVM or ACO both have very low frame-rate and are unplayable even on ultra what is far from the highest setting. Install AMDs AMDVLK and set the launch command to \"VK_ICD_FILENAMES=\"/etc/vulkan/icd.d/amd_icd64.json\"  %command%",
+      "launch_options": null,
       "env_vars": {},
-      "proton_version": "4.2-9"
+      "proton_version": "Proton Experimental",
+      "notes_en": "Radeon VII may need AMDVLK driver instead of RADV for acceptable performance. Set AMD_VULKAN_ICD=AMDVLK if RADV has low framerates.",
+      "notes_es": "Radeon VII puede necesitar el driver AMDVLK en vez de RADV para rendimiento aceptable. Configurar AMD_VULKAN_ICD=AMDVLK si RADV tiene bajo framerate."
     },
     {
       "app_id": 936720,

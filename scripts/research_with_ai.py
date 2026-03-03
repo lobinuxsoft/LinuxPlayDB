@@ -113,6 +113,17 @@ IMPORTANT:
 - Do NOT extract ProtonDB tier, anti-cheat, or native Linux status — we get those from dedicated APIs.
 - rt_type_override: Set to "pt" if search results confirm the game uses path tracing, global illumination via ray tracing, or voxel-based lighting (even if not DXR/RTX). Set to "rt" if it only has standard ray tracing (reflections, shadows). Leave null ONLY if no RT/PT info found.
 - Many games have path tracing via custom engines (Teardown voxel PT, Minecraft Java shaders, Lumen GI). These MUST get rt_type_override = "pt" because the NVIDIA database does not list them.
+
+STRICT RULES for launch_options and env_vars:
+- launch_options MUST be actual commands, NOT prose or forum comments. Never paste sentences.
+- launch_options containing env vars MUST end with %command% (lowercase, not %COMMAND%).
+- env_vars keys MUST be real environment variables (PROTON_*, VKD3D_*, DXVK_*, RADV_*, MESA_*, WINE*, AMD_VULKAN_ICD, SteamDeck). Do NOT invent variable names.
+- env_vars values MUST be actual values (numbers, strings), NEVER natural language descriptions.
+- Do NOT include user-specific paths (/home/username/*, ~/custom_tool, /mnt/drive/).
+- Do NOT include third-party tools (lsfg, custom scripts) — only standard Linux gaming stack.
+- Do NOT mix comma-separated options. Use space separation.
+- The variable PROTON_NO_GLSL_SHADERS does not exist. Do not use it.
+- gamescope is a COMMAND, not an env var. Put it in launch_options, not env_vars.
 """
 
 
@@ -306,6 +317,153 @@ def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None
     return None
 
 
+# ── Post-LLM Validation ──────────────────────────────────────────────
+
+# Known-good env var prefixes. Anything outside this list is suspect.
+VALID_ENV_PREFIXES = (
+    "PROTON_", "VKD3D_", "DXVK_", "RADV_", "MESA_", "WINE", "AMD_VULKAN_ICD",
+    "ENABLE_VKBASALT", "MANGOHUD", "DXIL_SPIRV_", "STEAM_COMPAT_",
+    "SteamDeck", "DISABLE_LAYER_", "LD_PRELOAD", "LD_LIBRARY_PATH",
+    "__GL_", "__NV_",
+)
+
+# Known-fake variables that Groq loves to invent.
+BLACKLISTED_VARS = {
+    "PROTON_NO_GLSL_SHADERS", "PROTON_NO_GLSYNC", "PROTON_USE_WINED3D11",
+    "VKD3D_RENDERER", "PROTON_NO_SECCOMP",
+}
+
+
+def validate_result(data: dict) -> dict:
+    """Sanitize a single Groq result, fixing or removing bad data.
+
+    Returns the cleaned dict. Logs every correction so we can audit.
+    """
+    name = data.get("name", "?")
+    fixes = []
+
+    # ── launch_options ────────────────────────────────────────────
+    lo = data.get("launch_options")
+    if lo and isinstance(lo, str):
+        # Reject prose: sentences with periods, very long without %command%
+        if ". " in lo and len(lo) > 60:
+            fixes.append(f"launch_options: removed prose ({lo[:50]}...)")
+            data["launch_options"] = None
+
+        # Reject user-specific paths
+        elif re.search(r"(/home/\w|~/\w|/[a-zA-Z0-9]+/SteamLibrary)", lo):
+            fixes.append(f"launch_options: removed user path ({lo[:50]}...)")
+            data["launch_options"] = None
+
+        # Reject hallucinated flags
+        elif re.search(r"-force-d9vk|-force-proton", lo, re.IGNORECASE):
+            fixes.append(f"launch_options: removed hallucinated flags ({lo})")
+            data["launch_options"] = None
+
+        # Fix %COMMAND% → %command%
+        elif "%COMMAND%" in lo:
+            data["launch_options"] = lo.replace("%COMMAND%", "%command%")
+            fixes.append("launch_options: fixed %COMMAND% -> %command%")
+
+        # Fix comma-separated options → space-separated
+        elif ", " in lo and "%" not in lo:
+            data["launch_options"] = lo.replace(", ", " ") + " %command%"
+            fixes.append("launch_options: fixed comma separation, added %command%")
+
+        # Ensure %command% present when launch_options has env vars
+        elif "=" in lo and "%command%" not in lo.lower():
+            data["launch_options"] = lo + " %command%"
+            fixes.append("launch_options: appended missing %command%")
+
+        # Fix missing dash on game flags like "dx11" → "-dx11"
+        elif re.match(r"^(dx\d+|vulkan|d3d\d+|opengl)$", lo, re.IGNORECASE):
+            data["launch_options"] = f"-{lo}"
+            fixes.append(f"launch_options: added missing dash (-{lo})")
+
+        # Reject destructive UE debug flags
+        if data.get("launch_options") and isinstance(data["launch_options"], str):
+            bad_flags = ["-NoCull", "-NoLevelStreaming", "-maxqualitymode",
+                         "-ViewDistanceScale="]
+            for flag in bad_flags:
+                if flag in data["launch_options"]:
+                    # Strip individual bad flags, keep good ones
+                    parts = data["launch_options"].split()
+                    cleaned = [p for p in parts if not any(p.startswith(f) for f in bad_flags)]
+                    data["launch_options"] = " ".join(cleaned) if cleaned else None
+                    fixes.append(f"launch_options: stripped destructive UE flags")
+                    break
+
+    # ── env_vars ──────────────────────────────────────────────────
+    env = data.get("env_vars")
+    if env and isinstance(env, dict):
+        to_remove = []
+        for key, val in list(env.items()):
+            # Remove blacklisted (known-fake) vars
+            if key in BLACKLISTED_VARS:
+                to_remove.append(key)
+                fixes.append(f"env_vars: removed fake var {key}")
+                continue
+
+            # Remove vars that aren't env vars (tools used as keys)
+            if key.lower() in ("gamescope", "mangohud", "gamemoderun"):
+                to_remove.append(key)
+                fixes.append(f"env_vars: removed tool-as-key {key}")
+                continue
+
+            # Check prefix whitelist
+            if not any(key.startswith(p) for p in VALID_ENV_PREFIXES):
+                to_remove.append(key)
+                fixes.append(f"env_vars: removed unknown var {key}")
+                continue
+
+            # Reject prose values (natural language instead of actual values)
+            if isinstance(val, str) and len(val) > 30 and " " in val:
+                to_remove.append(key)
+                fixes.append(f"env_vars: removed prose value for {key}")
+                continue
+
+            # Reject user paths as values
+            if isinstance(val, str) and re.search(r"(/home/\w|~/|/path/to/)", val):
+                to_remove.append(key)
+                fixes.append(f"env_vars: removed user path in {key}")
+                continue
+
+        for key in to_remove:
+            del env[key]
+
+    # ── notes ─────────────────────────────────────────────────────
+    # Check for wrong-game contamination (very long notes that mention
+    # other game titles are hard to detect generically, but we can flag
+    # obvious patterns)
+    for field in ("linux_notes_en", "linux_notes_es", "notes_en", "notes_es"):
+        note = data.get(field, "")
+        if not note:
+            continue
+        # Reject if it reads like a personal blog post / rant
+        if any(phrase in note.lower() for phrase in
+               ("f you microsoft", "i kept reading", "i bit the bullet",
+                "i'm running it under bottles")):
+            data[field] = ""
+            fixes.append(f"{field}: removed personal anecdote")
+
+    # ── confidence gating ─────────────────────────────────────────
+    if data.get("confidence") == "low":
+        # Don't nuke the entry, but clear unreliable fields
+        if data.get("launch_options"):
+            fixes.append("low confidence: cleared launch_options")
+            data["launch_options"] = None
+        if data.get("env_vars"):
+            fixes.append("low confidence: cleared env_vars")
+            data["env_vars"] = {}
+
+    if fixes:
+        print(f"  [CLEAN] {name}: {len(fixes)} fixes applied")
+        for f in fixes:
+            print(f"    - {f}")
+
+    return data
+
+
 def save_results(results: list[dict]) -> None:
     """Save research results into the manual JSON files."""
     amd_file = MANUAL_DIR / "amd_specific.json"
@@ -476,6 +634,7 @@ def main():
         data = research_game(client, game)
 
         if data:
+            data = validate_result(data)
             results.append(data)
             succeeded.add(game["app_id"])
             failed_ids.discard(game["app_id"])  # remove from failed if retrying
