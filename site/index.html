@@ -61,6 +61,37 @@
       </div>
     </div>
 
+    <!-- Help Panel -->
+    <details class="lpdb-glass lpdb-help">
+      <summary data-i18n="help_title">Quick guide</summary>
+      <div class="lpdb-help-grid">
+        <div class="lpdb-help-item">
+          <strong data-i18n="help_what">What is LinuxPlayDB?</strong>
+          <p data-i18n="help_what_desc">Database of Steam games with Ray Tracing and Path Tracing. Shows AMD/NVIDIA compatibility, Linux status, and handheld support.</p>
+        </div>
+        <div class="lpdb-help-item">
+          <strong data-i18n="help_rt_pt">RT vs PT</strong>
+          <p data-i18n="help_rt_pt_desc">Ray Tracing (RT) adds realistic reflections and shadows. Path Tracing (PT) simulates ALL lighting via rays, more cinematic but more demanding.</p>
+        </div>
+        <div class="lpdb-help-item">
+          <strong data-i18n="help_filters">Tech Filters</strong>
+          <p data-i18n="help_filters_desc">RR = Ray Reconstruction, FG = Frame Generation, SR = Super Resolution, MFG = Multi Frame Gen, FSR4 = AMD FSR4 Redstone.</p>
+        </div>
+        <div class="lpdb-help-item">
+          <strong data-i18n="help_cmd">CMD (Commands)</strong>
+          <p data-i18n="help_cmd_desc">Some games need launch options or environment variables in Steam for RT to work on Linux. Click a game to see the commands.</p>
+        </div>
+        <div class="lpdb-help-item">
+          <strong data-i18n="help_broken">Broken</strong>
+          <p data-i18n="help_broken_desc">Games where RT/PT doesn't work on Linux currently. May be due to anti-cheat, incompatible shaders, or missing Vulkan RT support.</p>
+        </div>
+        <div class="lpdb-help-item">
+          <strong data-i18n="help_amd">AMD Status</strong>
+          <p data-i18n="help_amd_desc">AMD OK = works, AMD PT = path tracing works via VKD3D, NVIDIA Only = requires NVIDIA GPU for exclusive extensions.</p>
+        </div>
+      </div>
+    </details>
+
     <!-- Bazzite Quick Reference -->
     <details class="lpdb-glass lpdb-glass--accent lpdb-bazzite" open>
       <summary data-i18n="bazzite_title">Bazzite Linux — RT Quick Reference (RADV + Mesa 26.0)</summary>
@@ -130,55 +161,61 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">RT</span>
-        <span class="lpdb-chip active" data-group="rtType" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
-        <span class="lpdb-chip" data-group="rtType" data-value="pt" onclick="LPDB.filters.set(this)" data-i18n="filter_pt">Path Tracing</span>
-        <span class="lpdb-chip" data-group="rtType" data-value="rt" onclick="LPDB.filters.set(this)" data-i18n="filter_rt_only">RT Only</span>
+        <span class="lpdb-chip active" data-group="rtType" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all" data-i18n-title="tip_filter_all" role="button" tabindex="0" aria-pressed="true">All</span>
+        <span class="lpdb-chip" data-group="rtType" data-value="pt" onclick="LPDB.filters.set(this)" data-i18n="filter_pt" data-i18n-title="tip_filter_pt" role="button" tabindex="0" aria-pressed="false">Path Tracing</span>
+        <span class="lpdb-chip" data-group="rtType" data-value="rt" onclick="LPDB.filters.set(this)" data-i18n="filter_rt_only" data-i18n-title="tip_filter_rt_only" role="button" tabindex="0" aria-pressed="false">RT Only</span>
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">Tech</span>
-        <span class="lpdb-chip" data-group="tech" data-value="dlss_rr" onclick="LPDB.filters.toggle(this)">RR</span>
-        <span class="lpdb-chip" data-group="tech" data-value="dlss_mfg" onclick="LPDB.filters.toggle(this)">MFG</span>
-        <span class="lpdb-chip" data-group="tech" data-value="dlss_fg" onclick="LPDB.filters.toggle(this)">FG</span>
-        <span class="lpdb-chip" data-group="tech" data-value="dlss_sr" onclick="LPDB.filters.toggle(this)">SR</span>
-        <span class="lpdb-chip" data-group="tech" data-value="fsr4" onclick="LPDB.filters.toggle(this)">FSR4</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_rr" onclick="LPDB.filters.toggle(this)" data-i18n-title="tip_dlss_rr" role="button" tabindex="0" aria-pressed="false">RR</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_mfg" onclick="LPDB.filters.toggle(this)" data-i18n-title="tip_dlss_mfg" role="button" tabindex="0" aria-pressed="false">MFG</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_fg" onclick="LPDB.filters.toggle(this)" data-i18n-title="tip_dlss_fg" role="button" tabindex="0" aria-pressed="false">FG</span>
+        <span class="lpdb-chip" data-group="tech" data-value="dlss_sr" onclick="LPDB.filters.toggle(this)" data-i18n-title="tip_dlss_sr" role="button" tabindex="0" aria-pressed="false">SR</span>
+        <span class="lpdb-chip" data-group="tech" data-value="fsr4" onclick="LPDB.filters.toggle(this)" data-i18n-title="tip_fsr4" role="button" tabindex="0" aria-pressed="false">FSR4</span>
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">AMD</span>
-        <span class="lpdb-chip active-green" data-group="amd" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
-        <span class="lpdb-chip" data-group="amd" data-value="ok" onclick="LPDB.filters.set(this)" data-i18n="filter_amd_ok">AMD OK</span>
-        <span class="lpdb-chip" data-group="amd" data-value="pt" onclick="LPDB.filters.set(this)" data-i18n="filter_amd_pt">AMD PT</span>
-        <span class="lpdb-chip" data-group="amd" data-value="nvidia_only" onclick="LPDB.filters.set(this)" data-i18n="filter_nvidia_only">NVIDIA Only</span>
+        <span class="lpdb-chip active-green" data-group="amd" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all" data-i18n-title="tip_filter_all" role="button" tabindex="0" aria-pressed="true">All</span>
+        <span class="lpdb-chip" data-group="amd" data-value="ok" onclick="LPDB.filters.set(this)" data-i18n="filter_amd_ok" data-i18n-title="tip_amd_ok" role="button" tabindex="0" aria-pressed="false">AMD OK</span>
+        <span class="lpdb-chip" data-group="amd" data-value="pt" onclick="LPDB.filters.set(this)" data-i18n="filter_amd_pt" data-i18n-title="tip_amd_pt" role="button" tabindex="0" aria-pressed="false">AMD PT</span>
+        <span class="lpdb-chip" data-group="amd" data-value="nvidia_only" onclick="LPDB.filters.set(this)" data-i18n="filter_nvidia_only" data-i18n-title="tip_nvidia_only" role="button" tabindex="0" aria-pressed="false">NVIDIA Only</span>
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">Linux</span>
-        <span class="lpdb-chip active" data-group="linux" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
-        <span class="lpdb-chip" data-group="linux" data-value="works" onclick="LPDB.filters.set(this)" data-i18n="filter_works">Works</span>
-        <span class="lpdb-chip" data-group="linux" data-value="cmd" onclick="LPDB.filters.set(this)" data-i18n="filter_cmd">Needs CMD</span>
-        <span class="lpdb-chip" data-group="linux" data-value="broken" onclick="LPDB.filters.set(this)" data-i18n="filter_broken">Broken</span>
+        <span class="lpdb-chip active" data-group="linux" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all" data-i18n-title="tip_filter_all" role="button" tabindex="0" aria-pressed="true">All</span>
+        <span class="lpdb-chip" data-group="linux" data-value="works" onclick="LPDB.filters.set(this)" data-i18n="filter_works" data-i18n-title="tip_linux_works" role="button" tabindex="0" aria-pressed="false">Works</span>
+        <span class="lpdb-chip" data-group="linux" data-value="cmd" onclick="LPDB.filters.set(this)" data-i18n="filter_cmd" data-i18n-title="tip_linux_cmd" role="button" tabindex="0" aria-pressed="false">Needs CMD</span>
+        <span class="lpdb-chip" data-group="linux" data-value="broken" onclick="LPDB.filters.set(this)" data-i18n="filter_broken" data-i18n-title="tip_linux_broken" role="button" tabindex="0" aria-pressed="false">Broken</span>
       </div>
       <div class="lpdb-filter-row">
         <span class="lpdb-filter-label">Deck</span>
-        <span class="lpdb-chip active" data-group="deck" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all">All</span>
-        <span class="lpdb-chip" data-group="deck" data-value="verified" onclick="LPDB.filters.set(this)" data-i18n="filter_verified">Verified</span>
-        <span class="lpdb-chip" data-group="deck" data-value="playable" onclick="LPDB.filters.set(this)" data-i18n="filter_playable">Playable</span>
-        <span class="lpdb-chip" data-group="deck" data-value="unsupported" onclick="LPDB.filters.set(this)" data-i18n="filter_unsupported">Unsupported</span>
+        <span class="lpdb-chip active" data-group="deck" data-value="all" onclick="LPDB.filters.set(this)" data-i18n="filter_all" data-i18n-title="tip_filter_all" role="button" tabindex="0" aria-pressed="true">All</span>
+        <span class="lpdb-chip" data-group="deck" data-value="verified" onclick="LPDB.filters.set(this)" data-i18n="filter_verified" data-i18n-title="tip_deck_verified" role="button" tabindex="0" aria-pressed="false">Verified</span>
+        <span class="lpdb-chip" data-group="deck" data-value="playable" onclick="LPDB.filters.set(this)" data-i18n="filter_playable" data-i18n-title="tip_deck_playable" role="button" tabindex="0" aria-pressed="false">Playable</span>
+        <span class="lpdb-chip" data-group="deck" data-value="unsupported" onclick="LPDB.filters.set(this)" data-i18n="filter_unsupported" data-i18n-title="tip_deck_unsupported" role="button" tabindex="0" aria-pressed="false">Unsupported</span>
       </div>
     </div>
 
     <!-- Legend -->
     <div class="lpdb-legend">
-      <span class="lpdb-legend-title" data-i18n="legend">Legend:</span>
-      <span class="lpdb-legend-item"><span class="badge badge-pt">PT</span> <span data-i18n="legend_pt">Path Tracing</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-rt">RT</span> <span data-i18n="legend_rt">Ray Tracing</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-nvidia-sm">RR</span> <span data-i18n="legend_rr">Ray Reconstruction</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-tech">FG</span> <span data-i18n="legend_fg">Frame Generation</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-tech">SR</span> <span data-i18n="legend_sr">Super Resolution</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-tech">MFG</span> <span data-i18n="legend_mfg">Multi Frame Gen</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-fsr">FSR4</span> <span data-i18n="legend_fsr4">AMD FSR4</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-amd">AMD</span> <span data-i18n="legend_compatible">Compatible</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-nvidia">NV</span> <span data-i18n="legend_nvidia_excl">NVIDIA Excl.</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-cmd">CMD</span> <span data-i18n="legend_needs_cmd">Needs command</span></span>
-      <span class="lpdb-legend-item"><span class="badge badge-broken">BROKEN</span> <span data-i18n="legend_broken">Broken</span></span>
+      <div class="lpdb-legend-row">
+        <span class="lpdb-legend-title" data-i18n="legend">Legend:</span>
+        <span class="lpdb-legend-item"><span class="badge badge-pt">PT</span> <span data-i18n="legend_pt">Path Tracing</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-rt">RT</span> <span data-i18n="legend_rt">Ray Tracing</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-nvidia-sm">RR</span> <span data-i18n="legend_rr">Ray Reconstruction</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-tech">FG</span> <span data-i18n="legend_fg">Frame Generation</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-tech">SR</span> <span data-i18n="legend_sr">Super Resolution</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-tech">MFG</span> <span data-i18n="legend_mfg">Multi Frame Gen</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-fsr">FSR4</span> <span data-i18n="legend_fsr4">AMD FSR4</span></span>
+      </div>
+      <div class="lpdb-legend-row">
+        <span class="lpdb-legend-item"><span class="badge badge-amd">AMD OK</span> <span data-i18n="legend_amd_ok_desc">RT/PT works on AMD</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-amd">AMD PT</span> <span data-i18n="legend_amd_pt_desc">Path Tracing works on AMD</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-amd-warn">AMD RT</span> <span data-i18n="legend_amd_rt_only_desc">RT only works on AMD</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-nvidia">NV</span> <span data-i18n="legend_nvidia_only_desc">Requires NVIDIA GPU</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-cmd">CMD</span> <span data-i18n="legend_cmd_desc">Needs launch command</span></span>
+        <span class="lpdb-legend-item"><span class="badge badge-broken">BROKEN</span> <span data-i18n="legend_broken_desc">Broken on Linux</span></span>
+      </div>
     </div>
 
     <!-- Actions -->
@@ -194,6 +231,7 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
 
     <!-- Table -->
     <div class="lpdb-table-wrap">
+      <div class="lpdb-scroll-hint" data-i18n="table_scroll_hint">Swipe to see more columns</div>
       <table class="lpdb-table">
         <thead>
           <tr>
@@ -208,6 +246,9 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
         <tbody id="gamesBody"></tbody>
       </table>
     </div>
+
+    <!-- Pagination -->
+    <div class="lpdb-pagination-wrap" id="paginationControls"></div>
   </div>
 
   <!-- Footer -->
@@ -228,11 +269,11 @@ gamescope -h 1800 -H 2160 -F fsr -f -- <span class="v">MANGOHUD</span>=<span cla
 <!-- Inline DB (allows file:// usage without server) -->
 <script src="js/db_inline.js"></script>
 <!-- App modules (v= cache bust) -->
-<script src="js/i18n.js?v=6"></script>
-<script src="js/db.js?v=6"></script>
-<script src="js/filters.js?v=6"></script>
-<script src="js/render.js?v=6"></script>
-<script src="js/export.js?v=6"></script>
-<script src="js/app.js?v=6"></script>
+<script src="js/i18n.js?v=8"></script>
+<script src="js/db.js?v=8"></script>
+<script src="js/filters.js?v=8"></script>
+<script src="js/render.js?v=8"></script>
+<script src="js/export.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
 </body>
 </html>

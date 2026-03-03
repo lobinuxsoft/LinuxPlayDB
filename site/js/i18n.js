@@ -75,6 +75,74 @@ const LPDB_i18n = (() => {
       error_hint: "Verifica que db_inline.js est\u00e9 generado. Ejecuta: python scripts/build_db.py",
       no_data_export: "No hay datos para exportar",
       exported: "Exportados",
+
+      // Filter chip tooltips
+      tip_filter_all: "Mostrar todos los juegos sin filtro",
+      tip_filter_pt: "Solo juegos con Path Tracing completo",
+      tip_filter_rt_only: "Solo juegos con Ray Tracing (sin PT)",
+      tip_dlss_rr: "DLSS Ray Reconstruction: reemplaza el denoiser tradicional con IA",
+      tip_dlss_mfg: "DLSS Multi Frame Generation: genera multiples cuadros extra via IA",
+      tip_dlss_fg: "DLSS Frame Generation: genera un cuadro extra entre cada cuadro real",
+      tip_dlss_sr: "DLSS Super Resolution: upscaling de resolucion via IA",
+      tip_fsr4: "AMD FSR4 Redstone: upscaling de nueva generacion para RDNA4",
+      tip_amd_ok: "RT/PT funciona completamente en GPUs AMD",
+      tip_amd_pt: "Path Tracing funciona en AMD (via VKD3D u otro metodo)",
+      tip_nvidia_only: "Requiere GPU NVIDIA (RTX Remix, OptiX, extensiones exclusivas)",
+      tip_linux_works: "Funciona en Linux sin configuracion extra",
+      tip_linux_cmd: "Necesita comando de lanzamiento o variables de entorno en Linux",
+      tip_linux_broken: "Roto o no funcional en Linux actualmente",
+      tip_deck_verified: "Verificado por Valve para Steam Deck",
+      tip_deck_playable: "Jugable en Steam Deck con ajustes",
+      tip_deck_unsupported: "No soportado en Steam Deck",
+
+      // Badge tooltips
+      badge_tip_pt: "Path Tracing: iluminacion global completa por trazado de rayos",
+      badge_tip_rt: "Ray Tracing: reflejos, sombras o GI parcial por trazado de rayos",
+      badge_tip_rr: "Ray Reconstruction: denoiser IA de NVIDIA reemplaza el tradicional",
+      badge_tip_mfg: "Multi Frame Gen: genera multiples cuadros extra via IA",
+      badge_tip_fg: "Frame Generation: genera cuadros intermedios para mayor fluidez",
+      badge_tip_sr: "Super Resolution: upscaling IA para mayor rendimiento",
+      badge_tip_fsr4: "FSR4 Redstone: upscaling AMD de nueva generacion (RDNA4)",
+      badge_tip_amd_ok: "AMD compatible: RT/PT funciona correctamente en GPUs AMD",
+      badge_tip_amd_pt: "AMD Path Tracing: PT funciona en AMD via VKD3D u otro metodo",
+      badge_tip_amd_rt_only: "AMD solo RT: Ray Tracing funciona, Path Tracing no disponible en AMD",
+      badge_tip_nvidia_only: "Exclusivo NVIDIA: requiere RTX (Remix, OptiX, extensiones Vulkan RT)",
+      badge_tip_works: "Funciona en Linux sin configuracion adicional",
+      badge_tip_cmd: "Necesita comando de lanzamiento o variables de entorno",
+      badge_tip_broken: "Roto o no funcional en Linux actualmente",
+
+      // Help panel
+      help_title: "Guia rapida",
+      help_what: "Que es LinuxPlayDB?",
+      help_what_desc: "Base de datos de juegos Steam con Ray Tracing y Path Tracing. Muestra compatibilidad AMD/NVIDIA, estado en Linux, y soporte para handhelds.",
+      help_rt_pt: "RT vs PT",
+      help_rt_pt_desc: "Ray Tracing (RT) agrega reflejos y sombras realistas. Path Tracing (PT) simula TODA la iluminacion via rayos, resultado mas cinematografico pero mas costoso.",
+      help_filters: "Filtros Tech",
+      help_filters_desc: "RR = Ray Reconstruction, FG = Frame Generation, SR = Super Resolution, MFG = Multi Frame Gen, FSR4 = AMD FSR4 Redstone.",
+      help_cmd: "CMD (Comandos)",
+      help_cmd_desc: "Algunos juegos necesitan opciones de lanzamiento o variables de entorno en Steam para que RT funcione en Linux. Haz click en un juego para ver los comandos.",
+      help_broken: "Broken (Roto)",
+      help_broken_desc: "Juegos donde RT/PT no funciona en Linux actualmente. Puede ser por anti-cheat, shaders incompatibles, o falta de soporte Vulkan RT.",
+      help_amd: "AMD Status",
+      help_amd_desc: "AMD OK = funciona, AMD PT = path tracing funciona via VKD3D, NVIDIA Only = requiere GPU NVIDIA por extensiones exclusivas.",
+
+      // Expanded legend descriptions
+      legend_amd_ok_desc: "RT/PT funciona en AMD",
+      legend_amd_pt_desc: "Path Tracing funciona en AMD",
+      legend_amd_rt_only_desc: "Solo RT funciona en AMD",
+      legend_nvidia_only_desc: "Requiere GPU NVIDIA",
+      legend_cmd_desc: "Necesita comando de lanzamiento",
+      legend_broken_desc: "Roto en Linux",
+
+      // Pagination
+      page_prev: "Anterior",
+      page_next: "Siguiente",
+      per_page: "Por pagina",
+      filtered_games: "juegos filtrados",
+      total: "total",
+
+      // Mobile scroll hint
+      table_scroll_hint: "Desliza para ver mas columnas",
     },
     en: {
       subtitle: "Steam RT/PT Database \u00b7 AMD + NVIDIA + Linux + Handhelds",
@@ -143,6 +211,74 @@ const LPDB_i18n = (() => {
       error_hint: "Make sure db_inline.js is generated. Run: python scripts/build_db.py",
       no_data_export: "No data to export",
       exported: "Exported",
+
+      // Filter chip tooltips
+      tip_filter_all: "Show all games without filtering",
+      tip_filter_pt: "Only games with full Path Tracing",
+      tip_filter_rt_only: "Only games with Ray Tracing (no PT)",
+      tip_dlss_rr: "DLSS Ray Reconstruction: replaces traditional denoiser with AI",
+      tip_dlss_mfg: "DLSS Multi Frame Generation: generates multiple extra frames via AI",
+      tip_dlss_fg: "DLSS Frame Generation: generates an extra frame between each real frame",
+      tip_dlss_sr: "DLSS Super Resolution: AI-powered resolution upscaling",
+      tip_fsr4: "AMD FSR4 Redstone: next-gen upscaling for RDNA4",
+      tip_amd_ok: "RT/PT fully works on AMD GPUs",
+      tip_amd_pt: "Path Tracing works on AMD (via VKD3D or other method)",
+      tip_nvidia_only: "Requires NVIDIA GPU (RTX Remix, OptiX, exclusive extensions)",
+      tip_linux_works: "Works on Linux without extra configuration",
+      tip_linux_cmd: "Needs launch command or environment variables on Linux",
+      tip_linux_broken: "Broken or non-functional on Linux currently",
+      tip_deck_verified: "Verified by Valve for Steam Deck",
+      tip_deck_playable: "Playable on Steam Deck with adjustments",
+      tip_deck_unsupported: "Not supported on Steam Deck",
+
+      // Badge tooltips
+      badge_tip_pt: "Path Tracing: full global illumination via ray tracing",
+      badge_tip_rt: "Ray Tracing: partial reflections, shadows, or GI via ray tracing",
+      badge_tip_rr: "Ray Reconstruction: NVIDIA AI denoiser replaces traditional one",
+      badge_tip_mfg: "Multi Frame Gen: generates multiple extra frames via AI",
+      badge_tip_fg: "Frame Generation: generates intermediate frames for smoother gameplay",
+      badge_tip_sr: "Super Resolution: AI upscaling for higher performance",
+      badge_tip_fsr4: "FSR4 Redstone: AMD next-gen upscaling (RDNA4)",
+      badge_tip_amd_ok: "AMD compatible: RT/PT works correctly on AMD GPUs",
+      badge_tip_amd_pt: "AMD Path Tracing: PT works on AMD via VKD3D or other method",
+      badge_tip_amd_rt_only: "AMD RT only: Ray Tracing works, Path Tracing not available on AMD",
+      badge_tip_nvidia_only: "NVIDIA exclusive: requires RTX (Remix, OptiX, Vulkan RT extensions)",
+      badge_tip_works: "Works on Linux without extra configuration",
+      badge_tip_cmd: "Needs launch command or environment variables",
+      badge_tip_broken: "Broken or non-functional on Linux currently",
+
+      // Help panel
+      help_title: "Quick guide",
+      help_what: "What is LinuxPlayDB?",
+      help_what_desc: "Database of Steam games with Ray Tracing and Path Tracing. Shows AMD/NVIDIA compatibility, Linux status, and handheld support.",
+      help_rt_pt: "RT vs PT",
+      help_rt_pt_desc: "Ray Tracing (RT) adds realistic reflections and shadows. Path Tracing (PT) simulates ALL lighting via rays, more cinematic but more demanding.",
+      help_filters: "Tech Filters",
+      help_filters_desc: "RR = Ray Reconstruction, FG = Frame Generation, SR = Super Resolution, MFG = Multi Frame Gen, FSR4 = AMD FSR4 Redstone.",
+      help_cmd: "CMD (Commands)",
+      help_cmd_desc: "Some games need launch options or environment variables in Steam for RT to work on Linux. Click a game to see the commands.",
+      help_broken: "Broken",
+      help_broken_desc: "Games where RT/PT doesn't work on Linux currently. May be due to anti-cheat, incompatible shaders, or missing Vulkan RT support.",
+      help_amd: "AMD Status",
+      help_amd_desc: "AMD OK = works, AMD PT = path tracing works via VKD3D, NVIDIA Only = requires NVIDIA GPU for exclusive extensions.",
+
+      // Expanded legend descriptions
+      legend_amd_ok_desc: "RT/PT works on AMD",
+      legend_amd_pt_desc: "Path Tracing works on AMD",
+      legend_amd_rt_only_desc: "RT only works on AMD",
+      legend_nvidia_only_desc: "Requires NVIDIA GPU",
+      legend_cmd_desc: "Needs launch command",
+      legend_broken_desc: "Broken on Linux",
+
+      // Pagination
+      page_prev: "Prev",
+      page_next: "Next",
+      per_page: "Per page",
+      filtered_games: "filtered games",
+      total: "total",
+
+      // Mobile scroll hint
+      table_scroll_hint: "Swipe to see more columns",
     },
   };
 
@@ -186,7 +322,7 @@ const LPDB_i18n = (() => {
     applyToDOM();
     updateToggleButton();
     if (typeof LPDB_Filters !== "undefined") {
-      LPDB_Filters.apply();
+      LPDB_Filters.apply(false);
     }
   }
 
@@ -198,6 +334,11 @@ const LPDB_i18n = (() => {
       const key = el.getAttribute("data-i18n");
       const val = t(key);
       if (val !== key) el.textContent = val;
+    });
+    document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-title");
+      const val = t(key);
+      if (val !== key) el.title = val;
     });
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
       const key = el.getAttribute("data-i18n-placeholder");
