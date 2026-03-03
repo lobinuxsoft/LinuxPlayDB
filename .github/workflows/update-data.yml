@@ -30,7 +30,7 @@ jobs:
         continue-on-error: true
 
       # Step 2: AI research for games missing data (needs GROQ_API_KEY secret)
-      # 50 games/week × ~19s each = ~16 min. Progress persists across runs.
+      # 50 games/week × ~15s each = ~13 min. Progress persists across runs.
       - name: AI research (Groq + DuckDuckGo)
         if: env.GROQ_API_KEY != ''
         env:

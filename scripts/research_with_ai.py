@@ -70,9 +70,7 @@ Analyze the following web search results about the game **{name}** and extract s
    - gamemoderun, mangohud, PROTON_*, VKD3D_*, DXVK_*, RADV_*, MESA_* variables
    - Proton version recommendations (GE-Proton, Proton Experimental, etc.)
 
-3. **Linux status** — does it work on Proton? Native? ProtonDB rating? Anti-cheat?
-
-4. **Useful links** — extract REAL URLs from the search results that help with Linux/AMD gaming.
+3. **Useful links** — extract REAL URLs from the search results that help with Linux/AMD gaming.
 
 RESPOND ONLY with valid JSON (no markdown fences, no explanation, ONLY the JSON object):
 
@@ -82,16 +80,11 @@ RESPOND ONLY with valid JSON (no markdown fences, no explanation, ONLY the JSON 
   "amd_status": "amd_ok|amd_pt|amd_rt_only|nvidia_only|unknown",
   "amd_notes_en": "Brief explanation of AMD RT status based on search results",
   "amd_notes_es": "Breve explicación del estado AMD RT",
-  "linux_status": "works|cmd|broken|check|unknown",
   "launch_options": null,
   "env_vars": {{}},
   "proton_version": null,
-  "protondb_tier": "platinum|gold|silver|bronze|borked|unknown",
-  "native_linux": false,
-  "anticheat": null,
-  "anticheat_linux": null,
-  "linux_notes_en": "Brief Linux compatibility notes from search results",
-  "linux_notes_es": "Breves notas de compatibilidad Linux",
+  "linux_notes_en": "Brief Linux workarounds or tips from search results",
+  "linux_notes_es": "Breves notas de workarounds Linux",
   "useful_links": [
     {{
       "url": "https://actual-url-from-search-results",
@@ -111,27 +104,37 @@ IMPORTANT:
 - If no launch options found, set launch_options to null and env_vars to {{}}.
 - useful_links MUST be real URLs from the search results above. Do not invent URLs.
 - Set confidence based on how much relevant information was found.
+- Do NOT extract ProtonDB tier, anti-cheat, or native Linux status — we get those from dedicated APIs.
 """
 
 
-def load_progress() -> set[int]:
-    """Load set of already-researched app_ids from progress file."""
+def load_progress() -> tuple[set[int], set[int]]:
+    """Load sets of succeeded and failed app_ids from progress file.
+
+    Returns (succeeded_ids, failed_ids).
+    """
     if PROGRESS_FILE.exists():
         try:
             data = json.loads(PROGRESS_FILE.read_text(encoding="utf-8"))
-            return set(data.get("researched_ids", []))
+            # Backwards compat: old format had "researched_ids" as a flat list
+            if "succeeded_ids" in data:
+                return (set(data.get("succeeded_ids", [])),
+                        set(data.get("failed_ids", [])))
+            return set(data.get("researched_ids", [])), set()
         except (json.JSONDecodeError, KeyError):
-            return set()
-    return set()
+            return set(), set()
+    return set(), set()
 
 
-def save_progress(researched_ids: set[int]) -> None:
-    """Persist the set of researched app_ids to disk."""
+def save_progress(succeeded_ids: set[int], failed_ids: set[int]) -> None:
+    """Persist the sets of succeeded/failed app_ids to disk."""
     PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
     data = {
         "last_updated": datetime.now(timezone.utc).isoformat(),
-        "count": len(researched_ids),
-        "researched_ids": sorted(researched_ids),
+        "succeeded": len(succeeded_ids),
+        "failed": len(failed_ids),
+        "succeeded_ids": sorted(succeeded_ids),
+        "failed_ids": sorted(failed_ids),
     }
     PROGRESS_FILE.write_text(
         json.dumps(data, indent=2) + "\n", encoding="utf-8"
@@ -199,9 +202,8 @@ def _search_with_retry(query: str, max_results: int = 5,
 def search_game(game_name: str) -> str:
     """Search DuckDuckGo for game compatibility info. Returns formatted results."""
     queries = [
-        f"{game_name} ProtonDB Linux Proton compatibility",
         f"{game_name} AMD ray tracing RDNA Linux vkd3d",
-        f"{game_name} Steam launch options Linux fix",
+        f"{game_name} Steam Linux Proton launch options env vars fix",
     ]
 
     all_results = []
@@ -335,11 +337,6 @@ def save_results(results: list[dict]) -> None:
                 "launch_options": r.get("launch_options"),
                 "env_vars": r.get("env_vars") if r.get("env_vars") else {},
                 "proton_version": r.get("proton_version"),
-                "linux_status": r.get("linux_status"),
-                "protondb_tier": r.get("protondb_tier"),
-                "native_linux": r.get("native_linux", False),
-                "anticheat": r.get("anticheat"),
-                "anticheat_linux": r.get("anticheat_linux"),
                 "notes_en": r.get("linux_notes_en", ""),
                 "notes_es": r.get("linux_notes_es", ""),
             })
@@ -395,6 +392,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Show games to research without calling APIs")
     parser.add_argument("--delay", type=float, default=REQUEST_DELAY, help=f"Seconds between Groq calls (default: {REQUEST_DELAY})")
     parser.add_argument("--reset-progress", action="store_true", help="Reset progress tracking (re-research all games)")
+    parser.add_argument("--retry-failed", action="store_true", help="Retry only previously failed games")
     args = parser.parse_args()
 
     # Check API key
@@ -415,19 +413,32 @@ def main():
         PROGRESS_FILE.unlink()
         print("[OK] Progress reset.")
 
-    already_done = load_progress() if not args.app_id else set()
-    if already_done:
-        print(f"[INFO] Skipping {len(already_done)} previously researched games.")
+    if args.app_id:
+        succeeded, failed_ids = set(), set()
+    else:
+        succeeded, failed_ids = load_progress()
+
+    if args.retry_failed:
+        # Only retry previously failed games
+        if not failed_ids:
+            print("[INFO] No failed games to retry.")
+            return
+        print(f"[INFO] Retrying {len(failed_ids)} previously failed games.")
+        exclude_ids = succeeded
+    else:
+        exclude_ids = succeeded | failed_ids
+        if exclude_ids:
+            print(f"[INFO] Skipping {len(succeeded)} succeeded, {len(failed_ids)} failed.")
 
     # Get games to research
     games = get_games_to_research(DB_FILE, app_id=args.app_id, limit=args.limit,
-                                  exclude_ids=already_done)
+                                  exclude_ids=exclude_ids)
 
     if not games:
         print("[INFO] No games need research.")
         return
 
-    est_time = len(games) * (args.delay + SEARCH_DELAY * 3 + 2)  # rough estimate
+    est_time = len(games) * (args.delay + SEARCH_DELAY * 2 + 2)  # rough estimate
     print(f"LinuxPlayDB — AI Research ({len(games)} games)")
     print(f"Search: DuckDuckGo (free, no API key)")
     print(f"Analysis: Groq {GROQ_MODEL} (14,400 req/day free)")
@@ -452,41 +463,43 @@ def main():
 
         data = research_game(client, game)
 
-        # Track this game as processed regardless of success
-        already_done.add(game["app_id"])
-        save_progress(already_done)
-
         if data:
             results.append(data)
+            succeeded.add(game["app_id"])
+            failed_ids.discard(game["app_id"])  # remove from failed if retrying
             confidence = data.get("confidence", "?")
             amd = data.get("amd_status", "?")
-            linux = data.get("linux_status", "?")
             links_count = len(data.get("useful_links", []))
-            print(f"  [OK] AMD: {amd} | Linux: {linux} | Links: {links_count} | Confidence: {confidence}")
+            print(f"  [OK] AMD: {amd} | Links: {links_count} | Confidence: {confidence}")
             success += 1
         else:
+            failed_ids.add(game["app_id"])
             failed += 1
+
+        save_progress(succeeded, failed_ids)
 
         # Checkpoint results every 10 games
         if i % 10 == 0:
             if results:
                 save_results(results)
                 save_full_research(results)
-            print(f"\n[CHECKPOINT] Saved {len(results)} results, "
-                  f"{len(already_done)} total tracked.\n")
+            print(f"\n[CHECKPOINT] Saved {len(results)} results | "
+                  f"{len(succeeded)} ok, {len(failed_ids)} failed.\n")
 
         # Rate limiting (skip on last item)
         if i < len(games):
             time.sleep(args.delay)
 
     # Final save
-    save_progress(already_done)
+    save_progress(succeeded, failed_ids)
     if results:
         save_results(results)
         save_full_research(results)
 
     print(f"\nDone! Success: {success}, Failed: {failed}, Total: {len(games)}")
-    print(f"Progress: {len(already_done)} games tracked across all sessions.")
+    print(f"Progress: {len(succeeded)} succeeded, {len(failed_ids)} failed across all sessions.")
+    if failed_ids:
+        print(f"Run with --retry-failed to retry the {len(failed_ids)} failed games.")
 
 
 if __name__ == "__main__":
