@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Research game compatibility using Groq (Llama 3.3) + DuckDuckGo search.
+"""Research game compatibility using Groq (Llama 3.3 70B) + DuckDuckGo search.
 
-Uses Groq's free API (14,400 req/day) with DuckDuckGo web search to find
+Uses Groq's free API (1,000 req/day) with DuckDuckGo web search to find
 AMD RT compatibility, Linux workarounds, launch options, and useful links.
 
 Requirements:
@@ -43,9 +43,10 @@ DB_FILE = ROOT / "data" / "linuxplaydb.db"
 MANUAL_DIR = ROOT / "scripts" / "manual"
 OUTPUT_DIR = ROOT / "scripts" / "research_output"
 
-# Groq free tier: llama-3.1-8b = 14,400 RPD, 6K TPM, 30 RPM
-# llama-3.3-70b = 1,000 RPD, 12K TPM (too low for bulk research)
-GROQ_MODEL = "llama-3.1-8b-instant"
+# Groq free tier: llama-3.3-70b = 1,000 RPD, 12K TPM, 30 RPM
+# Much better structured output than 8b — fewer hallucinations.
+# 1,000 RPD is plenty for 50 games/week workflow runs.
+GROQ_MODEL = "llama-3.3-70b-versatile"
 REQUEST_DELAY = 15  # seconds between Groq calls (safe for 6K TPM at ~1300 tok/game)
 SEARCH_DELAY = 3.0   # seconds between DuckDuckGo searches (avoid IP blocks in CI)
 PROGRESS_FILE = Path(__file__).parent / "research_output" / "progress.json"
