@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Research game compatibility using Groq (Llama 3.3 70B) + DuckDuckGo search.
+"""Research game compatibility using Mistral AI + DuckDuckGo search.
 
-Uses Groq's free API (1,000 req/day) with DuckDuckGo web search to find
-AMD RT compatibility, Linux workarounds, launch options, and useful links.
+Uses Mistral's free API (1B tokens/month) with DuckDuckGo web search to find
+AMD RT/PT compatibility, rt_type overrides, and useful links.
+
+Launch options, env vars, and proton versions are handled by fetch_protondb_reports.py.
 
 Requirements:
-    pip install groq ddgs requests
+    pip install mistralai ddgs requests
 
 Usage:
-    export GROQ_API_KEY="your-api-key-here"
+    export MISTRAL_API_KEY="your-api-key-here"
     python research_with_ai.py                    # Research all games missing data
     python research_with_ai.py --app-id -646526   # Research a specific game
     python research_with_ai.py --limit 50         # Research first 50 games
@@ -27,9 +29,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    from groq import Groq
+    from mistralai import Mistral
 except ImportError:
-    print("[ERROR] groq not installed. Run: pip install groq")
+    print("[ERROR] mistralai not installed. Run: pip install mistralai")
     sys.exit(1)
 
 try:
@@ -43,11 +45,11 @@ DB_FILE = ROOT / "data" / "linuxplaydb.db"
 MANUAL_DIR = ROOT / "scripts" / "manual"
 OUTPUT_DIR = ROOT / "scripts" / "research_output"
 
-# Groq free tier: llama-3.3-70b = 1,000 RPD, 12K TPM, 30 RPM
-# Much better structured output than 8b — fewer hallucinations.
-# 1,000 RPD is plenty for 50 games/week workflow runs.
-GROQ_MODEL = "llama-3.3-70b-versatile"
-REQUEST_DELAY = 15  # seconds between Groq calls (safe for 6K TPM at ~1300 tok/game)
+# Mistral free tier: 1B tokens/month, 2 RPM for small models.
+# mistral-small-latest (Small 3.1, 24B) — good structured JSON extraction.
+# Retry with backoff handles the 2 RPM rate limit naturally.
+MISTRAL_MODEL = "mistral-small-latest"
+REQUEST_DELAY = 5  # seconds between Mistral calls (backoff handles rate limits)
 SEARCH_DELAY = 3.0   # seconds between DuckDuckGo searches (avoid IP blocks in CI)
 PROGRESS_FILE = Path(__file__).parent / "research_output" / "progress.json"
 
@@ -72,11 +74,7 @@ Analyze the following web search results about the game **{name}** and extract s
    - Games using RTX Remix, OptiX, or NVIDIA-specific Vulkan RT extensions are "nvidia_only"
    - If a game has path tracing that works independently of DXR/Vulkan RT hardware (e.g. Teardown, voxel engines), it's "amd_ok"
 
-2. **Linux launch options and environment variables** — any Steam launch options or env vars needed:
-   - gamemoderun, mangohud, PROTON_*, VKD3D_*, DXVK_*, RADV_*, MESA_* variables
-   - Proton version recommendations (GE-Proton, Proton Experimental, etc.)
-
-3. **Useful links** — extract REAL URLs from the search results that help with Linux/AMD gaming.
+2. **Useful links** — extract REAL URLs from the search results that help with Linux/AMD gaming.
 
 RESPOND ONLY with valid JSON (no markdown fences, no explanation, ONLY the JSON object):
 
@@ -86,17 +84,12 @@ RESPOND ONLY with valid JSON (no markdown fences, no explanation, ONLY the JSON 
   "amd_status": "amd_ok|amd_pt|amd_rt_only|nvidia_only|unknown",
   "rt_type_override": null,
   "amd_notes_en": "Brief explanation of AMD RT status based on search results",
-  "amd_notes_es": "Breve explicación del estado AMD RT",
-  "launch_options": null,
-  "env_vars": {{}},
-  "proton_version": null,
-  "linux_notes_en": "Brief Linux workarounds or tips from search results",
-  "linux_notes_es": "Breves notas de workarounds Linux",
+  "amd_notes_es": "Breve explicacion del estado AMD RT",
   "useful_links": [
     {{
       "url": "https://actual-url-from-search-results",
       "title_en": "Link title in English",
-      "title_es": "Título del link en español",
+      "title_es": "Titulo del link en espanol",
       "source": "protondb|pcgamingwiki|reddit|github|steam",
       "link_type": "fix|guide|discussion|wiki|video"
     }}
@@ -108,23 +101,11 @@ RESPOND ONLY with valid JSON (no markdown fences, no explanation, ONLY the JSON 
 IMPORTANT:
 - Only include information actually present in the search results. Do NOT fabricate data.
 - If search results don't mention AMD RT, set amd_status to "unknown".
-- If no launch options found, set launch_options to null and env_vars to {{}}.
 - useful_links MUST be real URLs from the search results above. Do not invent URLs.
 - Set confidence based on how much relevant information was found.
-- Do NOT extract ProtonDB tier, anti-cheat, or native Linux status — we get those from dedicated APIs.
+- Do NOT extract ProtonDB tier, anti-cheat, native Linux status, launch options, or env vars — we get those from dedicated APIs.
 - rt_type_override: Set to "pt" if search results confirm the game uses path tracing, global illumination via ray tracing, or voxel-based lighting (even if not DXR/RTX). Set to "rt" if it only has standard ray tracing (reflections, shadows). Leave null ONLY if no RT/PT info found.
 - Many games have path tracing via custom engines (Teardown voxel PT, Minecraft Java shaders, Lumen GI). These MUST get rt_type_override = "pt" because the NVIDIA database does not list them.
-
-STRICT RULES for launch_options and env_vars:
-- launch_options MUST be actual commands, NOT prose or forum comments. Never paste sentences.
-- launch_options containing env vars MUST end with %command% (lowercase, not %COMMAND%).
-- env_vars keys MUST be real environment variables (PROTON_*, VKD3D_*, DXVK_*, RADV_*, MESA_*, WINE*, AMD_VULKAN_ICD, SteamDeck). Do NOT invent variable names.
-- env_vars values MUST be actual values (numbers, strings), NEVER natural language descriptions.
-- Do NOT include user-specific paths (/home/username/*, ~/custom_tool, /mnt/drive/).
-- Do NOT include third-party tools (lsfg, custom scripts) — only standard Linux gaming stack.
-- Do NOT mix comma-separated options. Use space separation.
-- The variable PROTON_NO_GLSL_SHADERS does not exist. Do not use it.
-- gamescope is a COMMAND, not an env var. Put it in launch_options, not env_vars.
 """
 
 
@@ -254,8 +235,8 @@ def search_game(game_name: str) -> str:
     return "\n\n".join(formatted)
 
 
-def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None:
-    """Search web + analyze with Groq to research a single game."""
+def research_game(client: Mistral, game: dict, max_retries: int = 3) -> dict | None:
+    """Search web + analyze with Mistral to research a single game."""
     # Step 1: Search the web
     search_results = search_game(game["name"])
 
@@ -263,7 +244,7 @@ def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None
         print(f"  [WARN] No search results for {game['name']}")
         return None
 
-    # Step 2: Analyze with Groq
+    # Step 2: Analyze with Mistral
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     prompt = ANALYSIS_PROMPT.format(
         name=game["name"],
@@ -274,8 +255,8 @@ def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None
 
     for attempt in range(1, max_retries + 1):
         try:
-            response = client.chat.completions.create(
-                model=GROQ_MODEL,
+            response = client.chat.complete(
+                model=MISTRAL_MODEL,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.1,
                 max_tokens=2000,
@@ -320,123 +301,17 @@ def research_game(client: Groq, game: dict, max_retries: int = 3) -> dict | None
 
 # ── Post-LLM Validation ──────────────────────────────────────────────
 
-# Known-good env var prefixes. Anything outside this list is suspect.
-VALID_ENV_PREFIXES = (
-    "PROTON_", "VKD3D_", "DXVK_", "RADV_", "MESA_", "WINE", "AMD_VULKAN_ICD",
-    "ENABLE_VKBASALT", "MANGOHUD", "DXIL_SPIRV_", "STEAM_COMPAT_",
-    "SteamDeck", "DISABLE_LAYER_", "LD_PRELOAD", "LD_LIBRARY_PATH",
-    "__GL_", "__NV_",
-)
-
-# Known-fake variables that Groq loves to invent.
-BLACKLISTED_VARS = {
-    "PROTON_NO_GLSL_SHADERS", "PROTON_NO_GLSYNC", "PROTON_USE_WINED3D11",
-    "VKD3D_RENDERER", "PROTON_NO_SECCOMP",
-}
-
 
 def validate_result(data: dict) -> dict:
-    """Sanitize a single Groq result, fixing or removing bad data.
+    """Sanitize a single Mistral result, fixing or removing bad data.
 
     Returns the cleaned dict. Logs every correction so we can audit.
     """
     name = data.get("name", "?")
     fixes = []
 
-    # ── launch_options ────────────────────────────────────────────
-    lo = data.get("launch_options")
-    if lo and isinstance(lo, str):
-        # Reject prose: sentences with periods, very long without %command%
-        if ". " in lo and len(lo) > 60:
-            fixes.append(f"launch_options: removed prose ({lo[:50]}...)")
-            data["launch_options"] = None
-
-        # Reject user-specific paths
-        elif re.search(r"(/home/\w|~/\w|/[a-zA-Z0-9]+/SteamLibrary)", lo):
-            fixes.append(f"launch_options: removed user path ({lo[:50]}...)")
-            data["launch_options"] = None
-
-        # Reject hallucinated flags
-        elif re.search(r"-force-d9vk|-force-proton", lo, re.IGNORECASE):
-            fixes.append(f"launch_options: removed hallucinated flags ({lo})")
-            data["launch_options"] = None
-
-        # Fix %COMMAND% → %command%
-        elif "%COMMAND%" in lo:
-            data["launch_options"] = lo.replace("%COMMAND%", "%command%")
-            fixes.append("launch_options: fixed %COMMAND% -> %command%")
-
-        # Fix comma-separated options → space-separated
-        elif ", " in lo and "%" not in lo:
-            data["launch_options"] = lo.replace(", ", " ") + " %command%"
-            fixes.append("launch_options: fixed comma separation, added %command%")
-
-        # Ensure %command% present when launch_options has env vars
-        elif "=" in lo and "%command%" not in lo.lower():
-            data["launch_options"] = lo + " %command%"
-            fixes.append("launch_options: appended missing %command%")
-
-        # Fix missing dash on game flags like "dx11" → "-dx11"
-        elif re.match(r"^(dx\d+|vulkan|d3d\d+|opengl)$", lo, re.IGNORECASE):
-            data["launch_options"] = f"-{lo}"
-            fixes.append(f"launch_options: added missing dash (-{lo})")
-
-        # Reject destructive UE debug flags
-        if data.get("launch_options") and isinstance(data["launch_options"], str):
-            bad_flags = ["-NoCull", "-NoLevelStreaming", "-maxqualitymode",
-                         "-ViewDistanceScale="]
-            for flag in bad_flags:
-                if flag in data["launch_options"]:
-                    # Strip individual bad flags, keep good ones
-                    parts = data["launch_options"].split()
-                    cleaned = [p for p in parts if not any(p.startswith(f) for f in bad_flags)]
-                    data["launch_options"] = " ".join(cleaned) if cleaned else None
-                    fixes.append(f"launch_options: stripped destructive UE flags")
-                    break
-
-    # ── env_vars ──────────────────────────────────────────────────
-    env = data.get("env_vars")
-    if env and isinstance(env, dict):
-        to_remove = []
-        for key, val in list(env.items()):
-            # Remove blacklisted (known-fake) vars
-            if key in BLACKLISTED_VARS:
-                to_remove.append(key)
-                fixes.append(f"env_vars: removed fake var {key}")
-                continue
-
-            # Remove vars that aren't env vars (tools used as keys)
-            if key.lower() in ("gamescope", "mangohud", "gamemoderun"):
-                to_remove.append(key)
-                fixes.append(f"env_vars: removed tool-as-key {key}")
-                continue
-
-            # Check prefix whitelist
-            if not any(key.startswith(p) for p in VALID_ENV_PREFIXES):
-                to_remove.append(key)
-                fixes.append(f"env_vars: removed unknown var {key}")
-                continue
-
-            # Reject prose values (natural language instead of actual values)
-            if isinstance(val, str) and len(val) > 30 and " " in val:
-                to_remove.append(key)
-                fixes.append(f"env_vars: removed prose value for {key}")
-                continue
-
-            # Reject user paths as values
-            if isinstance(val, str) and re.search(r"(/home/\w|~/|/path/to/)", val):
-                to_remove.append(key)
-                fixes.append(f"env_vars: removed user path in {key}")
-                continue
-
-        for key in to_remove:
-            del env[key]
-
     # ── notes ─────────────────────────────────────────────────────
-    # Check for wrong-game contamination (very long notes that mention
-    # other game titles are hard to detect generically, but we can flag
-    # obvious patterns)
-    for field in ("linux_notes_en", "linux_notes_es", "notes_en", "notes_es"):
+    for field in ("amd_notes_en", "amd_notes_es"):
         note = data.get(field, "")
         if not note:
             continue
@@ -449,13 +324,10 @@ def validate_result(data: dict) -> dict:
 
     # ── confidence gating ─────────────────────────────────────────
     if data.get("confidence") == "low":
-        # Don't nuke the entry, but clear unreliable fields
-        if data.get("launch_options"):
-            fixes.append("low confidence: cleared launch_options")
-            data["launch_options"] = None
-        if data.get("env_vars"):
-            fixes.append("low confidence: cleared env_vars")
-            data["env_vars"] = {}
+        # Low confidence = don't trust the AMD classification
+        if data.get("amd_status") and data["amd_status"] != "unknown":
+            fixes.append(f"low confidence: downgraded amd_status from {data['amd_status']} to unknown")
+            data["amd_status"] = "unknown"
 
     if fixes:
         print(f"  [CLEAN] {name}: {len(fixes)} fixes applied")
@@ -466,18 +338,15 @@ def validate_result(data: dict) -> dict:
 
 
 def save_results(results: list[dict]) -> None:
-    """Save research results into the manual JSON files."""
+    """Save research results into the manual JSON files (amd_specific + useful_links)."""
     amd_file = MANUAL_DIR / "amd_specific.json"
-    cmd_file = MANUAL_DIR / "linux_commands.json"
     links_file = MANUAL_DIR / "useful_links.json"
 
     amd_data = json.loads(amd_file.read_text(encoding="utf-8")) if amd_file.exists() else {"games": []}
-    cmd_data = json.loads(cmd_file.read_text(encoding="utf-8")) if cmd_file.exists() else {"games": []}
     links_data = json.loads(links_file.read_text(encoding="utf-8")) if links_file.exists() else {"links": []}
 
     # Index existing entries by app_id for dedup
     amd_index = {g["app_id"] for g in amd_data.get("games", [])}
-    cmd_index = {g["app_id"] for g in cmd_data.get("games", [])}
     link_index = {(l["app_id"], l["url"]) for l in links_data.get("links", [])}
 
     for r in results:
@@ -499,20 +368,6 @@ def save_results(results: list[dict]) -> None:
             amd_data["games"].append(entry)
             amd_index.add(app_id)
 
-        # Linux commands
-        has_cmd = r.get("launch_options") or r.get("env_vars") or r.get("proton_version")
-        if has_cmd and app_id not in cmd_index:
-            cmd_data["games"].append({
-                "app_id": app_id,
-                "name": r.get("name", ""),
-                "launch_options": r.get("launch_options"),
-                "env_vars": r.get("env_vars") if r.get("env_vars") else {},
-                "proton_version": r.get("proton_version"),
-                "notes_en": r.get("linux_notes_en", ""),
-                "notes_es": r.get("linux_notes_es", ""),
-            })
-            cmd_index.add(app_id)
-
         # Useful links
         for link in r.get("useful_links", []):
             url = link.get("url", "")
@@ -530,16 +385,13 @@ def save_results(results: list[dict]) -> None:
     # Update timestamps
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     amd_data["last_updated"] = today
-    cmd_data["last_updated"] = today
     links_data["last_updated"] = today
 
     # Write back
     amd_file.write_text(json.dumps(amd_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    cmd_file.write_text(json.dumps(cmd_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     links_file.write_text(json.dumps(links_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print(f"\n[OK] Saved: {len(amd_data['games'])} AMD entries, "
-          f"{len(cmd_data['games'])} Linux commands, "
           f"{len(links_data['links'])} useful links")
 
 
@@ -556,21 +408,21 @@ def save_full_research(results: list[dict]) -> None:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Research game compatibility using Groq AI + DuckDuckGo search"
+        description="Research game compatibility using Mistral AI + DuckDuckGo search"
     )
     parser.add_argument("--app-id", type=int, help="Research a specific game by internal App ID")
     parser.add_argument("--limit", type=int, help="Maximum number of games to research")
     parser.add_argument("--dry-run", action="store_true", help="Show games to research without calling APIs")
-    parser.add_argument("--delay", type=float, default=REQUEST_DELAY, help=f"Seconds between Groq calls (default: {REQUEST_DELAY})")
+    parser.add_argument("--delay", type=float, default=REQUEST_DELAY, help=f"Seconds between Mistral calls (default: {REQUEST_DELAY})")
     parser.add_argument("--reset-progress", action="store_true", help="Reset progress tracking (re-research all games)")
     parser.add_argument("--retry-failed", action="store_true", help="Retry only previously failed games")
     args = parser.parse_args()
 
     # Check API key
-    api_key = os.environ.get("GROQ_API_KEY")
+    api_key = os.environ.get("MISTRAL_API_KEY")
     if not api_key and not args.dry_run:
-        print("[ERROR] GROQ_API_KEY environment variable not set.")
-        print("Get your free key at: https://console.groq.com")
+        print("[ERROR] MISTRAL_API_KEY environment variable not set.")
+        print("Get your free key at: https://console.mistral.ai/api-keys/")
         sys.exit(1)
 
     # Check database
@@ -612,7 +464,7 @@ def main():
     est_time = len(games) * (args.delay + SEARCH_DELAY * 3 + 2)  # rough estimate
     print(f"LinuxPlayDB — AI Research ({len(games)} games)")
     print(f"Search: DuckDuckGo (free, no API key)")
-    print(f"Analysis: Groq {GROQ_MODEL} (14,400 req/day free)")
+    print(f"Analysis: Mistral {MISTRAL_MODEL} (1B tokens/month free)")
     print(f"Estimated time: ~{est_time / 60:.0f} minutes\n")
 
     if args.dry_run:
@@ -622,8 +474,8 @@ def main():
         print(f"\nTotal: {len(games)} games")
         return
 
-    # Initialize Groq client
-    client = Groq(api_key=api_key)
+    # Initialize Mistral client
+    client = Mistral(api_key=api_key)
 
     results = []
     success = 0

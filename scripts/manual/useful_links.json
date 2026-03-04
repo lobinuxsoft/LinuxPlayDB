@@ -1,6 +1,6 @@
 {
   "description": "Useful external links per game (ProtonDB, PCGamingWiki, Reddit, etc)",
-  "last_updated": "2026-03-03",
+  "last_updated": "2026-03-04",
   "schema": {
     "app_id": "int — Steam App ID",
     "url": "str — Full URL to the resource",
@@ -21151,6 +21151,14 @@
       "title_es": "Mejorar el rendimiento - ProtonDB",
       "source": "protondb",
       "link_type": "fix"
+    },
+    {
+      "app_id": 1091500,
+      "url": "https://chipsandcheese.com/p/cyberpunk-2077s-path-tracing-update",
+      "title_en": "Cyberpunk 2077's Path Tracing Update",
+      "title_es": "Actualización de Trazado de Rutas de Cyberpunk 2077",
+      "source": "blog",
+      "link_type": "guide"
     }
   ]
 }
