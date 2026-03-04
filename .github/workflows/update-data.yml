@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update:
@@ -16,6 +17,8 @@ jobs:
       STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
@@ -61,18 +64,43 @@ jobs:
       - name: Regenerate inline DB
         run: python scripts/build_db.py --inline-only
 
-      # Step 6: Commit everything
-      - name: Commit and push
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: weekly data update"
-          add_options: '-f'
-          file_pattern: >-
-            data/linuxplaydb.db
-            site/data/linuxplaydb.db
-            site/js/db_inline.js
-            scripts/manual/amd_specific.json
-            scripts/manual/linux_commands.json
-            scripts/manual/useful_links.json
-            scripts/research_output/progress.json
+      # Step 6: Commit to automation branch and create PR to development
+      - name: Commit and create PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage data files (force to bypass .gitignore for progress files)
+          git add -f \
+            data/linuxplaydb.db \
+            site/data/linuxplaydb.db \
+            site/js/db_inline.js \
+            scripts/manual/amd_specific.json \
+            scripts/manual/linux_commands.json \
+            scripts/manual/useful_links.json \
+            scripts/research_output/progress.json \
             scripts/research_output/protondb_progress.json
+
+          # Exit early if nothing changed
+          if git diff --cached --quiet; then
+            echo "No data changes detected, skipping."
+            exit 0
+          fi
+
+          git commit -m "chore: weekly data update"
+
+          # Push to automation branch (force-update since it's disposable)
+          git push origin HEAD:refs/heads/automated/data-update --force
+
+          # Create or update PR to development
+          if gh pr list --head automated/data-update --base main --state open --json number --jq '.[0].number' | grep -q .; then
+            echo "PR already exists, force-push updated it."
+          else
+            gh pr create \
+              --base main \
+              --head automated/data-update \
+              --title "chore: weekly data update" \
+              --body "Automated weekly update of game database, ProtonDB reports, and AI research data."
+          fi
