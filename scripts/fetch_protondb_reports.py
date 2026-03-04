@@ -401,6 +401,8 @@ def main():
             print("[INFO] Progress file deleted.")
 
     succeeded_ids, failed_ids = load_progress()
+    # Always persist progress file so CI commit step can find it
+    save_progress(succeeded_ids, failed_ids)
 
     if args.retry_failed:
         if not failed_ids:
