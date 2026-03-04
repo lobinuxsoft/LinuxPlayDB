@@ -11,6 +11,8 @@ Usage:
     python fetch_protondb_reports.py                    # Fetch all games in DB
     python fetch_protondb_reports.py --app-id 1182900   # Fetch specific Steam app ID
     python fetch_protondb_reports.py --limit 50         # Limit to 50 games
+    python fetch_protondb_reports.py --reset-progress   # Wipe progress and re-fetch
+    python fetch_protondb_reports.py --retry-failed     # Re-try only failed games
 """
 
 import argparse
@@ -32,6 +34,9 @@ ROOT = Path(__file__).parent.parent
 DB_FILE = ROOT / "data" / "linuxplaydb.db"
 MANUAL_DIR = ROOT / "scripts" / "manual"
 OUTPUT_DIR = ROOT / "scripts" / "research_output"
+PROGRESS_FILE = OUTPUT_DIR / "protondb_progress.json"
+
+CHECKPOINT_INTERVAL = 50  # save partial results every N games
 
 COMMUNITY_API = "https://protondb.max-p.me"
 OFFICIAL_API = "https://www.protondb.com/api/v1/reports/summaries"
@@ -61,8 +66,39 @@ PROTON_VER_PATTERN = re.compile(
 )
 
 
+def load_progress() -> tuple[set[int], set[int]]:
+    """Load sets of succeeded and failed app_ids from progress file.
+
+    Returns (succeeded_ids, failed_ids).
+    """
+    if PROGRESS_FILE.exists():
+        try:
+            data = json.loads(PROGRESS_FILE.read_text(encoding="utf-8"))
+            return (set(data.get("succeeded_ids", [])),
+                    set(data.get("failed_ids", [])))
+        except (json.JSONDecodeError, KeyError):
+            return set(), set()
+    return set(), set()
+
+
+def save_progress(succeeded_ids: set[int], failed_ids: set[int]) -> None:
+    """Persist the sets of succeeded/failed app_ids to disk."""
+    PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    data = {
+        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "succeeded": len(succeeded_ids),
+        "failed": len(failed_ids),
+        "succeeded_ids": sorted(succeeded_ids),
+        "failed_ids": sorted(failed_ids),
+    }
+    PROGRESS_FILE.write_text(
+        json.dumps(data, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def get_games_from_db(db_path: Path, steam_app_id: int | None = None,
-                      limit: int | None = None) -> list[dict]:
+                      limit: int | None = None,
+                      exclude_ids: set[int] | None = None) -> list[dict]:
     """Get games from DB. Returns list with internal app_id, name, and steam_app_id if available."""
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
@@ -82,6 +118,9 @@ def get_games_from_db(db_path: Path, steam_app_id: int | None = None,
 
     rows = [dict(r) for r in cur.fetchall()]
     conn.close()
+
+    if exclude_ids and not steam_app_id:
+        rows = [r for r in rows if r["app_id"] not in exclude_ids]
 
     if limit and not steam_app_id:
         rows = rows[:limit]
@@ -251,9 +290,9 @@ def find_steam_app_id(game_name: str) -> int | None:
 def save_protondb_data(results: list[dict]) -> None:
     """Save ProtonDB report analysis to manual JSON files."""
     cmd_file = MANUAL_DIR / "linux_commands.json"
-    cmd_data = json.loads(cmd_file.read_text()) if cmd_file.exists() else {"games": []}
+    cmd_data = json.loads(cmd_file.read_text(encoding="utf-8")) if cmd_file.exists() else {"games": []}
     links_file = MANUAL_DIR / "useful_links.json"
-    links_data = json.loads(links_file.read_text()) if links_file.exists() else {"links": []}
+    links_data = json.loads(links_file.read_text(encoding="utf-8")) if links_file.exists() else {"links": []}
 
     # Index existing entries by name (lowercase) for dedup
     existing = {}
@@ -331,8 +370,8 @@ def save_protondb_data(results: list[dict]) -> None:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     cmd_data["last_updated"] = today
     links_data["last_updated"] = today
-    cmd_file.write_text(json.dumps(cmd_data, indent=2, ensure_ascii=False) + "\n")
-    links_file.write_text(json.dumps(links_data, indent=2, ensure_ascii=False) + "\n")
+    cmd_file.write_text(json.dumps(cmd_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    links_file.write_text(json.dumps(links_data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"[OK] Updated {updated} entries in linux_commands.json")
     print(f"[OK] Added {links_added} ProtonDB direct links to useful_links.json")
 
@@ -345,19 +384,48 @@ def main():
     parser.add_argument("--limit", type=int, help="Max games to process")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be fetched")
     parser.add_argument("--delay", type=float, default=REQUEST_DELAY)
+    parser.add_argument("--reset-progress", action="store_true",
+                        help="Delete progress file and re-process everything")
+    parser.add_argument("--retry-failed", action="store_true",
+                        help="Only re-try games that failed in previous runs")
     args = parser.parse_args()
 
     if not DB_FILE.exists():
         print(f"[ERROR] Database not found: {DB_FILE}")
         sys.exit(1)
 
-    games = get_games_from_db(DB_FILE, steam_app_id=args.app_id, limit=args.limit)
+    # --- Progress tracking ---
+    if args.reset_progress:
+        if PROGRESS_FILE.exists():
+            PROGRESS_FILE.unlink()
+            print("[INFO] Progress file deleted.")
+
+    succeeded_ids, failed_ids = load_progress()
+
+    if args.retry_failed:
+        if not failed_ids:
+            print("[INFO] No failed games to retry.")
+            return
+        print(f"[INFO] Retrying {len(failed_ids)} previously failed games...")
+        # Get all games, then filter to only failed ones
+        games = get_games_from_db(DB_FILE, steam_app_id=args.app_id,
+                                  limit=args.limit)
+        games = [g for g in games if g["app_id"] in failed_ids]
+        # Remove them from failed so they get re-classified
+        failed_ids -= {g["app_id"] for g in games}
+    else:
+        skip_ids = succeeded_ids | failed_ids if not args.app_id else None
+        if skip_ids:
+            print(f"[INFO] Skipping {len(succeeded_ids)} succeeded, "
+                  f"{len(failed_ids)} failed from previous runs.")
+        games = get_games_from_db(DB_FILE, steam_app_id=args.app_id,
+                                  limit=args.limit, exclude_ids=skip_ids)
 
     if not games:
         print("[INFO] No games to process.")
         return
 
-    print(f"LinuxPlayDB — ProtonDB Report Fetcher ({len(games)} games)")
+    print(f"LinuxPlayDB -- ProtonDB Report Fetcher ({len(games)} games)")
     print(f"Sources: Community API ({COMMUNITY_API}) + Official API\n")
 
     if args.dry_run:
@@ -368,58 +436,78 @@ def main():
     results = []
     success = 0
     no_reports = 0
+    errors = 0
 
     for i, game in enumerate(games, 1):
-        print(f"[{i}/{len(games)}] {game['name']}...", end=" ", flush=True)
+        try:
+            print(f"[{i}/{len(games)}] {game['name']}...", end=" ", flush=True)
 
-        # Try to find real Steam app ID (our DB uses negative IDs from seed)
-        steam_id = game["app_id"] if game["app_id"] > 0 else None
+            # Try to find real Steam app ID (our DB uses negative IDs from seed)
+            steam_id = game["app_id"] if game["app_id"] > 0 else None
 
-        if not steam_id:
-            steam_id = find_steam_app_id(game["name"])
-            if steam_id:
-                print(f"(Steam: {steam_id})", end=" ", flush=True)
+            if not steam_id:
+                steam_id = find_steam_app_id(game["name"])
+                if steam_id:
+                    print(f"(Steam: {steam_id})", end=" ", flush=True)
 
-        if not steam_id:
-            print("[SKIP] No Steam ID found")
-            continue
+            if not steam_id:
+                print("[SKIP] No Steam ID found")
+                succeeded_ids.add(game["app_id"])
+                save_progress(succeeded_ids, failed_ids)
+                continue
 
-        # Fetch community reports
-        reports = fetch_community_reports(steam_id)
+            # Fetch community reports
+            reports = fetch_community_reports(steam_id)
 
-        # Fetch official summary
-        summary = fetch_official_summary(steam_id)
+            # Fetch official summary
+            summary = fetch_official_summary(steam_id)
 
-        if not reports and not summary:
-            print(f"[EMPTY] No data")
-            no_reports += 1
-            time.sleep(args.delay)
-            continue
+            if not reports and not summary:
+                print("[EMPTY] No data")
+                no_reports += 1
+                succeeded_ids.add(game["app_id"])
+                save_progress(succeeded_ids, failed_ids)
+                time.sleep(args.delay)
+                continue
 
-        # Analyze reports
-        analysis = analyze_reports(reports, game["name"])
+            # Analyze reports
+            analysis = analyze_reports(reports, game["name"])
 
-        # Merge official summary tier
-        if summary and summary.get("tier"):
-            if not analysis.get("dominant_rating"):
-                analysis["dominant_rating"] = summary["tier"]
-            analysis["official_tier"] = summary["tier"]
-            analysis["official_confidence"] = summary.get("confidence", "")
+            # Merge official summary tier
+            if summary and summary.get("tier"):
+                if not analysis.get("dominant_rating"):
+                    analysis["dominant_rating"] = summary["tier"]
+                analysis["official_tier"] = summary["tier"]
+                analysis["official_confidence"] = summary.get("confidence", "")
 
-        report_count = analysis.get("report_count", 0)
-        tier = analysis.get("dominant_rating", "?")
-        env_count = len(analysis.get("env_vars", {}))
-        config_count = len(analysis.get("top_configs", []))
+            report_count = analysis.get("report_count", 0)
+            tier = analysis.get("dominant_rating", "?")
+            env_count = len(analysis.get("env_vars", {}))
+            config_count = len(analysis.get("top_configs", []))
 
-        print(f"[OK] {report_count} reports | tier: {tier} | envs: {env_count} | configs: {config_count}")
+            print(f"[OK] {report_count} reports | tier: {tier} | "
+                  f"envs: {env_count} | configs: {config_count}")
 
-        results.append({
-            "app_id": game["app_id"],
-            "steam_app_id": steam_id,
-            "name": game["name"],
-            "analysis": analysis,
-        })
-        success += 1
+            results.append({
+                "app_id": game["app_id"],
+                "steam_app_id": steam_id,
+                "name": game["name"],
+                "analysis": analysis,
+            })
+            success += 1
+            succeeded_ids.add(game["app_id"])
+
+        except Exception as exc:
+            print(f"[ERROR] {exc}")
+            failed_ids.add(game["app_id"])
+            errors += 1
+
+        save_progress(succeeded_ids, failed_ids)
+
+        # Checkpoint: save partial results every N games to avoid data loss
+        if results and len(results) % CHECKPOINT_INTERVAL == 0:
+            print(f"\n[CHECKPOINT] Saving {len(results)} results so far...")
+            save_protondb_data(results)
 
         if i < len(games):
             time.sleep(args.delay)
@@ -431,10 +519,14 @@ def main():
         # Save full output for reference
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
         output_file = OUTPUT_DIR / f"protondb_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.json"
-        output_file.write_text(json.dumps(results, indent=2, ensure_ascii=False) + "\n")
+        output_file.write_text(
+            json.dumps(results, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
         print(f"[OK] Full output: {output_file}")
 
-    print(f"\nDone! Success: {success}, No reports: {no_reports}, Total: {len(games)}")
+    print(f"\nDone! Success: {success}, No reports: {no_reports}, "
+          f"Errors: {errors}, Total: {len(games)}")
 
 
 if __name__ == "__main__":

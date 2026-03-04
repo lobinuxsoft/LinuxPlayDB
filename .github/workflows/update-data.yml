@@ -25,9 +25,11 @@ jobs:
         run: pip install -r scripts/requirements.txt
 
       # Step 1: Fetch ProtonDB reports (free, no API key)
+      # 1000 games/run × ~4s each = ~67 min. Progress persists across runs.
       - name: Fetch ProtonDB reports
-        run: python scripts/fetch_protondb_reports.py --delay 1.5
+        run: python scripts/fetch_protondb_reports.py --delay 1.5 --limit 1000
         continue-on-error: true
+        timeout-minutes: 90
 
       # Step 2: AI research for games missing data (needs GROQ_API_KEY secret)
       # 50 games/week × ~15s each = ~13 min. Progress persists across runs.
@@ -72,3 +74,4 @@ jobs:
             scripts/manual/linux_commands.json
             scripts/manual/useful_links.json
             scripts/research_output/progress.json
+            scripts/research_output/protondb_progress.json

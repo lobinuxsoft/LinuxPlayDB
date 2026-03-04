@@ -28,6 +28,7 @@ Thumbs.db
 # Research output (AI generated, not tracked)
 scripts/research_output/
 !scripts/research_output/progress.json
+!scripts/research_output/protondb_progress.json
 
 # Node (if ever needed)
 node_modules/
