@@ -1,6 +1,6 @@
 {
   "description": "AMD-specific RT/PT compatibility data, curated manually",
-  "last_updated": "2026-03-04",
+  "last_updated": "2026-03-05",
   "schema": {
     "app_id": "int — Steam App ID",
     "name": "str — Game name for human reference",
@@ -1632,6 +1632,69 @@
       "amd_status": "amd_ok",
       "notes_en": "Ray Tracing now possible on Polaris, Vega and RDNA1 on Linux",
       "notes_es": "Ray Tracing ahora posible en Polaris, Vega y RDNA1 en Linux"
+    },
+    {
+      "app_id": -797890,
+      "name": "A Difficult Game About ROLLING - ReUpRise",
+      "amd_status": "nvidia_only",
+      "notes_en": "The game supports RTX Remix, which is NVIDIA-exclusive. No mention of AMD compatibility.",
+      "notes_es": "El juego soporta RTX Remix, que es exclusivo de NVIDIA. No hay mención de compatibilidad con AMD.",
+      "rt_type": "rt"
+    },
+    {
+      "app_id": 2399830,
+      "name": "ARK: Survival Ascended",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on AMD GPUs, but performance may be worse than on NVIDIA due to driver optimizations. Path tracing is not mentioned in the search results.",
+      "notes_es": "El trazado de rayos funciona en las GPUs AMD, pero el rendimiento puede ser peor que en NVIDIA debido a las optimizaciones del controlador. No se menciona el trazado de caminos en los resultados de búsqueda.",
+      "rt_type": "rt"
+    },
+    {
+      "app_id": -419294,
+      "name": "AWAY: The Survival Series",
+      "amd_status": "amd_ok",
+      "notes_en": "The game supports path tracing, which is compatible with AMD RDNA4 GPUs based on the architecture's improvements in ray tracing and path tracing capabilities.",
+      "notes_es": "El juego soporta trazado de rutas, compatible con las GPUs AMD RDNA4 según las mejoras en trazado de rayos y trazado de rutas.",
+      "rt_type": "pt"
+    },
+    {
+      "app_id": -266857,
+      "name": "Anno 117: Pax Romana",
+      "amd_status": "amd_ok",
+      "notes_en": "Ray tracing works on AMD GPUs, with users reporting performance improvements by adjusting RT settings. No specific issues mentioned for AMD hardware.",
+      "notes_es": "El trazado de rayos funciona en GPUs AMD, con usuarios reportando mejoras de rendimiento ajustando los ajustes de RT. No se mencionan problemas específicos para hardware AMD.",
+      "rt_type": "rt"
+    },
+    {
+      "app_id": -244272,
+      "name": "Apocalypse: 2.0 Edition",
+      "amd_status": "amd_ok",
+      "notes_en": "The game is listed as supporting NVIDIA RTX features, but no specific issues with AMD GPUs are mentioned. AMD RDNA4 architecture supports ray tracing, suggesting compatibility.",
+      "notes_es": "El juego soporta características NVIDIA RTX, pero no se mencionan problemas específicos con GPUs AMD. La arquitectura AMD RDNA4 soporta trazado de rayos, lo que sugiere compatibilidad."
+    },
+    {
+      "app_id": -269482,
+      "name": "Aunt Fatima - خالة فاطمة",
+      "amd_status": "nvidia_only",
+      "notes_en": "The game leverages NVIDIA RTX 50 Series features like DLSS 4, Ray Reconstruction, and RTX Video Super Resolution, suggesting heavy reliance on NVIDIA-specific technologies.",
+      "notes_es": "El juego utiliza características de la serie RTX 50 de NVIDIA como DLSS 4, Ray Reconstruction y RTX Video Super Resolution, lo que indica una dependencia significativa de tecnologías exclusivas de NVIDIA.",
+      "rt_type": "pt"
+    },
+    {
+      "app_id": 2457220,
+      "name": "Avowed",
+      "amd_status": "amd_ok",
+      "notes_en": "Avowed uses ray tracing for reflections, lighting, and shadows but does not support path tracing. AMD GPUs should work correctly with these features.",
+      "notes_es": "Avowed utiliza trazado de rayos para reflejos, iluminación y sombras, pero no admite trazado de caminos. Las GPUs de AMD deberían funcionar correctamente con estas características.",
+      "rt_type": "rt"
+    },
+    {
+      "app_id": -284000,
+      "name": "Batora: Lost Haven",
+      "amd_status": "nvidia_only",
+      "notes_en": "The game supports DLSS 2 and ray tracing (ambient occlusion, reflections) but is marketed as an RTX-exclusive feature, suggesting it may not work on AMD GPUs.",
+      "notes_es": "El juego soporta DLSS 2 y trazado de rayos (oclusión ambiental, reflejos), pero se promociona como una característica exclusiva de RTX, lo que sugiere que puede no funcionar en GPUs AMD.",
+      "rt_type": "rt"
     }
   ]
 }
