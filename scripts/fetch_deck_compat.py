@@ -61,26 +61,26 @@ def _get_eligible_app_ids(cur: sqlite3.Cursor) -> list[int]:
 
 
 def _parse_compat_category(data) -> str:
-    """Extract the compatibility category from the API response."""
+    """Extract the compatibility category from the API response.
+
+    Steam returns two formats:
+    - Reviewed game:  {"success": 1, "results": {"appid": ..., "resolved_category": 0-3}}
+    - No review data: {"success": 1, "results": []}
+    """
     if not isinstance(data, dict):
+        logger.debug("Unexpected response type: %s", type(data).__name__)
         return "unknown"
 
-    # The response structure can vary; handle known formats.
-    results = data.get("results", {})
-    if not isinstance(results, dict):
+    results = data.get("results", [])
+
+    # No review data — Steam returns an empty list.
+    if isinstance(results, list):
         return "unknown"
 
-    # Primary: look for resolved_category.
+    # Normal case — results is a dict with resolved_category.
     resolved = results.get("resolved_category")
     if resolved is not None:
         return COMPAT_CATEGORIES.get(resolved, "unknown")
-
-    # Fallback: check success and look at the raw response.
-    if data.get("success") == 1:
-        # Sometimes the category is at the top level.
-        category = data.get("resolved_category")
-        if category is not None:
-            return COMPAT_CATEGORIES.get(category, "unknown")
 
     return "unknown"
 
