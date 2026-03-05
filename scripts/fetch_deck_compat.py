@@ -60,10 +60,15 @@ def _get_eligible_app_ids(cur: sqlite3.Cursor) -> list[int]:
     return [row[0] for row in cur.fetchall()]
 
 
-def _parse_compat_category(data: dict) -> str:
+def _parse_compat_category(data) -> str:
     """Extract the compatibility category from the API response."""
+    if not isinstance(data, dict):
+        return "unknown"
+
     # The response structure can vary; handle known formats.
     results = data.get("results", {})
+    if not isinstance(results, dict):
+        return "unknown"
 
     # Primary: look for resolved_category.
     resolved = results.get("resolved_category")
@@ -90,80 +95,81 @@ def fetch(db_path: Path) -> int:
         Number of entries updated.
     """
     conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
+    try:
+        cur = conn.cursor()
 
-    app_ids = _get_eligible_app_ids(cur)
-    if not app_ids:
-        logger.info("No games need Deck compat check")
-        conn.close()
-        return 0
+        app_ids = _get_eligible_app_ids(cur)
+        if not app_ids:
+            logger.info("No games need Deck compat check")
+            return 0
 
-    logger.info("Checking Deck compatibility for %d games", len(app_ids))
+        logger.info("Checking Deck compatibility for %d games", len(app_ids))
 
-    session = requests.Session()
-    session.headers.update({"User-Agent": "LinuxPlayDB/1.0"})
+        session = requests.Session()
+        session.headers.update({"User-Agent": "LinuxPlayDB/1.0"})
 
-    updated = 0
-    errors = 0
+        updated = 0
+        errors = 0
 
-    for i, app_id in enumerate(app_ids):
-        try:
-            resp = session.get(
-                DECK_COMPAT_URL,
-                params={"nAppID": app_id},
-                timeout=REQUEST_TIMEOUT,
-            )
-
-            if resp.status_code == 429:
-                logger.warning("Rate limited at app %d, backing off 30s", app_id)
-                time.sleep(30)
-                continue
-
-            if resp.status_code != 200:
-                logger.debug("App %d: HTTP %d", app_id, resp.status_code)
-                errors += 1
-                time.sleep(RATE_LIMIT_SECONDS)
-                continue
-
-            data = resp.json()
-            status = _parse_compat_category(data)
-
-            if status != "unknown":
-                cur.execute(
-                    """INSERT INTO linux_compat (app_id, deck_status)
-                       VALUES (?, ?)
-                       ON CONFLICT(app_id) DO UPDATE SET deck_status = excluded.deck_status""",
-                    (app_id, status),
+        for i, app_id in enumerate(app_ids):
+            try:
+                resp = session.get(
+                    DECK_COMPAT_URL,
+                    params={"nAppID": app_id},
+                    timeout=REQUEST_TIMEOUT,
                 )
-                updated += 1
 
-        except requests.RequestException as exc:
-            logger.warning("App %d: request failed: %s", app_id, exc)
-            errors += 1
-        except (ValueError, KeyError) as exc:
-            logger.warning("App %d: parse error: %s", app_id, exc)
-            errors += 1
+                if resp.status_code == 429:
+                    logger.warning("Rate limited at app %d, backing off 30s", app_id)
+                    time.sleep(30)
+                    continue
 
-        # Progress + intermediate commit every 50 games.
-        if (i + 1) % 50 == 0:
-            logger.info("Progress: %d/%d (updated: %d, errors: %d)", i + 1, len(app_ids), updated, errors)
-            conn.commit()
+                if resp.status_code != 200:
+                    logger.debug("App %d: HTTP %d", app_id, resp.status_code)
+                    errors += 1
+                    time.sleep(RATE_LIMIT_SECONDS)
+                    continue
 
-        time.sleep(RATE_LIMIT_SECONDS)
+                data = resp.json()
+                status = _parse_compat_category(data)
 
-    # Record source metadata.
-    now = datetime.now(timezone.utc).isoformat()
-    cur.execute(
-        """INSERT OR REPLACE INTO data_sources
-               (source_id, last_updated, entries_count, url, notes)
-           VALUES ('deck_compat', ?, ?, ?, 'Steam Deck compatibility reports')""",
-        (now, updated, DECK_COMPAT_URL),
-    )
+                if status != "unknown":
+                    cur.execute(
+                        """INSERT INTO linux_compat (app_id, deck_status)
+                           VALUES (?, ?)
+                           ON CONFLICT(app_id) DO UPDATE SET deck_status = excluded.deck_status""",
+                        (app_id, status),
+                    )
+                    updated += 1
 
-    conn.commit()
-    conn.close()
-    logger.info("Deck compat fetch complete: %d updated, %d errors out of %d total", updated, errors, len(app_ids))
-    return updated
+            except requests.RequestException as exc:
+                logger.warning("App %d: request failed: %s", app_id, exc)
+                errors += 1
+            except (ValueError, KeyError) as exc:
+                logger.warning("App %d: parse error: %s", app_id, exc)
+                errors += 1
+
+            # Progress + intermediate commit every 50 games.
+            if (i + 1) % 50 == 0:
+                logger.info("Progress: %d/%d (updated: %d, errors: %d)", i + 1, len(app_ids), updated, errors)
+                conn.commit()
+
+            time.sleep(RATE_LIMIT_SECONDS)
+
+        # Record source metadata.
+        now = datetime.now(timezone.utc).isoformat()
+        cur.execute(
+            """INSERT OR REPLACE INTO data_sources
+                   (source_id, last_updated, entries_count, url, notes)
+               VALUES ('deck_compat', ?, ?, ?, 'Steam Deck compatibility reports')""",
+            (now, updated, DECK_COMPAT_URL),
+        )
+
+        conn.commit()
+        logger.info("Deck compat fetch complete: %d updated, %d errors out of %d total", updated, errors, len(app_ids))
+        return updated
+    finally:
+        conn.close()
 
 
 def fetch_for_ids(db_path: Path, app_ids: list[int],
@@ -178,75 +184,76 @@ def fetch_for_ids(db_path: Path, app_ids: list[int],
         session.headers.update({"User-Agent": "LinuxPlayDB/1.0"})
 
     conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
+    try:
+        cur = conn.cursor()
 
-    # Filter to IDs that need a Deck compat check.
-    placeholders = ",".join("?" * len(app_ids))
-    cur.execute(
-        f"""SELECT g.app_id FROM games g
-            LEFT JOIN linux_compat lc ON g.app_id = lc.app_id
-            WHERE g.app_id IN ({placeholders})
-              AND g.app_id > 0
-              AND (lc.deck_status IS NULL OR lc.deck_status = 'unknown')""",
-        app_ids,
-    )
-    eligible = [r[0] for r in cur.fetchall()]
+        # Filter to IDs that need a Deck compat check.
+        placeholders = ",".join("?" * len(app_ids))
+        cur.execute(
+            f"""SELECT g.app_id FROM games g
+                LEFT JOIN linux_compat lc ON g.app_id = lc.app_id
+                WHERE g.app_id IN ({placeholders})
+                  AND g.app_id > 0
+                  AND (lc.deck_status IS NULL OR lc.deck_status = 'unknown')""",
+            app_ids,
+        )
+        eligible = [r[0] for r in cur.fetchall()]
 
-    if not eligible:
-        conn.close()
-        return 0
+        if not eligible:
+            return 0
 
-    logger.info("Deck compat: checking %d/%d games", len(eligible), len(app_ids))
+        logger.info("Deck compat: checking %d/%d games", len(eligible), len(app_ids))
 
-    updated = 0
-    for i, app_id in enumerate(eligible):
-        try:
-            resp = session.get(
-                DECK_COMPAT_URL,
-                params={"nAppID": app_id},
-                timeout=REQUEST_TIMEOUT,
-            )
-            if resp.status_code == 429:
-                logger.warning("Deck compat rate limited at %d, backing off 30s", app_id)
-                time.sleep(30)
-                continue
-            if resp.status_code != 200:
-                time.sleep(RATE_LIMIT_SECONDS)
-                continue
-
-            data = resp.json()
-            status = _parse_compat_category(data)
-
-            if status != "unknown":
-                cur.execute(
-                    """INSERT INTO linux_compat (app_id, deck_status)
-                       VALUES (?, ?)
-                       ON CONFLICT(app_id) DO UPDATE SET deck_status = excluded.deck_status""",
-                    (app_id, status),
+        updated = 0
+        for i, app_id in enumerate(eligible):
+            try:
+                resp = session.get(
+                    DECK_COMPAT_URL,
+                    params={"nAppID": app_id},
+                    timeout=REQUEST_TIMEOUT,
                 )
-                updated += 1
+                if resp.status_code == 429:
+                    logger.warning("Deck compat rate limited at %d, backing off 30s", app_id)
+                    time.sleep(30)
+                    continue
+                if resp.status_code != 200:
+                    time.sleep(RATE_LIMIT_SECONDS)
+                    continue
 
-        except (requests.RequestException, ValueError, KeyError) as exc:
-            logger.warning("Deck compat app %d failed: %s", app_id, exc)
+                data = resp.json()
+                status = _parse_compat_category(data)
 
-        if (i + 1) % 50 == 0:
-            conn.commit()
-            logger.info("  Deck compat: %d/%d (%d updated)", i + 1, len(eligible), updated)
+                if status != "unknown":
+                    cur.execute(
+                        """INSERT INTO linux_compat (app_id, deck_status)
+                           VALUES (?, ?)
+                           ON CONFLICT(app_id) DO UPDATE SET deck_status = excluded.deck_status""",
+                        (app_id, status),
+                    )
+                    updated += 1
 
-        time.sleep(RATE_LIMIT_SECONDS)
+            except (requests.RequestException, ValueError, KeyError) as exc:
+                logger.warning("Deck compat app %d failed: %s", app_id, exc)
 
-    now = datetime.now(timezone.utc).isoformat()
-    cur.execute(
-        """INSERT OR REPLACE INTO data_sources
-               (source_id, last_updated, entries_count, url, notes)
-           VALUES ('deck_compat', ?, ?, ?, 'Steam Deck compatibility reports')""",
-        (now, updated, DECK_COMPAT_URL),
-    )
+            if (i + 1) % 50 == 0:
+                conn.commit()
+                logger.info("  Deck compat: %d/%d (%d updated)", i + 1, len(eligible), updated)
 
-    conn.commit()
-    conn.close()
-    logger.info("Deck compat: %d updated out of %d eligible", updated, len(eligible))
-    return updated
+            time.sleep(RATE_LIMIT_SECONDS)
+
+        now = datetime.now(timezone.utc).isoformat()
+        cur.execute(
+            """INSERT OR REPLACE INTO data_sources
+                   (source_id, last_updated, entries_count, url, notes)
+               VALUES ('deck_compat', ?, ?, ?, 'Steam Deck compatibility reports')""",
+            (now, updated, DECK_COMPAT_URL),
+        )
+
+        conn.commit()
+        logger.info("Deck compat: %d updated out of %d eligible", updated, len(eligible))
+        return updated
+    finally:
+        conn.close()
 
 
 if __name__ == "__main__":
