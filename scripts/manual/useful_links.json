@@ -21159,6 +21159,118 @@
       "title_es": "Actualización de Trazado de Rutas de Cyberpunk 2077",
       "source": "blog",
       "link_type": "guide"
+    },
+    {
+      "app_id": 1269370,
+      "url": "https://www.amd.com/en/products/graphics/technologies/fidelityfx/supported-games.html",
+      "title_en": "AMD Gaming Technologies Supported Games",
+      "title_es": "Juegos compatibles con tecnologías de gaming de AMD",
+      "source": "amd",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 1269370,
+      "url": "https://github.com/ValveSoftware/Proton",
+      "title_en": "Proton Compatibility Tool for Steam Play",
+      "title_es": "Herramienta de compatibilidad Proton para Steam Play",
+      "source": "github",
+      "link_type": "guide"
+    },
+    {
+      "app_id": 251570,
+      "url": "https://steamcommunity.com/app/251570/discussions/0/4516631559566880269/",
+      "title_en": "Graphic Engine; Unity & HDRP",
+      "title_es": "Motor gráfico; Unity & HDRP",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 251570,
+      "url": "https://community.thefunpimps.com/threads/ray-tracing-in-7-days-to-die.19074/",
+      "title_en": "Ray Tracing in 7 Days to Die",
+      "title_es": "Ray Tracing en 7 Days to Die",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 251570,
+      "url": "https://steamcommunity.com/app/251570/discussions/0/690872195393786895/",
+      "title_en": "Why Ray Tracing and Better Audio Would Make 7 Days to Die Far Scarier",
+      "title_es": "Por qué el Ray Tracing y un mejor audio harían que 7 Days to Die fuera mucho más aterrador",
+      "source": "steam",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": 251570,
+      "url": "https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List",
+      "title_en": "FSR4 Compatibility List",
+      "title_es": "Lista de compatibilidad de FSR4",
+      "source": "github",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 251570,
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1i7bnwd/steam_wproton_everything_ive_tried_to_fix_stutter/",
+      "title_en": "Steam w/Proton - everything I've tried to fix stutter on mouse input",
+      "title_es": "Steam con Proton - todo lo que he intentado para solucionar el tartamudeo en la entrada del ratón",
+      "source": "reddit",
+      "link_type": "discussion"
+    },
+    {
+      "app_id": -797890,
+      "url": "https://store.steampowered.com/app/1901130/A_Difficult_Game_About_ROLLING__ReUpRise/",
+      "title_en": "A Difficult Game About ROLLING - ReUpRise on Steam",
+      "title_es": "A Difficult Game About ROLLING - ReUpRise en Steam",
+      "source": "steam",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": -797890,
+      "url": "https://www.nvidia.com/en-eu/geforce/news/nvidia-rtx-games-engines-apps/",
+      "title_en": "NVIDIA DLSS & GeForce RTX: List Of All Games, Engines And",
+      "title_es": "NVIDIA DLSS & GeForce RTX: Lista de todos los juegos, motores y",
+      "source": "nvidia",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 1182900,
+      "url": "https://www.amd.com/en/products/graphics/technologies/fidelityfx/supported-games.html",
+      "title_en": "AMD Gaming Technologies Supported Games",
+      "title_es": "Juegos compatibles con tecnologías de gaming de AMD",
+      "source": "amd",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 1182900,
+      "url": "https://www.nvidia.com/en-us/geforce/news/a-plague-tale-requiem-dlss-ray-tracing/",
+      "title_en": "NVIDIA DLSS & Ray Tracing Coming to A Plague Tale: Requiem",
+      "title_es": "DLSS y trazado de rayos de NVIDIA llegan a A Plague Tale: Requiem",
+      "source": "nvidia",
+      "link_type": "news"
+    },
+    {
+      "app_id": 2233120,
+      "url": "https://www.amd.com/en/products/graphics/technologies/fidelityfx/supported-games.html",
+      "title_en": "AMD Gaming Technologies Supported Games",
+      "title_es": "Juegos compatibles con tecnologías de AMD Gaming",
+      "source": "amd",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 2233120,
+      "url": "https://www.pcgamingwiki.com/wiki/A_Quiet_Place:_The_Road_Ahead",
+      "title_en": "A Quiet Place: The Road Ahead - PCGamingWiki",
+      "title_es": "A Quiet Place: The Road Ahead - PCGamingWiki",
+      "source": "pcgamingwiki",
+      "link_type": "wiki"
+    },
+    {
+      "app_id": 2233120,
+      "url": "https://steamcommunity.com/app/2233120/discussions/0/4693405608846475957/",
+      "title_en": "Micro-stutter discussion on Steam",
+      "title_es": "Discusión sobre micro-tartamudeo en Steam",
+      "source": "steam",
+      "link_type": "discussion"
     }
   ]
 }
