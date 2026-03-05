@@ -413,12 +413,19 @@ def fetch_for_ids(db_path: Path, app_ids: list[int]) -> int:
 
             analysis = analyze_reports(reports, name)
 
-            if summary and summary.get("tier"):
-                if not analysis.get("dominant_rating"):
-                    analysis["dominant_rating"] = summary["tier"]
-                analysis["official_tier"] = summary["tier"]
+            summary_total = None
+            summary_tier = None
+            if summary:
+                if summary.get("tier"):
+                    summary_tier = summary["tier"]
+                    if not analysis.get("dominant_rating"):
+                        analysis["dominant_rating"] = summary_tier
+                    analysis["official_tier"] = summary_tier
+                summary_total = summary.get("total")
 
-            _upsert_protondb_to_db(cur, app_id, analysis)
+            _upsert_protondb_to_db(cur, app_id, analysis,
+                                   summary_total=summary_total,
+                                   summary_tier=summary_tier)
             success += 1
 
         except Exception as exc:
@@ -437,7 +444,9 @@ def fetch_for_ids(db_path: Path, app_ids: list[int]) -> int:
 
 
 def _upsert_protondb_to_db(cur: sqlite3.Cursor, app_id: int,
-                           analysis: dict) -> None:
+                           analysis: dict,
+                           summary_total: int | None = None,
+                           summary_tier: str | None = None) -> None:
     """Write ProtonDB analysis results into the database using an existing cursor."""
     tier = analysis.get("dominant_rating") or analysis.get("official_tier")
     proton_ver = analysis.get("proton_version")
@@ -487,6 +496,20 @@ def _upsert_protondb_to_db(cur: sqlite3.Cursor, app_id: int,
             f"Reportes ProtonDB{tier_str} — {report_count} reportes",
         ),
     )
+
+    # Update research_snapshots with current ProtonDB state.
+    if summary_total is not None or summary_tier is not None:
+        now = datetime.now(timezone.utc).isoformat()
+        cur.execute(
+            """INSERT INTO research_snapshots
+                   (app_id, protondb_total, protondb_tier, protondb_fetched_at)
+               VALUES (?, ?, ?, ?)
+               ON CONFLICT(app_id) DO UPDATE SET
+                   protondb_total = excluded.protondb_total,
+                   protondb_tier = excluded.protondb_tier,
+                   protondb_fetched_at = excluded.protondb_fetched_at""",
+            (app_id, summary_total, summary_tier, now),
+        )
 
 
 def main():

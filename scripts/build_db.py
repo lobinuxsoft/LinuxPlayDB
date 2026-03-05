@@ -152,6 +152,18 @@ CREATE TABLE IF NOT EXISTS pipeline_meta (
     key TEXT PRIMARY KEY,
     value TEXT
 );
+
+-- AI research snapshots: tracks ProtonDB state at time of last research
+-- to avoid re-researching games with no new community data.
+CREATE TABLE IF NOT EXISTS research_snapshots (
+    app_id INTEGER PRIMARY KEY REFERENCES games(app_id),
+    protondb_total INTEGER,
+    protondb_tier TEXT,
+    protondb_fetched_at TEXT,
+    ai_researched_at TEXT,
+    protondb_total_at_research INTEGER,
+    protondb_tier_at_research TEXT
+);
 """
 
 

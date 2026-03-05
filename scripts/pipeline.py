@@ -292,8 +292,38 @@ def print_status(db_path: Path) -> None:
     row = conn.execute("SELECT COUNT(*) FROM games").fetchone()
     print(f"\n  Games in DB: {row[0]}")
 
+    # Research snapshots stats.
+    try:
+        rs_total = conn.execute(
+            "SELECT COUNT(*) FROM research_snapshots"
+        ).fetchone()[0]
+        rs_researched = conn.execute(
+            "SELECT COUNT(*) FROM research_snapshots "
+            "WHERE ai_researched_at IS NOT NULL"
+        ).fetchone()[0]
+        rs_with_protondb = conn.execute(
+            "SELECT COUNT(*) FROM research_snapshots "
+            "WHERE protondb_total IS NOT NULL"
+        ).fetchone()[0]
+        rs_stale = conn.execute(
+            """SELECT COUNT(*) FROM research_snapshots
+               WHERE ai_researched_at IS NOT NULL
+                 AND ((protondb_total IS NOT NULL
+                       AND protondb_total_at_research IS NOT NULL
+                       AND protondb_total - protondb_total_at_research >= 10)
+                      OR (protondb_tier IS NOT NULL
+                          AND protondb_tier_at_research IS NOT NULL
+                          AND protondb_tier != protondb_tier_at_research))"""
+        ).fetchone()[0]
+        print(f"\n  Research snapshots: {rs_total}")
+        print(f"    AI researched:   {rs_researched}")
+        print(f"    ProtonDB data:   {rs_with_protondb}")
+        print(f"    Stale (need re-research): {rs_stale}")
+    except sqlite3.OperationalError:
+        pass  # table doesn't exist yet
+
     size = db_path.stat().st_size
-    print(f"  DB size: {size / 1024:.1f} KB")
+    print(f"\n  DB size: {size / 1024:.1f} KB")
     print("=" * 50)
 
     conn.close()

@@ -421,20 +421,49 @@ def research_for_ids(db_path: Path, app_ids: list[int]) -> int:
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    # Only research games with graphics features that need it.
+    # Count total RT/PT games in batch for skip reporting.
     placeholders = ",".join("?" * len(app_ids))
     cur.execute(
-        f"""SELECT g.app_id, g.name
+        f"""SELECT COUNT(*)
             FROM games g
             JOIN graphics_features gf ON g.app_id = gf.app_id
             WHERE g.app_id IN ({placeholders})
               AND g.type = 'game'
               AND (gf.rt_type IN ('rt', 'pt')
+                   OR gf.dlss_sr = 1 OR gf.fsr3 = 1 OR gf.fsr4 = 1)""",
+        app_ids,
+    )
+    total_eligible = cur.fetchone()[0]
+
+    # Only research games that need it: never researched, research failed,
+    # 10+ new ProtonDB reports, or ProtonDB tier changed.
+    cur.execute(
+        f"""SELECT g.app_id, g.name
+            FROM games g
+            JOIN graphics_features gf ON g.app_id = gf.app_id
+            LEFT JOIN research_snapshots rs ON g.app_id = rs.app_id
+            WHERE g.app_id IN ({placeholders})
+              AND g.type = 'game'
+              AND (gf.rt_type IN ('rt', 'pt')
                    OR gf.dlss_sr = 1 OR gf.fsr3 = 1 OR gf.fsr4 = 1)
-              AND gf.amd_status IS NULL""",
+              AND (
+                  rs.ai_researched_at IS NULL
+                  OR gf.amd_status IS NULL
+                  OR (rs.protondb_total IS NOT NULL
+                      AND rs.protondb_total_at_research IS NOT NULL
+                      AND rs.protondb_total - rs.protondb_total_at_research >= 10)
+                  OR (rs.protondb_tier IS NOT NULL
+                      AND rs.protondb_tier_at_research IS NOT NULL
+                      AND rs.protondb_tier != rs.protondb_tier_at_research)
+              )""",
         app_ids,
     )
     games = [dict(r) for r in cur.fetchall()]
+
+    skipped = total_eligible - len(games)
+    if skipped > 0:
+        print(f"[AI Research] Skipped {skipped}/{total_eligible} games "
+              f"(no new ProtonDB data since last research)")
 
     if not games:
         conn.close()
@@ -456,6 +485,7 @@ def research_for_ids(db_path: Path, app_ids: list[int]) -> int:
         if data:
             data = validate_result(data)
             _upsert_research_to_db(cur, game["app_id"], data)
+            _update_research_snapshot(cur, game["app_id"])
             confidence = data.get("confidence", "?")
             amd = data.get("amd_status", "?")
             print(f"AMD: {amd} | Confidence: {confidence}")
@@ -523,6 +553,21 @@ def _upsert_research_to_db(cur: sqlite3.Cursor, app_id: int,
                 link.get("link_type", ""),
             ),
         )
+
+
+def _update_research_snapshot(cur: sqlite3.Cursor, app_id: int) -> None:
+    """Mark a game as researched and snapshot the current ProtonDB state."""
+    now = datetime.now(timezone.utc).isoformat()
+    cur.execute(
+        """INSERT INTO research_snapshots (app_id, ai_researched_at,
+               protondb_total_at_research, protondb_tier_at_research)
+           VALUES (?, ?, NULL, NULL)
+           ON CONFLICT(app_id) DO UPDATE SET
+               ai_researched_at = excluded.ai_researched_at,
+               protondb_total_at_research = research_snapshots.protondb_total,
+               protondb_tier_at_research = research_snapshots.protondb_tier""",
+        (app_id, now),
+    )
 
 
 def main():
