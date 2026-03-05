@@ -138,6 +138,32 @@ CREATE TABLE IF NOT EXISTS data_sources (
     url TEXT,
     notes TEXT
 );
+
+-- Pipeline incremental progress tracking
+CREATE TABLE IF NOT EXISTS pipeline_progress (
+    app_id INTEGER PRIMARY KEY,
+    status TEXT NOT NULL DEFAULT 'pending',
+    cycle_id TEXT NOT NULL,
+    processed_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_pipeline_status ON pipeline_progress(status);
+
+CREATE TABLE IF NOT EXISTS pipeline_meta (
+    key TEXT PRIMARY KEY,
+    value TEXT
+);
+
+-- AI research snapshots: tracks ProtonDB state at time of last research
+-- to avoid re-researching games with no new community data.
+CREATE TABLE IF NOT EXISTS research_snapshots (
+    app_id INTEGER PRIMARY KEY REFERENCES games(app_id),
+    protondb_total INTEGER,
+    protondb_tier TEXT,
+    protondb_fetched_at TEXT,
+    ai_researched_at TEXT,
+    protondb_total_at_research INTEGER,
+    protondb_tier_at_research TEXT
+);
 """
 
 

@@ -176,6 +176,127 @@ def fetch(db_path: Path) -> int:
     return inserted + updated
 
 
+def fetch_and_cache(session: "requests.Session | None" = None) -> list[dict] | None:
+    """Download the NVIDIA JSON and return the raw game entries.
+
+    The data can be reused across batches within a single pipeline run.
+    """
+    if session is None:
+        session = requests.Session()
+
+    try:
+        resp = session.get(NVIDIA_URL, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+    except requests.RequestException as exc:
+        logger.error("Failed to fetch NVIDIA data: %s", exc)
+        return None
+
+    try:
+        payload = resp.json()
+    except ValueError as exc:
+        logger.error("Failed to parse NVIDIA JSON: %s", exc)
+        return None
+
+    entries = payload.get("data", [])
+    if not entries:
+        logger.warning("NVIDIA JSON has no 'data' array or it is empty")
+        return None
+
+    logger.info("NVIDIA cache: %d raw entries downloaded", len(entries))
+    return entries
+
+
+def match_for_ids(db_path: Path, app_ids: list[int],
+                  nvidia_entries: list[dict]) -> int:
+    """Match cached NVIDIA data against a batch of app_ids and upsert.
+
+    Returns the number of matched entries.
+    """
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+
+    # Build name->app_id index scoped to the batch for fast lookup.
+    batch_set = set(app_ids)
+    cur.execute("SELECT app_id, name FROM games")
+    name_index: dict[str, int] = {}
+    id_set: set[int] = set()
+    for row in cur.fetchall():
+        if row[0] in batch_set:
+            name_index[row[1].strip().lower()] = row[0]
+            id_set.add(row[0])
+
+    matched = 0
+    for entry in nvidia_entries:
+        entry_type = (entry.get("type") or "").strip()
+        if entry_type != "Game":
+            continue
+
+        name = entry.get("name", "")
+        if isinstance(name, int):
+            name = str(name)
+        name = name.strip()
+        if not name:
+            continue
+
+        rt_raw = entry.get("ray tracing", "")
+        dlss_sr_raw = entry.get("dlss super resolution", "")
+        dlss_fg_raw = entry.get("dlss frame generation", "")
+        dlss_rr_raw = entry.get("dlss ray reconstruction", "")
+        dlss_mfg_raw = entry.get("dlss multi frame generation", "")
+        dlaa_raw = entry.get("dlaa", "")
+
+        has_any = any(
+            _has_value(f)
+            for f in [rt_raw, dlss_sr_raw, dlss_fg_raw, dlss_rr_raw, dlss_mfg_raw, dlaa_raw]
+        )
+        if not has_any:
+            continue
+
+        # Only match games in the current batch.
+        app_id = name_index.get(name.lower())
+        if app_id is None:
+            continue
+
+        rt_type = _parse_rt_type(rt_raw)
+        dlss_sr = int(_has_value(dlss_sr_raw))
+        dlss_fg = int(_has_value(dlss_fg_raw))
+        dlss_rr = int(_has_value(dlss_rr_raw))
+        dlss_mfg = int(_has_value(dlss_mfg_raw))
+        dlaa = int(_has_value(dlaa_raw))
+
+        cur.execute(
+            """INSERT INTO graphics_features
+                   (app_id, rt_type, dlss_sr, dlss_fg, dlss_rr, dlss_mfg, dlaa)
+               VALUES (?, ?, ?, ?, ?, ?, ?)
+               ON CONFLICT(app_id) DO UPDATE SET
+                   rt_type  = CASE WHEN excluded.rt_type = 'pt' THEN 'pt'
+                                   WHEN graphics_features.rt_type = 'pt' THEN 'pt'
+                                   WHEN excluded.rt_type != 'none' THEN excluded.rt_type
+                                   ELSE graphics_features.rt_type END,
+                   dlss_sr  = MAX(graphics_features.dlss_sr,  excluded.dlss_sr),
+                   dlss_fg  = MAX(graphics_features.dlss_fg,  excluded.dlss_fg),
+                   dlss_rr  = MAX(graphics_features.dlss_rr,  excluded.dlss_rr),
+                   dlss_mfg = MAX(graphics_features.dlss_mfg, excluded.dlss_mfg),
+                   dlaa     = MAX(graphics_features.dlaa,     excluded.dlaa)
+            """,
+            (app_id, rt_type, dlss_sr, dlss_fg, dlss_rr, dlss_mfg, dlaa),
+        )
+        matched += 1
+
+    now = datetime.now(timezone.utc).isoformat()
+    cur.execute(
+        """INSERT OR REPLACE INTO data_sources
+               (source_id, last_updated, entries_count, url, notes)
+           VALUES ('nvidia', ?, ?, ?, 'NVIDIA RTX/DLSS database')""",
+        (now, matched, NVIDIA_URL),
+    )
+
+    conn.commit()
+    conn.close()
+    logger.info("NVIDIA: matched %d entries in batch", matched)
+    return matched
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     db = Path(__file__).parent.parent / "data" / "linuxplaydb.db"

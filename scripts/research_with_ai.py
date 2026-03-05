@@ -406,6 +406,170 @@ def save_full_research(results: list[dict]) -> None:
     print(f"[OK] Full research saved to {output_file}")
 
 
+def research_for_ids(db_path: Path, app_ids: list[int]) -> int:
+    """Research specific app_ids with AI and upsert results directly into DB.
+
+    Only researches games that have RT/PT features (same filter as the main
+    research flow). Returns the number of successfully researched games.
+    """
+    api_key = os.environ.get("MISTRAL_API_KEY")
+    if not api_key:
+        print("[AI Research] No MISTRAL_API_KEY — skipping")
+        return 0
+
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    # Count total RT/PT games in batch for skip reporting.
+    placeholders = ",".join("?" * len(app_ids))
+    cur.execute(
+        f"""SELECT COUNT(*)
+            FROM games g
+            JOIN graphics_features gf ON g.app_id = gf.app_id
+            WHERE g.app_id IN ({placeholders})
+              AND g.type = 'game'
+              AND (gf.rt_type IN ('rt', 'pt')
+                   OR gf.dlss_sr = 1 OR gf.fsr3 = 1 OR gf.fsr4 = 1)""",
+        app_ids,
+    )
+    total_eligible = cur.fetchone()[0]
+
+    # Only research games that need it: never researched, research failed,
+    # 10+ new ProtonDB reports, or ProtonDB tier changed.
+    cur.execute(
+        f"""SELECT g.app_id, g.name
+            FROM games g
+            JOIN graphics_features gf ON g.app_id = gf.app_id
+            LEFT JOIN research_snapshots rs ON g.app_id = rs.app_id
+            WHERE g.app_id IN ({placeholders})
+              AND g.type = 'game'
+              AND (gf.rt_type IN ('rt', 'pt')
+                   OR gf.dlss_sr = 1 OR gf.fsr3 = 1 OR gf.fsr4 = 1)
+              AND (
+                  rs.ai_researched_at IS NULL
+                  OR gf.amd_status IS NULL
+                  OR (rs.protondb_total IS NOT NULL
+                      AND rs.protondb_total_at_research IS NOT NULL
+                      AND rs.protondb_total - rs.protondb_total_at_research >= 10)
+                  OR (rs.protondb_tier IS NOT NULL
+                      AND rs.protondb_tier_at_research IS NOT NULL
+                      AND rs.protondb_tier != rs.protondb_tier_at_research)
+              )""",
+        app_ids,
+    )
+    games = [dict(r) for r in cur.fetchall()]
+
+    skipped = total_eligible - len(games)
+    if skipped > 0:
+        print(f"[AI Research] Skipped {skipped}/{total_eligible} games "
+              f"(no new ProtonDB data since last research)")
+
+    if not games:
+        conn.close()
+        print("[AI Research] No eligible games in batch")
+        return 0
+
+    print(f"[AI Research] Researching {len(games)} games")
+
+    client = Mistral(api_key=api_key)
+    # Switch to a plain cursor for upserts.
+    conn.row_factory = None
+    cur = conn.cursor()
+    success = 0
+
+    for i, game in enumerate(games, 1):
+        print(f"  [{i}/{len(games)}] {game['name']}...", end=" ", flush=True)
+
+        data = research_game(client, game)
+        if data:
+            data = validate_result(data)
+            _upsert_research_to_db(cur, game["app_id"], data)
+            _update_research_snapshot(cur, game["app_id"])
+            confidence = data.get("confidence", "?")
+            amd = data.get("amd_status", "?")
+            print(f"AMD: {amd} | Confidence: {confidence}")
+            success += 1
+        else:
+            print("[SKIP]")
+
+        if i % 10 == 0:
+            conn.commit()
+
+        if i < len(games):
+            time.sleep(REQUEST_DELAY)
+
+    conn.commit()
+    conn.close()
+    print(f"[AI Research] Done: {success}/{len(games)} researched")
+    return success
+
+
+def _upsert_research_to_db(cur: sqlite3.Cursor, app_id: int,
+                           data: dict) -> None:
+    """Write AI research results into the database using an existing cursor."""
+    amd_status = data.get("amd_status")
+    rt_override = data.get("rt_type_override")
+    notes_en = data.get("amd_notes_en", "")
+    notes_es = data.get("amd_notes_es", "")
+
+    if amd_status and amd_status != "unknown":
+        if rt_override:
+            cur.execute(
+                """UPDATE graphics_features
+                   SET amd_status = ?,
+                       rt_type = CASE WHEN ? IS NOT NULL THEN ? ELSE rt_type END,
+                       notes_en = COALESCE(?, notes_en),
+                       notes_es = COALESCE(?, notes_es)
+                   WHERE app_id = ?""",
+                (amd_status, rt_override, rt_override, notes_en or None,
+                 notes_es or None, app_id),
+            )
+        else:
+            cur.execute(
+                """UPDATE graphics_features
+                   SET amd_status = ?,
+                       notes_en = COALESCE(?, notes_en),
+                       notes_es = COALESCE(?, notes_es)
+                   WHERE app_id = ?""",
+                (amd_status, notes_en or None, notes_es or None, app_id),
+            )
+
+    # Upsert useful links.
+    for link in data.get("useful_links", []):
+        url = link.get("url", "")
+        if not url:
+            continue
+        cur.execute(
+            """INSERT OR IGNORE INTO useful_links
+                   (app_id, url, title_en, title_es, source, link_type)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (
+                app_id,
+                url,
+                link.get("title_en", ""),
+                link.get("title_es", ""),
+                link.get("source", ""),
+                link.get("link_type", ""),
+            ),
+        )
+
+
+def _update_research_snapshot(cur: sqlite3.Cursor, app_id: int) -> None:
+    """Mark a game as researched and snapshot the current ProtonDB state."""
+    now = datetime.now(timezone.utc).isoformat()
+    cur.execute(
+        """INSERT INTO research_snapshots (app_id, ai_researched_at,
+               protondb_total_at_research, protondb_tier_at_research)
+           VALUES (?, ?, NULL, NULL)
+           ON CONFLICT(app_id) DO UPDATE SET
+               ai_researched_at = excluded.ai_researched_at,
+               protondb_total_at_research = research_snapshots.protondb_total,
+               protondb_tier_at_research = research_snapshots.protondb_tier""",
+        (app_id, now),
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Research game compatibility using Mistral AI + DuckDuckGo search"

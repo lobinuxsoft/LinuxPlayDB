@@ -25,10 +25,8 @@ Thumbs.db
 .env
 .env.local
 
-# Research output (AI generated, not tracked)
+# Research output (AI generated, not tracked — progress lives in DB now)
 scripts/research_output/
-!scripts/research_output/progress.json
-!scripts/research_output/protondb_progress.json
 
 # Node (if ever needed)
 node_modules/

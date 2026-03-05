@@ -376,6 +376,142 @@ def save_protondb_data(results: list[dict]) -> None:
     print(f"[OK] Added {links_added} ProtonDB direct links to useful_links.json")
 
 
+def fetch_for_ids(db_path: Path, app_ids: list[int]) -> int:
+    """Fetch ProtonDB data for specific app_ids and upsert directly into DB.
+
+    Writes to linux_compat (tier, proton_version, launch_options, env_vars)
+    and useful_links (ProtonDB page link).
+    Returns number of games successfully processed.
+    """
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+
+    # Only process games that exist and are type 'game' with positive IDs.
+    placeholders = ",".join("?" * len(app_ids))
+    cur.execute(
+        f"SELECT app_id, name FROM games WHERE app_id IN ({placeholders}) "
+        f"AND app_id > 0 AND type = 'game'",
+        app_ids,
+    )
+    games = cur.fetchall()
+
+    if not games:
+        conn.close()
+        return 0
+
+    print(f"[ProtonDB] Processing {len(games)}/{len(app_ids)} eligible games")
+
+    success = 0
+    for i, (app_id, name) in enumerate(games, 1):
+        try:
+            reports = fetch_community_reports(app_id)
+            summary = fetch_official_summary(app_id)
+
+            if not reports and not summary:
+                time.sleep(REQUEST_DELAY)
+                continue
+
+            analysis = analyze_reports(reports, name)
+
+            summary_total = None
+            summary_tier = None
+            if summary:
+                if summary.get("tier"):
+                    summary_tier = summary["tier"]
+                    if not analysis.get("dominant_rating"):
+                        analysis["dominant_rating"] = summary_tier
+                    analysis["official_tier"] = summary_tier
+                summary_total = summary.get("total")
+
+            _upsert_protondb_to_db(cur, app_id, analysis,
+                                   summary_total=summary_total,
+                                   summary_tier=summary_tier)
+            success += 1
+
+        except Exception as exc:
+            print(f"  [WARN] ProtonDB {app_id} ({name}): {exc}")
+
+        if i % 50 == 0:
+            conn.commit()
+            print(f"  [ProtonDB] Progress: {i}/{len(games)} ({success} ok)")
+
+        time.sleep(REQUEST_DELAY)
+
+    conn.commit()
+    conn.close()
+    print(f"[ProtonDB] Done: {success}/{len(games)} games enriched")
+    return success
+
+
+def _upsert_protondb_to_db(cur: sqlite3.Cursor, app_id: int,
+                           analysis: dict,
+                           summary_total: int | None = None,
+                           summary_tier: str | None = None) -> None:
+    """Write ProtonDB analysis results into the database using an existing cursor."""
+    tier = analysis.get("dominant_rating") or analysis.get("official_tier")
+    proton_ver = analysis.get("proton_version")
+    launch_opts = analysis.get("launch_options")
+    env_vars = analysis.get("env_vars")
+    env_json = json.dumps(env_vars) if env_vars else None
+
+    linux_status = None
+    if tier in ("platinum", "gold"):
+        linux_status = "works"
+
+    cur.execute(
+        """INSERT INTO linux_compat (app_id, protondb_tier, proton_version,
+               launch_options, env_vars, linux_status)
+           VALUES (?, ?, ?, ?, ?, ?)
+           ON CONFLICT(app_id) DO UPDATE SET
+               protondb_tier = COALESCE(excluded.protondb_tier, linux_compat.protondb_tier),
+               proton_version = COALESCE(
+                   CASE WHEN linux_compat.proton_version IS NULL
+                             OR linux_compat.proton_version LIKE '%Check%'
+                        THEN excluded.proton_version
+                        ELSE linux_compat.proton_version END,
+                   linux_compat.proton_version),
+               launch_options = COALESCE(excluded.launch_options, linux_compat.launch_options),
+               env_vars = COALESCE(excluded.env_vars, linux_compat.env_vars),
+               linux_status = CASE
+                   WHEN linux_compat.linux_status IN ('check', '') OR linux_compat.linux_status IS NULL
+                   THEN COALESCE(excluded.linux_status, linux_compat.linux_status)
+                   ELSE linux_compat.linux_status END""",
+        (app_id, tier, proton_ver, launch_opts, env_json, linux_status),
+    )
+
+    # Add ProtonDB link.
+    report_count = analysis.get("report_count", 0)
+    official_tier = analysis.get("official_tier", tier or "")
+    tier_str = f" ({official_tier})" if official_tier else ""
+    pdb_url = f"https://www.protondb.com/app/{app_id}"
+
+    cur.execute(
+        """INSERT OR IGNORE INTO useful_links
+               (app_id, url, title_en, title_es, source, link_type)
+           VALUES (?, ?, ?, ?, 'protondb', 'guide')""",
+        (
+            app_id,
+            pdb_url,
+            f"ProtonDB reports{tier_str} — {report_count} reports",
+            f"Reportes ProtonDB{tier_str} — {report_count} reportes",
+        ),
+    )
+
+    # Update research_snapshots with current ProtonDB state.
+    if summary_total is not None or summary_tier is not None:
+        now = datetime.now(timezone.utc).isoformat()
+        cur.execute(
+            """INSERT INTO research_snapshots
+                   (app_id, protondb_total, protondb_tier, protondb_fetched_at)
+               VALUES (?, ?, ?, ?)
+               ON CONFLICT(app_id) DO UPDATE SET
+                   protondb_total = excluded.protondb_total,
+                   protondb_tier = excluded.protondb_tier,
+                   protondb_fetched_at = excluded.protondb_fetched_at""",
+            (app_id, summary_total, summary_tier, now),
+        )
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Fetch ProtonDB reports and extract launch configs"
