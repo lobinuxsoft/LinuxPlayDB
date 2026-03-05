@@ -43,7 +43,7 @@ MAX_DETAIL_REQUESTS = 500  # Per run (safety cap)
 REQUEST_TIMEOUT = 20
 
 
-def _fetch_all_apps(session: requests.Session, api_key: str) -> dict[int, str]:
+def fetch_all_apps(session: requests.Session, api_key: str) -> dict[int, str]:
     """Fetch ALL Steam apps via IStoreService/GetAppList (paginated).
 
     Returns {appid: name} for games only. Names come free from the API.
@@ -205,7 +205,7 @@ def fetch(db_path: Path, api_key: str | None = None,
     # ── Phase 1: Get ALL app IDs + names from Steam ──
     if api_key:
         print("[Phase 1] Fetching all Steam games (IStoreService)...")
-        all_apps = _fetch_all_apps(session, api_key)
+        all_apps = fetch_all_apps(session, api_key)
         print(f"  Found {len(all_apps)} games from Steam")
 
         # Insert new games with names from IStoreService
@@ -395,6 +395,98 @@ def fetch(db_path: Path, api_key: str | None = None,
     print(f"\n[OK] Steam fetch complete: {total_before} → {total_after} games "
           f"(+{inserted} new, {resolved} resolved)")
     return total_after
+
+
+def insert_new_apps(conn: sqlite3.Connection, all_apps: dict[int, str]) -> int:
+    """Insert new game entries from a Steam catalog dump.
+
+    Existing rows are left untouched except for placeholder name resolution.
+    Returns the number of newly inserted games.
+    """
+    cur = conn.cursor()
+    cur.execute("SELECT app_id, name FROM games")
+    existing = {r[0]: r[1] for r in cur.fetchall()}
+
+    new_count = 0
+    batch = 0
+    for aid, api_name in all_apps.items():
+        if aid not in existing:
+            name = api_name.strip() if api_name else f"[Steam App {aid}]"
+            cur.execute(
+                "INSERT OR IGNORE INTO games (app_id, name, type) VALUES (?, ?, 'game')",
+                (aid, name),
+            )
+            cur.execute(
+                "INSERT OR IGNORE INTO linux_compat (app_id, linux_status) VALUES (?, 'check')",
+                (aid,),
+            )
+            cur.execute(
+                "INSERT OR IGNORE INTO graphics_features (app_id) VALUES (?)",
+                (aid,),
+            )
+            new_count += 1
+        else:
+            current_name = existing[aid]
+            if current_name.startswith("[Steam App ") and api_name.strip():
+                cur.execute("UPDATE games SET name = ? WHERE app_id = ?",
+                            (api_name.strip(), aid))
+        batch += 1
+        if batch % 5000 == 0:
+            conn.commit()
+
+    conn.commit()
+    return new_count
+
+
+def fetch_details_for_ids(db_path: Path, app_ids: list[int],
+                          session: requests.Session | None = None) -> int:
+    """Fetch Steam appdetails for a specific list of app_ids and upsert into DB.
+
+    Returns number of games successfully enriched.
+    """
+    if session is None:
+        session = requests.Session()
+        session.headers.update({"User-Agent": "LinuxPlayDB/1.0"})
+
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+
+    enriched = 0
+    for i, app_id in enumerate(app_ids):
+        data = _fetch_app_details(session, app_id)
+        if data:
+            name = data.get("name", "").strip()
+            app_type = data.get("type", "game")
+            short_desc = data.get("short_description", "").strip() or None
+            if name:
+                cur.execute(
+                    """UPDATE games SET
+                           name = CASE WHEN name LIKE '[Steam App %' THEN ? ELSE name END,
+                           type = ?,
+                           short_description = COALESCE(?, short_description)
+                       WHERE app_id = ?""",
+                    (name, app_type, short_desc, app_id),
+                )
+                enriched += 1
+
+        if (i + 1) % 50 == 0:
+            conn.commit()
+            logger.info("  Steam details: %d/%d (%d enriched)", i + 1, len(app_ids), enriched)
+
+        time.sleep(DETAILS_DELAY)
+
+    now = datetime.now(timezone.utc).isoformat()
+    cur.execute(
+        """INSERT OR REPLACE INTO data_sources
+               (source_id, last_updated, entries_count, url, notes)
+           VALUES ('steam_details', ?, ?, ?, 'Steam appdetails (incremental)')""",
+        (now, enriched, STEAM_DETAILS_URL),
+    )
+
+    conn.commit()
+    conn.close()
+    logger.info("Steam details: %d/%d enriched", enriched, len(app_ids))
+    return enriched
 
 
 def main():

@@ -166,6 +166,89 @@ def fetch(db_path: Path) -> int:
     return updated
 
 
+def fetch_for_ids(db_path: Path, app_ids: list[int],
+                  session: requests.Session | None = None) -> int:
+    """Fetch Deck compatibility for a specific list of app_ids.
+
+    Only queries games that don't already have a non-unknown deck_status.
+    Returns number of entries updated.
+    """
+    if session is None:
+        session = requests.Session()
+        session.headers.update({"User-Agent": "LinuxPlayDB/1.0"})
+
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+
+    # Filter to IDs that need a Deck compat check.
+    placeholders = ",".join("?" * len(app_ids))
+    cur.execute(
+        f"""SELECT g.app_id FROM games g
+            LEFT JOIN linux_compat lc ON g.app_id = lc.app_id
+            WHERE g.app_id IN ({placeholders})
+              AND g.app_id > 0
+              AND (lc.deck_status IS NULL OR lc.deck_status = 'unknown')""",
+        app_ids,
+    )
+    eligible = [r[0] for r in cur.fetchall()]
+
+    if not eligible:
+        conn.close()
+        return 0
+
+    logger.info("Deck compat: checking %d/%d games", len(eligible), len(app_ids))
+
+    updated = 0
+    for i, app_id in enumerate(eligible):
+        try:
+            resp = session.get(
+                DECK_COMPAT_URL,
+                params={"nAppID": app_id},
+                timeout=REQUEST_TIMEOUT,
+            )
+            if resp.status_code == 429:
+                logger.warning("Deck compat rate limited at %d, backing off 30s", app_id)
+                time.sleep(30)
+                continue
+            if resp.status_code != 200:
+                time.sleep(RATE_LIMIT_SECONDS)
+                continue
+
+            data = resp.json()
+            status = _parse_compat_category(data)
+
+            if status != "unknown":
+                cur.execute(
+                    """INSERT INTO linux_compat (app_id, deck_status)
+                       VALUES (?, ?)
+                       ON CONFLICT(app_id) DO UPDATE SET deck_status = excluded.deck_status""",
+                    (app_id, status),
+                )
+                updated += 1
+
+        except (requests.RequestException, ValueError, KeyError) as exc:
+            logger.warning("Deck compat app %d failed: %s", app_id, exc)
+
+        if (i + 1) % 50 == 0:
+            conn.commit()
+            logger.info("  Deck compat: %d/%d (%d updated)", i + 1, len(eligible), updated)
+
+        time.sleep(RATE_LIMIT_SECONDS)
+
+    now = datetime.now(timezone.utc).isoformat()
+    cur.execute(
+        """INSERT OR REPLACE INTO data_sources
+               (source_id, last_updated, entries_count, url, notes)
+           VALUES ('deck_compat', ?, ?, ?, 'Steam Deck compatibility reports')""",
+        (now, updated, DECK_COMPAT_URL),
+    )
+
+    conn.commit()
+    conn.close()
+    logger.info("Deck compat: %d updated out of %d eligible", updated, len(eligible))
+    return updated
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     db = Path(__file__).parent.parent / "data" / "linuxplaydb.db"

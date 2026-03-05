@@ -27,44 +27,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      # Step 1: Fetch ProtonDB reports (free, no API key)
-      # 1000 games/run × ~4s each = ~67 min. Progress persists across runs.
-      - name: Fetch ProtonDB reports
-        run: python scripts/fetch_protondb_reports.py --delay 1.5 --limit 1000
-        continue-on-error: true
-        timeout-minutes: 90
-
-      # Step 2: AI research for games missing data (needs MISTRAL_API_KEY secret)
-      # 50 games/week × ~5s each = ~5 min. Progress persists across runs.
-      - name: AI research (Mistral + DuckDuckGo)
-        if: env.MISTRAL_API_KEY != ''
+      # Single pipeline step: processes one batch (default 1000 games).
+      # Handles cycle management, all data sources, and DB finalization.
+      - name: Run incremental pipeline
         env:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-        run: python scripts/research_with_ai.py --limit 50 --delay 5
-        continue-on-error: true
-        timeout-minutes: 25
-
-      # Step 3: Build database (Steam + NVIDIA + seed + manual data)
-      # STEAM_API_KEY is already in env, build_db.py calls fetch_steam.py
-      # which reads it. SteamSpy skipped in CI — IStoreService provides names.
-      - name: Build database
-        env:
           SKIP_STEAMSPY: "1"
-        run: python scripts/build_db.py
-        timeout-minutes: 10
+        run: python scripts/pipeline.py --batch-size 1000
+        timeout-minutes: 100
 
-      # Step 4: Incremental Steam detail fetch (names for new games)
-      # 500 games per run at ~1.6s each = ~13 min. SteamSpy skipped.
-      - name: Fetch Steam game details (incremental)
-        run: python scripts/fetch_steam.py --skip-steamspy --details-limit 500
-        continue-on-error: true
-        timeout-minutes: 20
-
-      # Step 5: Rebuild inline DB after details enrichment
-      - name: Regenerate inline DB
-        run: python scripts/build_db.py --inline-only
-
-      # Step 6: Commit to automation branch and create PR to development
+      # Commit to automation branch and create PR to main
       - name: Commit and create PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,16 +44,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage data files (force to bypass .gitignore for progress files)
+          # Stage data files
           git add -f \
             data/linuxplaydb.db \
             site/data/linuxplaydb.db \
             site/js/db_inline.js \
             scripts/manual/amd_specific.json \
             scripts/manual/linux_commands.json \
-            scripts/manual/useful_links.json \
-            scripts/research_output/progress.json \
-            scripts/research_output/protondb_progress.json
+            scripts/manual/useful_links.json
 
           # Exit early if nothing changed
           if git diff --cached --quiet; then
@@ -94,7 +64,7 @@ jobs:
           # Push to automation branch (force-update since it's disposable)
           git push origin HEAD:refs/heads/automated/data-update --force
 
-          # Create or update PR to development
+          # Create or update PR to main
           if gh pr list --head automated/data-update --base main --state open --json number --jq '.[0].number' | grep -q .; then
             echo "PR already exists, force-push updated it."
           else
