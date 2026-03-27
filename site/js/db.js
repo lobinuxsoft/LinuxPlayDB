@@ -108,8 +108,9 @@ const LPDB_DB = (() => {
       where.push("gf.rt_type = 'rt'");
     }
     if (filters.tech && filters.tech.length > 0) {
+      const VALID_TECH = new Set(["dlss_sr", "dlss_fg", "dlss_rr", "dlss_mfg", "dlaa", "fsr4", "fsr3", "fsr2", "xess"]);
       for (const t of filters.tech) {
-        where.push(`gf.${t} = 1`);
+        if (VALID_TECH.has(t)) where.push(`gf.${t} = 1`);
       }
     }
     if (filters.amd === "ok") {
