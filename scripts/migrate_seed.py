@@ -55,8 +55,10 @@ def extract_games_array(html: str) -> list[dict]:
     # Now safely quote unquoted JS keys (only bare identifiers before colons)
     raw = re.sub(r'(\w+)\s*:', r'"\1":', raw)
 
-    # Replace JS booleans with Python booleans
-    raw = raw.replace("true", "True").replace("false", "False")
+    # JS booleans (true/false) are already valid JSON — no conversion needed
+    # Remove trailing commas (valid in JS, invalid in JSON)
+    raw = re.sub(r",\s*(?=[}\]])", "", raw)
+    raw = raw.rstrip().rstrip(",")
 
     # Restore original strings
     def restore_string(m):
@@ -66,8 +68,8 @@ def extract_games_array(html: str) -> list[dict]:
     raw = re.sub(r'"__STR_(\d+)__"', restore_string, raw)
 
     try:
-        games = eval(f"[{raw}]")
-    except Exception as e:
+        games = json.loads(f"[{raw}]")
+    except json.JSONDecodeError as e:
         print(f"ERROR: Failed to parse GAMES_DB: {e}")
         sys.exit(1)
 
