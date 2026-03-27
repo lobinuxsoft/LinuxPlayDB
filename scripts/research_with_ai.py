@@ -31,14 +31,18 @@ from pathlib import Path
 try:
     from mistralai import Mistral
 except ImportError:
-    print("[ERROR] mistralai not installed. Run: pip install mistralai")
-    sys.exit(1)
+    if __name__ == "__main__":
+        print("[ERROR] mistralai not installed. Run: pip install mistralai")
+        sys.exit(1)
+    raise
 
 try:
     from ddgs import DDGS
 except ImportError:
-    print("[ERROR] ddgs not installed. Run: pip install ddgs")
-    sys.exit(1)
+    if __name__ == "__main__":
+        print("[ERROR] ddgs not installed. Run: pip install ddgs")
+        sys.exit(1)
+    raise
 
 ROOT = Path(__file__).parent.parent
 DB_FILE = ROOT / "data" / "linuxplaydb.db"
