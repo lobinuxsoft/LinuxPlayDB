@@ -29,10 +29,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    from mistralai import Mistral
+    from mistralai.client import Mistral
 except ImportError:
     if __name__ == "__main__":
-        print("[ERROR] mistralai not installed. Run: pip install mistralai")
+        print("[ERROR] mistralai 2.x not installed. Run: pip install 'mistralai>=2.0.0,<3.0.0'")
         sys.exit(1)
     raise
 
